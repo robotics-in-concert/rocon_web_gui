@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Rocon - ROBO WORLD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- jQuery -->
+    <script src="../rocon_web_common/js/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="../rocon_web_common/js/bootstrap/bootstrap.js"></script>
+    <script src="../rocon_web_common/js/bootstrap/bootstrap-button.js"></script>
+    <!-- ROS -->
+    <script src="../rocon_web_common/js/eventemitter2/eventemitter2.js"></script>
+    <script src="../rocon_web_common/js/ros/roslib.js"></script>
+    <!-- ROCON -->
+    <script type="text/javascript" src="../rocon_web_common/js/interactions.js"></script>
+    <script type="text/javascript" src="../rocon_web_common/js/uuid.js"></script>
+    <script type="text/javascript" src="../rocon_web_common/js/config.js"></script>
+    <!-- styles -->
+    <link href="../rocon_web_common/css/bootstrap.css" rel="stylesheet"></link>
+    <link href="../rocon_web_common/css/bootstrap-button.css" rel="stylesheet"></link>
+    <link href="../rocon_web_common/css/bootstrap-responsive.css" rel="stylesheet"></link>
+    <!-- App -->
+    <script type="text/javascript" src="index.js"></script>
+    <link href="index.css" rel="stylesheet"></link>
+
+  </head>
+  <body>
+    <!-- config layer -->
+     <p class='oa-ui-connection-info rosbridge-ip-info'>ws://localhost:9090</p>
+     <p class='oa-ui-connection-info rosbridge-connection-info'>connection</p>
+     
+     <div class='config-layer container'>
+        <h1>Config</h1>
+     </div>
+    <!-- order app main layer -->
+     <div class="oa-ui-main">
+       <!-- Title-layer -->
+       <div class="container oa-ui title-layer">
+       </div>
+       <!-- Intro-layer -->
+       <div class="container oa-ui intro-layer">
+        <img class="intro-layer-img-button" src="./img/2_intro_button_off.png">
+       </div>     
+       <!-- Menu-layer -->
+       <div class="container oa-ui menu-layer">
+        <p class="menu-layer-drink-img-group"></p>
+        <p class="menu-layer-button-img-group">
+          <img class="menu-layer-button-img cancel-img-btn" src="./img/3_order_button_cancel_disabled.png">
+          <img class="menu-layer-button-img order-img-btn" src="./img/3_order_button_order_disabled.png">
+        </p>
+       </div>
+       <!-- Ordered-layer -->
+       <div class="container oa-ui ordered-layer">
+        <p class='oa-ui-connection-info rosbridge-ip-info'>ws://localhost:9090</p>
+        <p class='oa-ui-connection-info rosbridge-connection-info'>connection</p>
+        <div class='config-layer container'>
+            <h1>Config</h1>
+        </div>
+       </div>
+       <!-- On delivery layer -->
+       <div class="container oa-ui on-delivery-layer">
+        <p class="video-rocon-adv-group">
+          <video class="video-rocon-adv" preload="auto" poster="" controls>
+            <source src="./video/introducing_gocart.mp4" type="video/mp4">
+          </video>
+        </p>
+        <p class="image-delivery-status-group">
+          <img class="on-delivery-layer-status-img status-img" src="./img/6_order status_ready.png"> 
+        </p>
+       </div>
+       
+       <!-- Arrival layer -->
+       <div class="container oa-ui arrival-layer">
+       </div>
+      
+       <!-- Delivery end layer -->
+       <div class="container oa-ui delivery-end-layer">
+       </div>
+       <!-- Modal layer  -->
+       <div id="confirm-modal" class="modal hide fade modal-order-list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <p class="modal-drink-img-group"></p>
+          <p class="modal-button-img-group">
+            <img class="modal-button-img no-img-btn" src="./img/4_modalbox_button_no_off.png" data-dismiss="modal">
+            <img class="modal-button-img yes-img-btn" src="./img/4_modalbox_button_yes_off.png" data-dismiss="modal">
+          </p>
+        </div>
+       </div>
+     </div>
+  </body>
+</html>
+
