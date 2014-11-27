@@ -581,6 +581,3 @@ function getBrowser() {
   if (agt.indexOf("msie") != -1) return 'internet_explorer';
 }
 
-
-
-
