@@ -25,6 +25,7 @@ $(document).ready(function () {
   startApp();
 
   if(defaultUrl != undefined) {
+    gUrl = defaultUrl;
     ros.connect(defaultUrl);
   }
 });
