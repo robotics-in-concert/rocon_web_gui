@@ -12,6 +12,8 @@ var gFinalUrl;
 var gUrl;
 var gCookieCount;
 
+var defaultUrl;
+
 // Starts here
 $(document).ready(function () {
   init();
@@ -21,6 +23,10 @@ $(document).ready(function () {
   deleteUrl();
   listItemSelect();
   startApp();
+
+  if(defaultUrl != undefined) {
+    ros.connect(defaultUrl);
+  }
 });
 
 
@@ -126,13 +132,7 @@ function connect() {
       newUrl += ":9090";
     }
 
-    try {
-      ros.connect('ws://' + newUrl);
-      $(this).text = "Disconnect";
-    } catch(e) {
-      console.log(e.message);
-      alert(e.message);
-    }
+    ros.connect('ws://' + newUrl);
   });
 }
 
