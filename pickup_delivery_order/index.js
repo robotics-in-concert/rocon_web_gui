@@ -314,7 +314,7 @@ function updateDiv(target_div){
         }
         else{
           is_showing_modal = true;
-          showConfrimModal();  
+          showConfirmModal();
           divList[currentDiv].show();
         }
       }
@@ -374,8 +374,8 @@ function deliveryProgressControl(video_src){
   }
 }
 
-function showConfrimModal(){
-  console.log("showConfrimModal");
+function showConfirmModal(){
+  console.log("showConfirmModal");
   $('.modal-drink-img-group').html("");
   
   context = '';
@@ -384,6 +384,7 @@ function showConfrimModal(){
     templete = '<img src='+ menu_list[menu].img_qty_1 +' class="modal-drink-img">';
     context += templete;
   };  
+  console.log(context);
   $('.modal-drink-img-group').html(context);
   $('#confirm-modal').modal('show');
 }
