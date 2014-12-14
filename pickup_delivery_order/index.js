@@ -1,9 +1,16 @@
 var ros = new ROSLIB.Ros();
 
-var kichen_order_action_type = "simple_delivery_msgs/DeliverOrderAction"
-var diagnostic_sub_topic_type = "diagnostic_msgs/DiagnosticArray";
+// remapping rules setting
+var send_order_pub = "send_order"
+var send_order_pub_type = "simple_delivery_msgs/DeliveryOrder"
+
+//sub
+var delivery_status_sub_topic = "delivery_status";
+var delivery_status_sub_type = "simple_delivery_msgs/DeliveryStatus";
+
+
+var tables_sub_topic = "tables";
 var tables_sub_topic_type = "yocs_msgs/TableList"
-var robot_status_sub_topic_type = "std_msgs/String";
 
 var defaultUrL = "";
 var discard_btn_list = "";
@@ -21,43 +28,26 @@ if (rocon_interactions.parameters.hasOwnProperty('discard_btn_name')){
     discard_btn_list = "";
 }
 
-// remapping rules setting
-//pub, sub
-var diagnostic_sub_topic = "diagnostics_agg";
-var tables_sub_topic = "tables";
-var robot_status_sub_topic = "robot_status"
-
-//action
-var kichen_order_action = "kitchen_order"
-
-
-if(diagnostic_sub_topic in rocon_interactions.remappings)
-  diagnostic_sub_topic = rocon_interactions.remappings[diagnostic_sub_topic];
+console.log(rocon_interactions.parameters);
+console.log(discard_btn_list);
 
 if(tables_sub_topic in rocon_interactions.remappings)
   tables_sub_topic = rocon_interactions.remappings[tables_sub_topic];
 
-if(robot_status_sub_topic in rocon_interactions.remappings)
-  robot_status_sub_topic = rocon_interactions.remappings[robot_status_sub_topic];
+if(send_order_pub in rocon_interactions.remappings)
+	send_order_pub = rocon_interactions.remappings[send_order_pub];
 
-if(kichen_order_action in rocon_interactions.remappings)
-	kichen_order_action = rocon_interactions.remappings[kichen_order_action];
+// remapping rules setting
+if(delivery_status_sub_topic in rocon_interactions.remappings)
+  delivery_status_sub_topic = rocon_interactions.remappings[delivery_status_sub_topic];
+
 
 // public var
 var row_max_num = 3;
 var delivery_goal = "";
-var robot_status;
-var robot_status_list = {
-                              "STATE_INITIALIZATION" :'Initialization',
-                              "STATE_GOTO_KITCHEN"    : 'GOTO_KITCHEN',
-                              "STATE_AT_KITCHEN"      : 'AT_KITCHEN',
-                              "STATE_GOTO_TABLE"      : 'GOTO_TABLE',
-                              "STATE_AT_TABLE"         : 'AT_TABLE',
-                              "STATE_ON_ERROR"         :'ON_ERROR',
-                             };
 var parsing_list = ['Distance','Remain Time','Message'];
 //ros action
-var delive_order_client; 
+var deliver_order_client; 
 
 $().ready(function(e){
   // setting ros callbacks()
@@ -71,19 +61,12 @@ function settingROSCallbacks()
     console.log("Connected");
     // subscribe to order list
     
-    delive_order_client = new ROSLIB.ActionClient({
+    deliver_order_client = new ROSLIB.Topic({
       ros : ros,
-      serverName : kichen_order_action,
-      actionName : kichen_order_action_type
+      name: send_order_pub,
+      messageType: send_order_pub_type 
     });
     
-    var diagnostic_listener = new ROSLIB.Topic({
-      ros : ros,
-      name : diagnostic_sub_topic,
-      messageType: diagnostic_sub_topic_type
-      });
-    diagnostic_listener.subscribe(processDiagnosticUpdate);
-
     var tables_listener = new ROSLIB.Topic({
       ros : ros,
       name : tables_sub_topic,
@@ -91,13 +74,14 @@ function settingROSCallbacks()
       });
     tables_listener.subscribe(processTableListUpdate);
 
-    var robot_status_listener = new ROSLIB.Topic({
+    var delivery_status_listener = new ROSLIB.Topic({
       ros : ros,
-      name : robot_status_sub_topic,
-      messageType: robot_status_sub_topic_type
+      name : delivery_status_sub_topic,
+      messageType: delivery_status_sub_type
       });
-    robot_status_listener.subscribe(processRobotStatusUpdate);
-    
+    delivery_status_listener.subscribe(processDeliveryStatusUpdate);
+
+
     settingDummyGreenButton();
     showMainMenu(true);
   }
@@ -141,23 +125,10 @@ function parsingDeliveryStatus(data, parsing_list){
   
   return parsing_data;
 }
-function showDeliberyStatus(data){
+function showDeliveryStatus(data){
   $(".sd-delivery-status-layer").html("");
-  Object.keys(data).forEach(function(item){
-    $(".sd-delivery-status-layer").append('<h1 class="sd-delivery-status-msg">'+item+': '+data[item]+'</h1>');
-  });
 }
 
-function processRobotStatusUpdate(data){
-  robot_status = data.data;
-  $(".sd-robot-status").text($(".sd-robot-status").text().split(':')[0]+': ' + robot_status);
-  if(robot_status === robot_status_list.STATE_AT_KITCHEN){
-    $(".sd-table-list").prop('disabled',false);
-  }
-  else{
-    $(".sd-table-list").prop('disabled',true);
-  }
-}
 
 function processFilterSortMenu(data){
   var menu = [];
@@ -203,21 +174,6 @@ function processTableListUpdate(data){
   settingMainMenu(menu);
 }
 
-function processDiagnosticUpdate(data){
-  for (var i = data.status.length - 1; i >= 0; i--) {
-    var name = data.status[i].name;
-    if(name === "/Power System/Laptop Battery"){
-        var percent = getBattPecent(data.status[i].values);
-        setBattPecent('.sd-laptop-batt-status',percent);
-    }
-    else if(name === "/Power System/Battery"){
-        var percent = getBattPecent(data.status[i].values);
-        setBattPecent('.sd-robot-batt-status',percent);
-    }
-  }
-  
-};
-
 function setBattPecent(obj, data){
     var text = $(obj).text();
     $(obj).text(text.split(':')[0]+': ' + data+' %');
@@ -260,22 +216,14 @@ function settingMainMenu(data){
       $('.sd-goal-msg').text(order_location);
 
       //send order
-      var goal = new ROSLIB.Goal({
-        actionClient : delive_order_client,
-        goalMessage : {
-          location : order_location
-        }
+      uuid = generateUUID()
+      //hardcoded
+      var order = new ROSLIB.Message({
+        order_id : uuid,
+        receivers : [{location: order_location, qty : 1, menus:[]}]
       });
-      goal.on('feedback', function(feedback){
-        showDeliberyStatus(parsingDeliveryStatus(feedback.status, parsing_list));
-      });
-      goal.on('result', function(result) {
-        console.log(result);
-        showMainMenu(true);
-      });
-      goal.send();
+      deliver_order_client.publish(order)
       showMainMenu(false);
-      
     });
   };
 };
@@ -291,3 +239,20 @@ function showMainMenu(flag){
     }
 };
 
+current_order_status = 10
+function processDeliveryStatusUpdate(data){
+  console.log(data);
+  if (data.order_id == uuid) {
+    console.log(data.status);
+    current_order_status = data.status;
+
+    if(current_order_status == 80) {
+      showMainMenu(true);
+    }
+  }
+  else{
+    console.log(uuid)
+    console.log(data.uuid)
+    console.log('other delivery status')
+  }
+};
