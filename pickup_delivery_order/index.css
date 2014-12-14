@@ -1,0 +1,31 @@
+.sd-status-bar{
+	margin:10px;
+	font-size:27px;
+	color:white;
+}
+.sd-logo{
+	height:47px;
+	width:150px;
+	float:right;
+}
+
+.sd-table-list{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 50px 5px;
+	font-size: 48px;
+
+}
+
+.sd-goal-msg{
+	font-size:45px;
+	line-height: 45px;
+}
+.sd-delivery-status-msg{
+	font-size:45px;
+	line-height: 45px;
+}
+.sd-dummy-green-btn{
+	padding: 50px 5px;
+	font-size: 48px;
+}
