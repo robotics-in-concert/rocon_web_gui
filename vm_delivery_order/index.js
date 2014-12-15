@@ -51,33 +51,37 @@ config_values['table'] = table;
 //-10 : "ERROR"
 
 //menu item setting
+
 var menu_list = {
-                    "COKE":{"name":'COKE',
+                    "water":{"name":'water',
                      "disable_img":"./img/3_order_1_water_disabled.png",
                      "img_qty_1"   :"./img/3_order_1_water_1cup.png",
-                     "img_qty_2"   :"./img/3_order_1_water_2cup.png",},
-                    "CIDER":{"name":'CIDER',
+                     "img_qty_2"   :"./img/3_order_1_water_2cup.png",
+                     "click_count" : 0},
+                    "juice":{"name":'juice',
                      "disable_img" :"./img/3_order_2_juice_disabled.png",
                      "img_qty_1"    :"./img/3_order_2_juice_1cup.png",
-                     "img_qty_2"    :"./img/3_order_2_juice_2cup.png",},
-                    /*"coffee":{"name":'coffee',
+                     "img_qty_2"    :"./img/3_order_2_juice_2cup.png",
+                     "click_count" : 0},
+                    "coffee":{"name":'coffee',
                      "disable_img"  :"./img/3_order_3_coffee_disabled.png",
                      "img_qty_1"    :"./img/3_order_3_coffee_1cup.png",
-                     "img_qty_2"    :"./img/3_order_3_coffee_2cup.png"},*/
-                    }
+                     "img_qty_2"    :"./img/3_order_3_coffee_2cup.png",
+                     "click_count" : 0},
+                    } 
 /*
 var menu_list = {
-  "COKE":{
-    "name":'COKE',
-    "disable_img": "./img/coke.jpg",
-    "img_qty_1": "./img/coke.jpg",
-    "img_qty_2": "./img/coke.jpg",},
-  "CIDER":{
-    "name":'CIDER',
-    "disable_img": "./img/cider.jpg",
-    "img_qty_1": "./img/cider.jpg",
-    "img_qty_2": "./img/cider.jpg",}
-  };
+                    "cider":{"name":'cider',
+                     "disable_img":"./img/cider.jpg",
+                     "img_qty_1"   :"./img/cider.jpg",
+                     "img_qty_2"   :"./img/cider.jpg",
+                     "click_count" : 0},
+                    "coke":{"name":'coke',
+                     "disable_img"  :"./img/coke.jpg",
+                     "img_qty_1"    :"./img/coke.jpg",
+                     "img_qty_2"    :"./img/coke.jpg",
+                     "click_count" : 0}
+                  }
 */
 
 //ui setting
@@ -220,29 +224,36 @@ function initMenu(){
     class_name = data.currentTarget.classList[data.currentTarget.classList.length -1];
     img_src = $("img."+class_name).attr("src");
     console.log(class_name)
-    if (cur_order_list.length > 1){
+
+    var max_order_count = 2;
+    if (cur_order_list.length > max_order_count -1 ){
+      console.log()
       for (var i = cur_order_list.length - 1; i >= 0; i--) {
         idx = jQuery.inArray( class_name, cur_order_list)
         if (idx >= 0 ){
           cur_order_list.splice(idx,1);
           $("img."+class_name).attr("src",menu_list[class_name].disable_img);
+          menu_list[class_name].click_count = 0;
         }  
       };
     }
     else{
-      if(img_src.indexOf("_disable")>0){
+      if(menu_list[class_name].click_count == 0){
         $("img."+class_name).attr("src", menu_list[class_name].img_qty_1);
         cur_order_list.push(class_name);
+        menu_list[class_name].click_count = 1;
       }
-      else if(img_src.indexOf("_1cup")>0){
+      else if(menu_list[class_name].click_count == 1){
         $("img."+class_name).attr("src", menu_list[class_name].img_qty_2);
         cur_order_list.push(class_name);
+        menu_list[class_name].click_count = 2;
       }
       else{
         $("img."+class_name).attr("src",menu_list[class_name].disable_img);
         idx = jQuery.inArray( class_name, cur_order_list)
         cur_order_list.splice(idx,1);
         cur_order_list.splice(idx,1);
+        menu_list[class_name].click_count = 0;
       }
     }
 
