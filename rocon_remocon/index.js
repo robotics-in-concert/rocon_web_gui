@@ -23,6 +23,7 @@ $(document).ready(function () {
   deleteUrl();
   listItemSelect();
   startApp();
+  getBrowser();
 
   if(defaultUrl != undefined) {
     gUrl = defaultUrl;
@@ -576,9 +577,11 @@ function subscribeTopic(ros, topicName, msgType, callBack) {
 function getBrowser() {
   var agt = navigator.userAgent.toLowerCase();
   if (agt.indexOf("chrome") != -1) return 'chrome';
+  if (agt.indexOf("crios") != -1) return 'chrome'; // for ios
   if (agt.indexOf("opera") != -1) return 'opera';
   if (agt.indexOf("firefox") != -1) return 'firefox';
   if (agt.indexOf("safari") != -1) return 'safari';
   if (agt.indexOf("msie") != -1) return 'internet_explorer';
+  
 }
 
