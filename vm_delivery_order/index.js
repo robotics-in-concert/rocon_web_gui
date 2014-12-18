@@ -51,24 +51,18 @@ config_values['table'] = table;
 //-10 : "ERROR"
 
 //menu item setting
-
 var menu_list = {
-                    "water":{"name":'water',
+                    "COKE":{"name":'COKE',
                      "disable_img":"./img/3_order_1_water_disabled.png",
                      "img_qty_1"   :"./img/3_order_1_water_1cup.png",
                      "img_qty_2"   :"./img/3_order_1_water_2cup.png",
                      "click_count" : 0},
-                    "juice":{"name":'juice',
+                    "CIDER":{"name":'CIDER',
                      "disable_img" :"./img/3_order_2_juice_disabled.png",
                      "img_qty_1"    :"./img/3_order_2_juice_1cup.png",
                      "img_qty_2"    :"./img/3_order_2_juice_2cup.png",
                      "click_count" : 0},
-                    "coffee":{"name":'coffee',
-                     "disable_img"  :"./img/3_order_3_coffee_disabled.png",
-                     "img_qty_1"    :"./img/3_order_3_coffee_1cup.png",
-                     "img_qty_2"    :"./img/3_order_3_coffee_2cup.png",
-                     "click_count" : 0},
-                    } 
+                    }; 
 /*
 var menu_list = {
                     "cider":{"name":'cider',
@@ -81,7 +75,7 @@ var menu_list = {
                      "img_qty_1"    :"./img/coke.jpg",
                      "img_qty_2"    :"./img/coke.jpg",
                      "click_count" : 0}
-                  }
+                  };
 */
 
 //ui setting
