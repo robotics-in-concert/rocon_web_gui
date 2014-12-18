@@ -81,8 +81,6 @@ function settingROSCallbacks()
       });
     delivery_status_listener.subscribe(processDeliveryStatusUpdate);
 
-
-    settingDummyGreenButton();
     showMainMenu(true);
   }
 
@@ -203,6 +201,7 @@ function getBattPecent(data){
 
 function settingMainMenu(data){
   var row_num = 0;
+  $('.sd-main-menu').html("");
   for (var i = 0; i < data.length; i++) {
     var table_name = data[i].name;
     if(i % row_max_num === 0){
@@ -214,7 +213,6 @@ function settingMainMenu(data){
     $('.sd-table-'+table_name).click(function(data){
       var order_location = data.currentTarget.outerText
       $('.sd-goal-msg').text(order_location);
-
       //send order
       uuid = generateUUID()
       //hardcoded
