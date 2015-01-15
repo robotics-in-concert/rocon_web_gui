@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <name>rocon_web_common</name>
+  <version>0.0.0</version>
+  <description>
+    Rocon Web common library
+  </description>
+
+  <maintainer email="jihoonlee.in@gmail.com">Jihoon Lee</maintainer>
+
+  <license>BSD</license>
+
+  <author>Jihoon Lee</author> 
+  <author>Dongwook Lee</author> 
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>
