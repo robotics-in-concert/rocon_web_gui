@@ -11,7 +11,7 @@ REGIONVIZ.AlvarAR = function(options) {
   that.rootObject = options.rootObject;
   that.ros = options.ros;
   var map_origin = options.map_origin;
-  that.color = options.color || createjs.Graphics.getRGB(0,154,205,0.8);
+  that.color = options.color || createjs.Graphics.getRGB(255,0,0,0.8);
   that.topicName = options.topicName || '/marker_pose_list';
   that.topicType = options.topicType || '/ar_track_alvar_msgs/AlvarMarkers';
   that.markers = {};
@@ -109,20 +109,9 @@ REGIONVIZ.AlvarAR = function(options) {
 
   var getRotation = function(orientation) {
     var quaternion = new ROSLIB.Quaternion(orientation);
-    var yaw_n180 = new ROSLIB.Quaternion({ x : 0, y : 0,z : 1, w : 0});
-    var roll_n180 = new ROSLIB.Quaternion({ x : 1, y : 0,z : 0, w : 0});
-
-    yaw_n180.invert();
-    roll_n180.invert();
-    
-    quaternion.multiply(roll_n180);
-    quaternion.multiply(yaw_n180);
-    quaternion.multiply(yaw_n180);
-    console.log(stage);
-    var rpy = stage.rosQuaternionToGlobalTheta(quaternion);
-    var rotation = -rpy * 180 / Math.PI;
-    
-    return rotation;
+    var yaw = stage.rosQuaternionToGlobalTheta(quaternion); // return degree
+    yaw  = yaw + 90 // rotation
+    return yaw;
   }
 
 };
