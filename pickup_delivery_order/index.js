@@ -10,7 +10,7 @@ var delivery_status_sub_type = "simple_delivery_msgs/DeliveryStatus";
 
 
 var tables_sub_topic = "tables";
-var tables_sub_topic_type = "yocs_msgs/TableList"
+var tables_sub_topic_type = "yocs_msgs/WaypointList"
 
 var defaultUrL = "";
 var discard_btn_list = "";
@@ -46,8 +46,10 @@ if(delivery_status_sub_topic in rocon_interactions.remappings)
 var row_max_num = 3;
 var delivery_goal = "";
 var parsing_list = ['Distance','Remain Time','Message'];
+var uuid = ''
 //ros action
-var deliver_order_client; 
+var deliver_order_client;
+
 
 $().ready(function(e){
   // setting ros callbacks()
@@ -168,7 +170,7 @@ function processFilterSortMenu(data){
 }
 
 function processTableListUpdate(data){
-  var menu = processFilterSortMenu(data.tables);
+  var menu = processFilterSortMenu(data.waypoints);
   settingMainMenu(menu);
 }
 
@@ -241,7 +243,6 @@ current_order_status = 10
 function processDeliveryStatusUpdate(data){
   console.log(data);
   if (data.order_id == uuid) {
-    console.log(data.status);
     current_order_status = data.status;
 
     if(current_order_status == 80) {

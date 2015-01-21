@@ -7,7 +7,7 @@ var robot3 = rocon_interactions.parameters['robot3'];
 
 var viewer;
 var gridClient;
-var circle_region_poller;
+var waypoint_poller;
 var ar_region_poller;
 var annotator;
 
@@ -216,20 +216,21 @@ function addNavigators(viewer,gridClient) {
 function addRegionViz(viewer,gridClient){
   var table_topic = rocon_interactions.remappings['tables'] || 'tables';
   var ar_marker_topic = rocon_interactions.remappings['ar_markers'] || 'ar_markers';
-  gridClient.on('change', function(map_origin) {
-    circle_region_poller = new REGIONVIZ.Circle({
+
+  gridClient.on('change', function(map_origin) {   
+    waypoint_poller = new REGIONVIZ.Waypoint({
       ros: ros,
       map_origin : map_origin,
       rootObject : viewer.scene,
-      tableTopicName : table_topic,
+      topicName : table_topic,
     });
 
     ar_region_poller = new REGIONVIZ.AlvarAR({
-      ros: ros,
-      map_origin : map_origin,
-      rootObject : viewer.scene,
-      topicName : ar_marker_topic
-    });
+       ros: ros,
+       map_origin : map_origin,
+       rootObject : viewer.scene,
+       topicName : ar_marker_topic
+     });
 
   });
 }
