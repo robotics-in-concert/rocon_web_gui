@@ -2,6 +2,8 @@ var ros = new ROSLIB.Ros();
 var defaultUrL = rocon_interactions.rosbridge_uri;
 
 var viewer;
+var format = 'svg';
+var engine = 'dot';
 
 //set sub
 var dotgraph_string_sub = '';
@@ -29,7 +31,7 @@ function initViewer() {
 
 function createViewer() {
   
-  var view = getElementById('view');
+  var view = document.getElementById('view');
   view.innerHTML = "No Data received";
 }
 
@@ -56,7 +58,7 @@ function settingROSCallbacks()
 
 function settingSubscriber()
 {
-  dotgraph_string_sub_topic = new ROSLIB.topic({
+  dotgraph_string_sub_topic = new ROSLIB.Topic({
     ros: ros,
     name: dotgraph_string_sub_topic_name,
     messageType: dotgraph_string_sub_topic_type
@@ -66,13 +68,14 @@ function settingSubscriber()
 
 function processConductorGraph(msg)
 {
+  console.log("Here");
   dotgraph_string = msg.data;
   updateViewer();
 }
 
 function updateViewer()
 {
-  var view = getElementById('view');
+  var view = document.getElementById('view');
 
   if(dotgraph_string != null) {
     drawDotGraph(view, dotgraph_string);
@@ -82,7 +85,7 @@ function updateViewer()
 function drawDotGraph(view, data)
 {
   var v = getViz(data);  
-  view.innerHTML += v;
+  view.innerHTML = v;
 }
 
 function getViz(data)
