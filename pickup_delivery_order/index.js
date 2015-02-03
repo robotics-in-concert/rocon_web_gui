@@ -41,6 +41,21 @@ if(send_order_pub in rocon_interactions.remappings)
 if(delivery_status_sub_topic in rocon_interactions.remappings)
   delivery_status_sub_topic = rocon_interactions.remappings[delivery_status_sub_topic];
 
+delivery_status_list = {
+"10" : "IDLE",
+"20" : "GO_TO_FRONTDESK",
+"30" : "ARRIVAL_AT_FRONTDESK",
+"40" : "WAITING_FOR_FRONTDESK",
+"51" : "GO_TO_RECEIVER",
+"52" : "ARRIVAL_AT_RECEIVER",
+"53" : "WAITING_CONFIRM_RECEIVER",
+"54" : "COMPLETE_DELIVERY",
+"60" : "COMPLETE_ALL_DELIVERY",
+"70" : "RETURN_TO_DOCK",
+"80" : "COMPELTE_RETURN",
+"-10" : "ERROR"
+}
+
 
 // public var
 var row_max_num = 3;
@@ -125,8 +140,9 @@ function parsingDeliveryStatus(data, parsing_list){
   
   return parsing_data;
 }
+
 function showDeliveryStatus(data){
-  $(".sd-delivery-status-layer").html("");
+  $(".sd-delivery-status-layer").html(delivery_status_list[current_order_status+""]);
 }
 
 
@@ -244,8 +260,8 @@ function processDeliveryStatusUpdate(data){
   console.log(data);
   if (data.order_id == uuid) {
     current_order_status = data.status;
-
-    if(current_order_status == 80) {
+    $(".sd-delivery-status-layer").html(delivery_status_list[current_order_status+""]);
+    if(current_order_status == 60) {
       showMainMenu(true);
     }
   }
