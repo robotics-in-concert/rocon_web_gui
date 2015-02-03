@@ -331,8 +331,8 @@ function createOrderLi(order_number, order) {
              "<br/><b> location : </b>" + order.location+
              "<br/><b> menu : </b>" + order.menus.toString()+
              "<br/><b> Robot : </b>" + (order.robot || "Not Assign")+  
-             "<br/><b> Status : </b>" + delivery_status_list[order.status+""];
-             "<br/><b> uuid : </b>" + order.id;
+             "<br/><b> Status : </b>" + delivery_status_list[order.status+""]+
+             "<br/><b> uuid : </b>" + order.order_id;
   li.appendChild(p);
 
   $(li).hover(
