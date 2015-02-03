@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <name>vm_delivery_order</name>
+  <version>0.0.0</version>
+  <description>
+    Vending machine delivery order application
+  </description>
+
+  <maintainer email="jihoonlee.in@gmail.com">Jihoon Lee</maintainer>
+
+  <license>BSD</license>
+
+  <author>Jihoon Lee</author> 
+  <author>Dongwook Lee</author> 
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>
