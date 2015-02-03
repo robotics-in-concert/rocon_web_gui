@@ -319,20 +319,20 @@ function processOrderList(msg) {
   nav_div.empty();
   for(i in msg.orders) {
       // add into navigation bar
-      msg.orders[i].order_id = i;
-      var navli = createOrderLi(msg.orders[i]); 
+      var navli = createOrderLi(i, msg.orders[i]); 
       nav_div.append(navli);
   }
 }
 
-function createOrderLi(order) {
+function createOrderLi(order_number, order) {
   var li = document.createElement('li');
   var p = document.createElement('p');
-  p.innerHTML = "<b>#" + order.order_id + "</b>"+
+  p.innerHTML = "<b>#" + order_number + "</b>"+
              "<br/><b> location : </b>" + order.location+
              "<br/><b> menu : </b>" + order.menus.toString()+
              "<br/><b> Robot : </b>" + (order.robot || "Not Assign")+  
              "<br/><b> Status : </b>" + delivery_status_list[order.status+""];
+             "<br/><b> uuid : </b>" + order.id;
   li.appendChild(p);
 
   $(li).hover(
