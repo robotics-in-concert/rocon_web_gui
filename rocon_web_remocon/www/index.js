@@ -12,7 +12,7 @@ var gFinalUrl;
 var gUrl;
 var gCookieCount;
 
-var defaultUrl="ws://192.168.10.32:9090";
+var defaultUrl;
 
 // Starts here
 $(document).ready(function () {
