@@ -92,8 +92,8 @@
 
 .menu-layer-drink-img{
   width: 13%;
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
   margin-top: 16%;
   z-index: 100;
 }
@@ -112,21 +112,21 @@
 
 
 /*on-delivery-layer css*/
-.video-rocon-adv-group{
-	text-align: center;
-}
+.on-delivery-layer-slideshow{
+  width:800px;
+  position:relative;
+  left:50%;
+  margin-left:-400px; 
+  margin-top:16%; 
 
-.video-rocon-adv{
-  width: 53%;
-  margin-top: 15%;
 }
 .image-delivery-status-group{
 	text-align: center;	
 }
 .on-delivery-layer-status-img{
-	width: 28%;
+	margin-top: 1%;
+  width: 28%;
 }
-
 
 /*config-layer ccss*/
 .config-layer{

@@ -20,6 +20,8 @@
     <script type="text/javascript" src="/rocon_web_common/js/rocon/interactions.js"></script>
     <script type="text/javascript" src="/rocon_web_common/js/utils/uuid.js"></script>
     <script type="text/javascript" src="/rocon_web_common/js/utils/config.js"></script>
+    <script type="text/javascript" src="/rocon_web_common/js/utils/jquery.flexslider.js"></script>
+
     <!-- styles -->
     <link href="/rocon_web_common/css/legacy/bootstrap.2.3.1.css" rel="stylesheet"></link>
     <link href="/rocon_web_common/css/bootstrap-button.css" rel="stylesheet"></link>
@@ -39,14 +41,14 @@
      </div>
     <!-- order app main layer -->
      <div class="oa-ui-main">
-       <!-- Title-layer -->
+       <!-- Title-layer 0-->
        <div class="container oa-ui title-layer">
        </div>
-       <!-- Intro-layer -->
+       <!-- Intro-layer 1-->
        <div class="container oa-ui intro-layer">
         <img class="intro-layer-img-button" src="./img/2_intro_button_off.png">
        </div>     
-       <!-- Menu-layer -->
+       <!-- Menu-layer 2-->
        <div class="container oa-ui menu-layer">
         <p class="menu-layer-drink-img-group"></p>
         <p class="menu-layer-button-img-group">
@@ -54,7 +56,7 @@
           <img class="menu-layer-button-img order-img-btn" src="./img/3_order_button_order_disabled.png">
         </p>
        </div>
-       <!-- Ordered-layer -->
+       <!-- Ordered-layer 3-->
        <div class="container oa-ui ordered-layer">
         <p class='oa-ui-connection-info rosbridge-ip-info'>ws://localhost:9090</p>
         <p class='oa-ui-connection-info rosbridge-connection-info'>connection</p>
@@ -62,13 +64,31 @@
             <h1>Config</h1>
         </div>
        </div>
-       <!-- On delivery layer -->
+       <!-- On delivery layer 4-->
        <div class="container oa-ui on-delivery-layer">
-        <p class="video-rocon-adv-group">
-          <video class="video-rocon-adv" preload="auto" poster="" controls>
-            <source src="./video/introducing_gocart.mp4" type="video/mp4">
-          </video>
-        </p>
+        <div class= "on-delivery-layer-slideshow">
+          <div class="flexslider">
+              <ul class="slides">
+                <li>
+                  <img src="./img/delivery_status_0.png" />
+                </li>
+                <li>
+                  <img src="./img/delivery_status_1.png" />
+                </li>
+                <li>
+                  <img src="./img/delivery_status_2.png" />
+                </li>
+                <li>
+                  <img src="./img/delivery_status_3.png" />
+                </li>
+                <li>
+                  <img src="./img/delivery_status_4.png" />
+                </li>
+                
+              </ul>
+          </div>
+        </div>
+        
         <p class="image-delivery-status-group">
           <img class="on-delivery-layer-status-img status-img" src="./img/6_order status_ready.png"> 
         </p>

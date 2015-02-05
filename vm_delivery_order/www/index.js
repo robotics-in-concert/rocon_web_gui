@@ -53,14 +53,14 @@ config_values['table'] = table;
 //menu item setting
 var menu_list = {
                     "COKE":{"name":'COKE',
-                     "disable_img":"./img/3_order_1_water_disabled.png",
-                     "img_qty_1"   :"./img/3_order_1_water_1cup.png",
-                     "img_qty_2"   :"./img/3_order_1_water_2cup.png",
+                     "disable_img":"./img/coke_disable.png",
+                     "img_qty_1"   :"./img/coke.png",
+                     "img_qty_2"   :"./img/coke_2.png",
                      "click_count" : 0},
-                    "CIDER":{"name":'CIDER',
-                     "disable_img" :"./img/3_order_2_juice_disabled.png",
-                     "img_qty_1"    :"./img/3_order_2_juice_1cup.png",
-                     "img_qty_2"    :"./img/3_order_2_juice_2cup.png",
+                    "WELCHS":{"name":'WELCHS',
+                     "disable_img" :"./img/welchs_disable.png",
+                     "img_qty_1"    :"./img/welchs.png",
+                     "img_qty_2"    :"./img/welchs_2.png",
                      "click_count" : 0},
                     }; 
 /*
@@ -99,7 +99,24 @@ $().ready(function(e){
   ros.connect(defaultUrL);
   $(".rosbridge-ip-info").html(defaultUrL);
   initConfig(config_values);
+
 });
+
+function initSlideShow(){
+  console.log("slide show");
+  $('.flexslider').flexslider({
+        animation: "slide",
+        slideshow: true,
+        animationLoop: true,
+        slideshowSpeed: 4000,
+        animationSpeed: 1000,
+        controlNav: false, 
+        directionNav: false,
+
+  });
+  $('.flexslider').flexslider("Play");
+
+}
 
 function initEvent(){
   //set event
@@ -271,7 +288,8 @@ function updateDiv(target_div){
       if (divList[currentDiv].selector.indexOf("on-delivery-layer") > 0){
         //post proc
         console.log("Play ad");
-        $(".video-rocon-adv")[0].play();
+        initSlideShow();
+        //$(".video-rocon-adv")[0].play();
         divList[target_div].show();
         currentDiv = target_div;
       }
@@ -290,7 +308,8 @@ function updateDiv(target_div){
 
       if (divList[currentDiv].selector.indexOf("arrival-layer") > 0){
         console.log("Play ad");
-        $(".video-rocon-adv")[0].play();
+        initSlideShow();
+        //$(".video-rocon-adv")[0].play();
         divList[target_div].show();
         currentDiv = target_div;
       }
@@ -302,7 +321,7 @@ function updateDiv(target_div){
         currentDiv = 0;
       }
       else{
-        $(".video-rocon-adv")[0].load();
+        //$(".video-rocon-adv")[0].load();
         deliveryProgressControl(0);
         divList[target_div].show();
         currentDiv = target_div;  
@@ -318,7 +337,8 @@ function updateDiv(target_div){
       if (divList[currentDiv].selector.indexOf("ordered-layer") > 0){
         //post proc
         console.log("Play ad");
-        $(".video-rocon-adv")[0].play();
+        initSlideShow();
+        //$(".video-rocon-adv")[0].play();
         deliveryProgressControl(1);
         divList[target_div].show();
         currentDiv = target_div;
@@ -360,7 +380,7 @@ function updateDiv(target_div){
       else{
         //post proc
         console.log("none post proc")
-        $(".video-rocon-adv")[0].load();
+        //$(".video-rocon-adv")[0].load();
         deliveryProgressControl(0);
         divList[target_div].show();
         currentDiv = target_div;
@@ -375,17 +395,33 @@ function waittingUpdateDiv(timeout){
   },timeout);
 }
 
-function deliveryProgressControl(video_src){
+var isBlank;
+function doBlink(item){
+  var visible = item.css("visibility")
+  visible = visible.indexOf("visible") >= 0 ? "hidden" : "visible";
+  item.css("visibility", visible);
+}
+function startBlink(item){
+  isBlank = setInterval(function(){
+    doBlink(item);
+  },350);
+}
+function stopBlink(item){
+  clearInterval(isBlank);
+}
 
+function deliveryProgressControl(video_src){
   if(video_src == 1){ //first step
     console.log("play 1: prepairing");
     $("img."+'on-delivery-layer-status-img').attr('src','./img/6_order status_ready.png');
     $("img."+'on-delivery-layer-status-img').show();
+    startBlink($("img."+'on-delivery-layer-status-img'));
   }
   else if(video_src == 2){ //secend step
     console.log("play 2: delivery");
     $("img."+'on-delivery-layer-status-img').attr('src','./img/6_order status_delivery.png');
     $("img."+'on-delivery-layer-status-img').show();
+    startBlink($("img."+'on-delivery-layer-status-img'));
   }
   else{ //all stop
     console.log("stop 1 and stop 2");
