@@ -7,8 +7,10 @@ Web interface and libraries for rocon
 
 ```
 > sudo apt-get install ros-indigo-roswww
+> <cd to work space src directory>
 > wstool init . https://raw.githubusercontent.com/robotics-in-concert/rocon_web_gui/indigo/web.rosinstall
-> yujin_make
+> cd ..
+> catkin_make
 ```
 
 ## Execution
