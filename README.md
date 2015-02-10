@@ -3,7 +3,7 @@ rocon_web_gui
 
 Web interface and libraries for rocon
 
-== Installation ==
+## Installation
 
 ```
 > sudo apt-get install ros-indigo-roswww
@@ -11,7 +11,7 @@ Web interface and libraries for rocon
 > yujin_make
 ```
 
-== Execution ==
+## Execution
 
 1. Start Webserver
 ```
