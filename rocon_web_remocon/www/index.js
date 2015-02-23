@@ -13,7 +13,7 @@ var gFinalHash;
 var gUrl;
 var gCookieCount;
 
-var defaultUrl = 'ws://192.168.10.24:9090';
+var defaultUrl;
 
 
 //Remocon profile
@@ -22,7 +22,7 @@ var gRunningInteractions = [];
 var gRoconVersion = 'acdc'; //todo make rocon/version.js fot obtaining
 var gRemoconUUID = generateUUID().replace(/-/g,'');
 var gRemoconName = 'web_remocon_' + gRemoconUUID;
-var gRemoconRoconURI = 'rocon:/*/' + gRemoconName + '/*/trusty|chrome'
+var gRemoconRoconURI = 'rocon:/*/' + gRemoconName + '/*/' + getBrowser();
 var gRemoconPlatformInfo = {
     'uri' : gRemoconRoconURI,
     'version' : gRoconVersion,
