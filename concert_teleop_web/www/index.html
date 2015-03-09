@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rocon - Teleop</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <!-- jQuery -->
+    <script src="/rocon_web_common/js/jquery/jquery.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="/rocon_web_common/js/bootstrap/bootstrap.js"></script>
+    <script src="/rocon_web_common/js/bootstrap/bootstrap-button.js"></script>
+    <!-- ROS-->
+    <script type="text/javascript" src="/rocon_web_common/js/eventemitter2/eventemitter2.js"></script>
+    <script type="text/javascript" src="/rocon_web_common/js/ros/roslib.js"></script>
+    
+    <!-- UTILS -->
+    <script type="text/javascript" src="/rocon_web_common/js/utils/uuid.js"></script>
+    
+    <!-- ROCON -->
+    <script type="text/javascript" src="/rocon_web_common/js/rocon/interactions.js"></script>
+
+    <!-- Dot graph -->
+    <script type="text/javascript" src="/rocon_web_common/js/graphviz/viz.js"></script>
+
+    <!-- Modal -->
+    <script type="text/javascript" src="modal.js"></script>
+
+    <!-- styles -->
+    <link href="/rocon_web_common/css/bootstrap.css" rel="stylesheet"></link>
+    <link href="/rocon_web_common/css/bootstrap-button.css" rel="stylesheet"></link>
+    <link href="/rocon_web_common/css/bootstrap-responsive.css" rel="stylesheet"></link>
+
+    <!-- Service Pair :todo move to rocon-->
+    <script type="text/javascript" src="service_pair_client.js"></script>
+
+    <!-- Video Steamer-->
+    <script type="text/javascript" src="/rocon_web_common/js/ros/mjpegcanvas.js"></script>
+    <script type="text/javascript" src="video_streamer_interface.js"></script>
+    <script type="text/javascript" src="video_streamer_ui.js"></script>
+    
+    <!-- Controller -->
+    <script type="text/javascript" src="controller_interface.js"></script>
+    <script type="text/javascript" src="controller_ui.js"></script>
+    
+    <!-- ResourceChooser -->
+    <script type="text/javascript" src="resource_chooser_interface.js"></script>
+    <script type="text/javascript" src="resource_chooser_ui.js"></script>
+
+    
+    <!-- App -->
+    <link href="index.css" rel="stylesheet"></link>
+    <script type="text/javascript" src="index.js"></script>
+    
+    
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <img class="brand" style="height:35px; width:120px;" src="/rocon_web_common/img/rocon_logo.png"></img>
+          <a class="brand" href="#" style="margin-top:6px">Teleop</a>
+          <p class="input-prepend navbar-text pull-right" style="margin-top:7px">
+            <input class="input-large" id="focusedInput" type="text" value=""></input>
+          </p>
+        </div>
+      </div>
+    <p class='oa-ui-connection-info rosbridge-ip-info'>ws://localhost:9090</p>
+    <p class='oa-ui-connection-info rosbridge-connection-info'>connection</p>
+    </div>
+
+    <!-- Visualizer -->
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span4" id="resource_chooser">
+          <ul class="nav nav-list teleop-resource-list">
+            <li class="nav-header">Resource List</li>
+          </ul>
+          <div class="row-fluid">
+            <button class="span4 btn btn-primary teleop-resource-capture" type="button">Capture</button>
+            <button class="span4 btn btn-primary teleop-resource-release" type="button">Release</button>
+            <button class="span4 btn btn-primary teleop-resource-all-release" type="button">All Release</button>
+          </div>
+        </div>
+        <div class="span8" id="teleop-ui">
+          <div class="row-fluid">
+            <div class="span12" id="video_streamer"></div>
+            <div class="span12" id="controller"></div>
+          </div>
+        </div>
+      </div>
+
+     <!--   <div class="span3 " id="middle-left" >
+        </div>-->
+    </div>
+    
+    <hr/>
+    <footer>
+      <img style="width:90px; height:25px;" src="/rocon_web_common/img/yujin_logo.jpg"></img>
+      &copy 2014
+    </footer>
+
+
+  </body>
+</html>
