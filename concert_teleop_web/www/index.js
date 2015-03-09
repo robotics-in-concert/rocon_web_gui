@@ -1,22 +1,36 @@
 var ros = new ROSLIB.Ros();
 
 //var defaultUrL = rocon_interactions.rosbridge_uri;
-var defaultUrl = 'ws://192.168.10.24:9090';
-var videoSteamerHost = '192.168.10.24';
-var videoSteamerPort = 8080;
+var defaultUrl = rocon_interactions.rosbridge_uri;
+var videoSteamerHost = rocon_interactions.parameters['video_steamer_host'];
+var videoSteamerPort = rocon_interactions.parameters['video_steamer_port'];
 
 //var videoSteamTopicName = "/camera/rgb/image_color";
-var videoSteamTopicName = "/teleop/compressed_image";
+var videoSteamTopicName = "compressed_image";
 var videoSteamTopicType = "sensor_msgs/Image";
 
-var controllerTopicName = '/teleop/cmd_vel';
+var controllerTopicName = 'cmd_vel';
 var controllerTopicType = 'geometry_msgs/Twist';
 
-var availableTeleopTopicName = 'services/teleop/available_teleops';
+var availableTeleopTopicName = 'available_teleops';
 var availableTeleopTopicType = 'rocon_std_msgs/StringArray';
 
-var captureResourcePairName = '/services/teleop/capture_teleop';
+var captureResourcePairName = 'capture_teleop';
 var captureResourcePairType = 'concert_service_msgs/CaptureResourcePair';
+
+if (rocon_interactions.remappings.hasOwnProperty(videoSteamTopicName)){
+  videoSteamTopicName = rocon_interactions.remappings[videoSteamTopicName];
+}
+if (rocon_interactions.remappings.hasOwnProperty(controllerTopicName)){
+  controllerTopicName = rocon_interactions.remappings[controllerTopicName];
+}
+if (rocon_interactions.remappings.hasOwnProperty(availableTeleopTopicName)){
+  availableTeleopTopicName = rocon_interactions.remappings[availableTeleopTopicName];
+}
+if (rocon_interactions.remappings.hasOwnProperty(captureResourcePairName)){
+  captureResourcePairName = rocon_interactions.remappings[captureResourcePairName];
+}
+
 
 var vsInterface;
 var vsUI;

@@ -8,8 +8,6 @@ VideoStreamerUI = function(options){
   that.height = options.height || $('#' + that.divID).height();
   that.videoStreamerInterface = options.videoStreamerInterface || new VideoStreamerInterface();
   
-  
-  
   that.initVideoCanvas = function(){
     //Register change stream callback
     that.videoStreamerInterface.regChangeStreamCallback(reloadVideoCanvas);
@@ -29,7 +27,7 @@ VideoStreamerUI = function(options){
 
   var reloadVideoCanvas = function(topic){
     if(that.viewer !== undefined){
-      that.viewer.changeStream(topic)
+      that.viewer.changeStream(topic);
     }
   }
 }
