@@ -20,7 +20,7 @@ var defaultUrl;
 var gPublishers = {}
 var gRunningInteractions = [];
 var gRoconVersion = 'acdc'; //todo make rocon/version.js fot obtaining
-var gRemoconUUID = generateUUID().replace(/-/g,'');
+var gRemoconUUID = uuid().replace(/-/g,'');
 var gRemoconName = 'web_remocon_' + gRemoconUUID;
 var gRemoconRoconURI = 'rocon:/*/' + gRemoconName + '/*/' + getBrowser();
 var gRemoconPlatformInfo = {
@@ -517,7 +517,7 @@ function startApp() {
     var finalUrl = gFinalUrl;
     var finalHash = gFinalHash;
     var runningInteraction = {}
-    var uuid = generateUUID();
+    var uuid = uuid();
 
     if (finalUrl == null) {
       alert("not available on this platform");
