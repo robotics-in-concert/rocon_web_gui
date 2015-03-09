@@ -14,10 +14,16 @@ ControllerInterface = function(options){
     messageType : that.cmdVelTopicType,
   });
 
-  that.setcmdVelTopic = function(msg){
+  that.unpublishTopic = function(){
     if(pubCmdVel !== undefined){
+      console.log("unpublishTopic"); 
       pubCmdVel.unadvertise();
+      pubCmdVel = undefined;
     }
+  }
+
+  that.setcmdVelTopic = function(msg){
+    that.unpublishTopic();
     var remappings = msg.response.remappings;
     var cmdvelTopicName = that.cmdVelTopicName;
     if(remappings.length !== 0){

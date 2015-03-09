@@ -18,7 +18,6 @@ var availableTeleopTopicType = 'rocon_std_msgs/StringArray';
 var captureResourcePairName = '/services/teleop/capture_teleop';
 var captureResourcePairType = 'concert_service_msgs/CaptureResourcePair';
 
-var modal;
 var vsInterface;
 var vsUI;
 var cInterface;
@@ -53,6 +52,7 @@ function initUI(){
 
   if(cInterface !== undefined && rcInterface !== undefined){
     rcInterface.regCaptureResourceCallbacks([cInterface.setcmdVelTopic]);
+    rcInterface.regReleaseResourceCallbacks([cInterface.unpublishTopic]);
   }
   if(vsInterface !== undefined && rcInterface !== undefined){
     rcInterface.regCaptureResourceCallbacks([vsInterface.changeVideoStreamTopic]);
