@@ -3,8 +3,8 @@ ResourceChooserUI = function(options){
   options = options || {};
   that.resourceChooserInterface = options.resourceChooserInterface || new ResourceChooserInterface();
   
-  var currentSelectedResource = '';
-  var capturedResource = '';
+  var currentSelectedResource = {'name':'','item':null};
+  var capturedResource = {'name':'','item':null};
   var rcModal = new Modal({
     divId: 'resource-chooser-modal'
   });
@@ -20,14 +20,14 @@ ResourceChooserUI = function(options){
     that.resourceChooserInterface.regResourceErrorCallbacks([updateCaptureErrorResource]);
     
     $('.teleop-resource-capture').click(function(e){
-        if(capturedResource.length === 0){
-          that.resourceChooserInterface.captureResource(currentSelectedResource);
+        if(capturedResource['name'].length === 0){
+          that.resourceChooserInterface.captureResource(currentSelectedResource['name']);
           $('.teleop-resource-capture').prop('disabled', true);
           $('.teleop-resource-release').prop('disabled', true);
-          message = 'Captureing [' + currentSelectedResource + ']\n Wait for a moment..';
+          message = 'Captureing [' + currentSelectedResource['name'] + ']\n Wait for a moment..';
         }
         else{
-          message = 'Error: Already captured resource: [' + capturedResource + ']';
+          message = 'Error: Already captured resource: [' + capturedResource['name'] + ']';
         }
         rcModal.show('Capture',message);
         
@@ -35,41 +35,34 @@ ResourceChooserUI = function(options){
 
     $('.teleop-resource-release').click(function(e){
         var message = '';
-        if(capturedResource.length !== 0){
-            that.resourceChooserInterface.releaseResource(currentSelectedResource);
-            capturedResource = '';
-            message = 'Releasing: [' + currentSelectedResource + ']';
+        if(capturedResource['name'].length !== 0){
+            that.resourceChooserInterface.releaseResource(capturedResource['name']);
+            capturedResource['item'].innerText = capturedResource['name'];
+            capturedResource = {'name':'','item':null};
+            message = 'Releasing: [' + currentSelectedResource['name'] + ']';
         }
         else{
-            message = 'Error: None captured resource: ['+ capturedResource + ']';
+            message = 'Error: None captured resource: ['+ capturedResource['name'] + ']';
         }
         rcModal.show('Release',message);
-    });
-
-    $('.teleop-resource-all-release').click(function(e){
-        that.resourceChooserInterface.releaseAllResource();
-        capturedResource = '';
     });
   }
 
   var updateCaptureResource = function(msg){
-    //rcModal.hide();
-    capturedResource = currentSelectedResource;
-    $('.teleop-resource-capture').prop('disabled', false);
+    capturedResource['name'] = currentSelectedResource['name'];
+    capturedResource['item'] = currentSelectedResource['item'];
     $('.teleop-resource-release').prop('disabled', false);
-    rcModal.show('Success', 'Captured: ' + capturedResource);
-    
+    rcModal.show('Success', 'Captured: ' + capturedResource['name']);
+    capturedResource['item'].innerText = capturedResource['item'].innerText + ' (Captured)'
   }
 
   var updateReleaseResource = function(msg){
-    //rcModal.hide();
     $('.teleop-resource-capture').prop('disabled', false);
     $('.teleop-resource-release').prop('disabled', false);
     rcModal.show('Success', 'Released');
   }
 
   var updateCaptureErrorResource = function(msg){
-    //rcModal.hide();
     $('.teleop-resource-capture').prop('disabled', false);
     $('.teleop-resource-release').prop('disabled', false);
     rcModal.show('Error', JSON.stringify(msg));
@@ -82,7 +75,8 @@ ResourceChooserUI = function(options){
         $('.teleop-resource-list').append(resourceItem);
     }
     $('.teleop-resource-item').click(function(e){
-        currentSelectedResource = e.currentTarget.innerText.replace(/[^A-Za-z0-9\/\:_]/g, '');
+        currentSelectedResource['item'] = e.currentTarget.children[0];
+        currentSelectedResource['name'] = currentSelectedResource['item'].innerText.replace(/[^A-Za-z0-9\/\:_]/g, '');
     })
   }
 }
