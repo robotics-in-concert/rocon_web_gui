@@ -47,7 +47,6 @@ window.onbeforeunload = function(e){
   if (rcInterface !== undefined){
     rcInterface.releaseAllResource();
   }
-  console.log("onbeforeunload");
   return null;
 }
 
@@ -59,7 +58,6 @@ function initHeader()
 }
 
 function initUI(){
-
   loadVideoStreamer();
   loadController();
   loadResourceChooser();
