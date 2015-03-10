@@ -29,6 +29,9 @@ VideoStreamerUI = function(options){
     if(that.viewer !== undefined){
       that.viewer.changeStream(topic);
     }
+    else{
+      that.initVideoCanvas();
+    }
   }
 }
 
