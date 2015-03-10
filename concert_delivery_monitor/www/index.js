@@ -9,7 +9,6 @@ var viewer;
 var gridClient;
 var waypoint_poller;
 var ar_region_poller;
-var annotator;
 
 //set sub
 var order_list_sub_topic_name = 'order_list';

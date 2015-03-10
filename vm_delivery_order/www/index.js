@@ -84,7 +84,7 @@ var divList = []
 var img_path = "./img/"
 
 //order setting
-var uuid = "";
+var id = "";
 var cur_order_list = [];
 var is_showing_modal = false;
 
@@ -446,10 +446,10 @@ function showConfirmModal(){
 
 function sendOrder(){
   console.log("send_order: ", cur_order_list);
-  uuid = generateUUID()
+  id = uuid()
   //hardcoded
   var order = new ROSLIB.Message({
-    order_id : uuid,
+    order_id : id,
     receivers : [{location: config_values['table']+"", qty : 1, menus:cur_order_list}]
   });
   send_order_publisher.publish(order)
@@ -494,7 +494,7 @@ function settingROSCallbacks(){
 current_order_status = 10
 function processDeliveryStatusUpdate(data){
   console.log(data);
-  if (data.order_id == uuid) {
+  if (data.order_id == id) {
     if(current_order_status != data.status){
       current_order_status = data.status;
       if (current_order_status.status >= 20 && current_order_status <= 40){
@@ -517,7 +517,7 @@ function processDeliveryStatusUpdate(data){
     }
   }
   else{
-    console.log(uuid)
+    console.log(id)
     console.log(data.uuid)
     console.log('other delivery status')
   }

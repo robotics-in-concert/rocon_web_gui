@@ -61,7 +61,7 @@ delivery_status_list = {
 var row_max_num = 3;
 var delivery_goal = "";
 var parsing_list = ['Distance','Remain Time','Message'];
-var uuid = ''
+var id = ''
 //ros action
 var deliver_order_client;
 
@@ -114,14 +114,6 @@ function settingROSCallbacks()
   );
 }
 
-function settingDummyGreenButton(){
-  var option = {};
-  option["ros"] = ros;
-  option["topic_type"] = "kobuki_msgs/DigitalInputEvent";
-  option["topic_name"] = "mobile_base/events/digital_input";
-  initDummyGreenButton(option);
-  $(".sd-dummy-green-btn").click(pubDummyGreenButtonPressingSignal);
-}
 
 function parsingDeliveryStatus(data, parsing_list){
   var parsing_data ={}
@@ -232,10 +224,10 @@ function settingMainMenu(data){
       var order_location = data.currentTarget.outerText
       $('.sd-goal-msg').text(order_location);
       //send order
-      uuid = generateUUID()
+      id = uuid();
       //hardcoded
       var order = new ROSLIB.Message({
-        order_id : uuid,
+        order_id : id,
         receivers : [{location: order_location, qty : 1, menus:[]}]
       });
       deliver_order_client.publish(order)
@@ -258,7 +250,7 @@ function showMainMenu(flag){
 current_order_status = 10
 function processDeliveryStatusUpdate(data){
   console.log(data);
-  if (data.order_id == uuid) {
+  if (data.order_id == id) {
     current_order_status = data.status;
     $(".sd-delivery-status-layer").html(delivery_status_list[current_order_status+""]);
     if(current_order_status == 60) {
@@ -266,8 +258,8 @@ function processDeliveryStatusUpdate(data){
     }
   }
   else{
-    console.log(uuid)
-    console.log(data.uuid)
+    console.log(id)
+    console.log(data.id)
     console.log('other delivery status')
   }
 };
