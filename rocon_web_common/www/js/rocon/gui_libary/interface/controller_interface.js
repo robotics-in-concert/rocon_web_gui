@@ -16,7 +16,6 @@ ControllerInterface = function(options){
 
   that.unpublishTopic = function(){
     if(pubCmdVel !== undefined){
-      console.log("unpublishTopic"); 
       pubCmdVel.unadvertise();
       pubCmdVel = undefined;
     }
@@ -47,7 +46,7 @@ ControllerInterface = function(options){
     publishCmdVel(-that.maxLinearVelocity, 0);
   }
   that.turnRight = function(){
-    publishCmdVel(0, that.maxAngularVelocity);
+    publishCmdVel(0, -that.maxAngularVelocity);
   }
   that.turnLeft = function(){
     publishCmdVel(0, that.maxAngularVelocity);
