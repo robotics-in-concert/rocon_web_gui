@@ -1,9 +1,15 @@
+/*
+Yujin robot
+- 2015.3.10
+comment about setting parameters of image size in changeStream function.
+This is because that web_video_server seem
+*/
 /**
  * @author Russell Toris - rctoris@wpi.edu
  */
 
 var MJPEGCANVAS = MJPEGCANVAS || {
-  REVISION : '3-yujin-devel'
+  REVISION : '3'
 };
 
 /**
@@ -310,12 +316,11 @@ MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
   // create the image to hold the stream
   var src = 'http://' + this.host + ':' + this.port + '/stream?topic=' + topic;
   // add various options
-  // anymore support check. todo
-  // src += '?width=' + this.width;
-  // src += '?height=' + this.height;
-  // if (this.quality > 0) {
-  //   src += '?quality=' + this.quality;
-  // }
+  src += '&width=' + this.width;
+  src += '&height=' + this.height;
+  if (this.quality > 0) {
+    src += '&quality=' + this.quality;
+  }
   
   this.image.src = src;
   // emit an event for the change
