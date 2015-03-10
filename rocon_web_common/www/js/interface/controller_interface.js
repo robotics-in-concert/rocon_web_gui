@@ -1,3 +1,10 @@
+/*
+  Controller Interface
+  
+  Dependency
+  - rocon_web_common/www/js/ros/robotwebtools/roslib.js
+*/
+
 ControllerInterface = function(options){
   var that = this;
   options = options || {};

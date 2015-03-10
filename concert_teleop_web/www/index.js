@@ -1,3 +1,33 @@
+/*
+  Concert Teleop
+  
+  Dependency
+    <!-- jQuery -->
+    /rocon_web_common/js/thirdparty/jquery/jquery.js
+    <!-- Bootstrap -->
+    /rocon_web_common/js/thirdparty/bootstrap/bootstrap.j/rocon_web_common/js/thirdparty/bootstrap/bootstrap-button.js
+    <!-- ROS -->
+    /rocon_web_common/js/thirdparty/eventemitter2/eventemitter2.js
+    /rocon_web_common/js/ros/robotwebtools/roslib.js
+    <!-- UTILS -->
+    /rocon_web_common/js/thirdparty/uuid.js
+    <!-- ROCON -->
+    /rocon_web_common/js/rocon/interactions.js
+    /rocon_web_common/js/rocon/service_pair_client.js
+    <!-- Modal -->
+    /rocon_web_common/js/ui/modal.js
+    <!-- Video Steamer-->
+    /rocon_web_common/js/wpi_rails/mjpegcanvas.js
+    /rocon_web_common/js/interface/video_streamer_interface.js
+    /rocon_web_common/js/ui/video_streamer_ui.js
+    <!-- Controller -->
+    /rocon_web_common/js/interface/controller_interface.js
+    /rocon_web_common/js/ui/controller_ui.js
+    <!-- ResourceChooser -->
+    /rocon_web_common/js/interface/resource_chooser_interface.js
+    /rocon_web_common/js/ui/resource_chooser_ui.js
+*/
+
 var ros = new ROSLIB.Ros();
 
 //var defaultUrL = rocon_interactions.rosbridge_uri;
@@ -30,7 +60,6 @@ if (rocon_interactions.remappings.hasOwnProperty(availableTeleopTopicName)){
 if (rocon_interactions.remappings.hasOwnProperty(captureResourcePairName)){
   captureResourcePairName = rocon_interactions.remappings[captureResourcePairName];
 }
-
 
 var vsInterface;
 var vsUI;

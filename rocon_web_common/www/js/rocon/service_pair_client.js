@@ -1,3 +1,10 @@
+/*
+  Service pair Client
+
+  Dependency
+  - rocon_web_common/www/js/thirdparty/uuid.js
+*/
+
 NonBlockingRequestHandler = function(options){
     var that = this;
     options = options || {};

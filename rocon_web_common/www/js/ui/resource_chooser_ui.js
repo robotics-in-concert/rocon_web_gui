@@ -1,3 +1,10 @@
+/*
+  Resource Chooser UI
+
+  Dependency
+  - rocon_web_common/www/js/interface/resource_chooser_interface.js
+  - rocon_web_common/www/js/ui/modal.js
+*/
 ResourceChooserUI = function(options){
   var that = this;
   options = options || {};

@@ -1,3 +1,9 @@
+/*
+  Controller UI
+
+  Dependency
+  - rocon_web_common/www/js/interface/controller_intergace.js
+*/
 ControllerUI = function(options){
   var that = this;
   options = options || {};

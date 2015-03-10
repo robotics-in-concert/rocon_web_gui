@@ -1,3 +1,10 @@
+/*
+  Modal
+  
+  Dependency
+  - rocon_web_common/www/js/thirdparty/bootstrap/bootstrap.js
+  - rocon_web_common/www/js/thirdparty/bootstrap/bootstrap-button.js
+*/
 Modal = function(options){
   var that = this;
   options = options || {};

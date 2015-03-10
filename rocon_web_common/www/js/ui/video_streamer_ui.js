@@ -1,3 +1,10 @@
+/*
+  Video Streamer UI
+
+  Dependency
+  - rocon_web_common/www/js/interface/video_streamer_interface.js
+  - rocon_web_common/www/js/wpi_rails/mjpegcanvas.js
+*/
 VideoStreamerUI = function(options){
   var that = this;
   options = options || {};

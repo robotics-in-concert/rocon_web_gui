@@ -1,3 +1,10 @@
+/*
+  Resource Chooser Interface
+  
+  Dependency
+  - rocon_web_common/www/js/ros/robotwebtools/roslib.js
+*/
+
 ResourceChooserInterface = function(options){
   var that = this;
   options = options || {};

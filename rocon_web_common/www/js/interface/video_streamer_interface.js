@@ -1,3 +1,10 @@
+/*
+  Video Streamer Interface
+  
+  Dependency
+  - rocon_web_common/www/js/ros/robotwebtools/roslib.js
+*/
+
 VideoStreamerInterface = function(options){
   var that = this;
   options = options || {};
@@ -6,13 +13,13 @@ VideoStreamerInterface = function(options){
   that.imageStreamTopicType = options.imageStreamTopicType || 'sensor_msgs/CompressedImage';
   that.imageStreamCallback = options.imageStreamCallback || function(){};
 
-  
+  // Not yet used
   var subImageStream = new ROSLIB.Topic({
     ros: that.ros,
     name : that.imageStreamTopicName, 
     messageType : that.imageStreamTopicType,
   });
-
+  // Not yet used
   subImageStream.subscribe(function(msg) {
     that.imageStreamCallback(msg)
   })

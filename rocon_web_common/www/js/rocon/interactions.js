@@ -1,3 +1,7 @@
+/*
+  Rocon Interaction
+*/
+
 function queryFieldByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
