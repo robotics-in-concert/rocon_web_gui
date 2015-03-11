@@ -10,9 +10,9 @@ ResourceChooserInterface = function(options){
   options = options || {};
   that.ros = options.ros;
   that.captureTimeout = options.captureTimeout || 15000;
-  that.availableResourceTopicName = options.availableResourceTopicName || 'teleop/available_teleops';
+  that.availableResourceTopicName = options.availableResourceTopicName || 'available_resource';
   that.availableResourceTopicType = options.availableResourceTopicType || 'rocon_std_msgs/StringArray';
-  that.captureResourcePairName = options.captureResourcePairName || 'capture_teleop';
+  that.captureResourcePairName = options.captureResourcePairName || 'capture_resource';
   that.captureResourcePairType = options.captureResourcePairType || 'concert_service_msgs/CaptureResourcePair';
   that.refreshListCallbacks = options.refreshListCallbacks || [];
 
