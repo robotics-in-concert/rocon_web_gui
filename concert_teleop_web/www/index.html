@@ -75,25 +75,30 @@
     <!-- Visualizer -->
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span4" id="resource_chooser">
+        <div class="col-md-4" id="resource_chooser">
           <ul class="nav nav-list teleop-resource-list">
             <li class="nav-header">Resource List</li>
           </ul>
           <div class="row-fluid">
-            <button class="span6 btn btn-primary teleop-resource-capture" type="button">Capture</button>
-            <button class="span6 btn btn-primary teleop-resource-release" type="button">Release</button>
+            <button class="col-md-6 btn btn-primary teleop-resource-capture" type="button">Capture</button>
+            <button class="col-md-6 btn btn-primary teleop-resource-release" type="button">Release</button>
           </div>
         </div>
-        <div class="span8" id="teleop-ui">
+        <div class="col-md-8" id="teleop-ui">
           <div class="row-fluid">
-            <div class="span12" id="video_streamer"></div>
-            <div class="span12" id="controller"></div>
+            <div class="col-md-12" id="video_streamer">
+              <h5>Video Streamer</h5>
+            </div>
+            <div class="col-md-12" id="controller">
+              <h5>KeyBoard Controller</h5>
+              <p><kbd>w</kbd>: foward</p>
+              <p><kbd>s</kbd>: backward</p>
+              <p><kbd>a</kbd>: left turn</p>
+              <p><kbd>d</kbd>: rigth turn</p>
+            </div>
           </div>
         </div>
       </div>
-
-     <!--   <div class="span3 " id="middle-left" >
-        </div>-->
     </div>
     
     <hr/>
