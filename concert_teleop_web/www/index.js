@@ -36,14 +36,14 @@ var videoSteamerHost = rocon_interactions.parameters['video_steamer_host'];
 var videoSteamerPort = rocon_interactions.parameters['video_steamer_port'];
 
 //var videoSteamTopicName = "/camera/rgb/image_color";
-var videoSteamTopicName = "compressed_image";
+var videoSteamTopicName = "image";
 var videoSteamTopicType = "sensor_msgs/Image";
 
 var controllerTopicName = 'cmd_vel';
 var controllerTopicType = 'geometry_msgs/Twist';
 
-var availableTeleopTopicName = 'available_teleops';
-var availableTeleopTopicType = 'rocon_std_msgs/StringArray';
+var availableResourceTopicName = 'available_teleops';
+var availableResourceTopicType = 'rocon_std_msgs/StringArray';
 
 var captureResourcePairName = 'capture_teleop';
 var captureResourcePairType = 'concert_service_msgs/CaptureResourcePair';
@@ -54,8 +54,8 @@ if (rocon_interactions.remappings.hasOwnProperty(videoSteamTopicName)){
 if (rocon_interactions.remappings.hasOwnProperty(controllerTopicName)){
   controllerTopicName = rocon_interactions.remappings[controllerTopicName];
 }
-if (rocon_interactions.remappings.hasOwnProperty(availableTeleopTopicName)){
-  availableTeleopTopicName = rocon_interactions.remappings[availableTeleopTopicName];
+if (rocon_interactions.remappings.hasOwnProperty(availableResourceTopicName)){
+  availableResourceTopicName = rocon_interactions.remappings[availableResourceTopicName];
 }
 if (rocon_interactions.remappings.hasOwnProperty(captureResourcePairName)){
   captureResourcePairName = rocon_interactions.remappings[captureResourcePairName];
@@ -133,8 +133,8 @@ function loadController(){
 function loadResourceChooser(){
   rcInterface = new ResourceChooserInterface({
     ros: ros,
-    availableTeleopTopicName: availableTeleopTopicName,
-    availableTeleopTopicType: availableTeleopTopicType,
+    availableResourceTopicName: availableResourceTopicName,
+    availableResourceTopicType: availableResourceTopicType,
     captureResourcePairName: captureResourcePairName,
     captureResourcePairType: captureResourcePairType,
   });

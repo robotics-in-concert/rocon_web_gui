@@ -10,8 +10,8 @@ ResourceChooserInterface = function(options){
   options = options || {};
   that.ros = options.ros;
   that.captureTimeout = options.captureTimeout || 15000;
-  that.availableTeleopTopicName = options.availableTeleopTopicName || 'teleop/available_teleops';
-  that.availableTeleopTopicType = options.availableTeleopTopicType || 'sensor_msgs/CompressedImage';
+  that.availableResourceTopicName = options.availableResourceTopicName || 'teleop/available_teleops';
+  that.availableResourceTopicType = options.availableResourceTopicType || 'rocon_std_msgs/StringArray';
   that.captureResourcePairName = options.captureResourcePairName || 'capture_teleop';
   that.captureResourcePairType = options.captureResourcePairType || 'concert_service_msgs/CaptureResourcePair';
   that.refreshListCallbacks = options.refreshListCallbacks || [];
@@ -28,8 +28,8 @@ ResourceChooserInterface = function(options){
 
   var subAvailableTeleop = new ROSLIB.Topic({
     ros: that.ros,
-    name : that.availableTeleopTopicName, 
-    messageType : that.availableTeleopTopicType,
+    name : that.availableResourceTopicName,
+    messageType : that.availableResourceTopicType,
   });
 
   subAvailableTeleop.subscribe(function(msg){

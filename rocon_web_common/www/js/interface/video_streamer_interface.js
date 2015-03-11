@@ -8,13 +8,13 @@
 VideoStreamerInterface = function(options){
   var that = this;
   options = options || {};
-  
+  that.imageStreamTopicName = options.imageStreamTopicName || 'image';
+
   // Not yet used
   // It will be used when implemetation of streaming via rosbridge is finished.
   /*
   that.ros = options.ros;
-  that.imageStreamTopicName = options.imageStreamTopicName || 'compressed_image';
-  that.imageStreamTopicType = options.imageStreamTopicType || 'sensor_msgs/CompressedImage';
+  that.imageStreamTopicType = options.imageStreamTopicType || 'sensor_msgs/Image';
   that.imageStreamCallback = options.imageStreamCallback || function(){};
 
   var subImageStream = new ROSLIB.Topic({
@@ -33,9 +33,6 @@ VideoStreamerInterface = function(options){
   }
 
   that.changeVideoStreamTopic = function(msg){
-    if(subImageStream !== undefined){
-      subImageStream.unsubscribe();
-    }
     var remappings = msg.response.remappings;
     var imageStreamTopicName = that.imageStreamTopicName;
     if(remappings.length !== 0){
@@ -48,6 +45,9 @@ VideoStreamerInterface = function(options){
     
     // Not yet used
     // It will be used when implemetation of streaming via rosbridge is finished.
+    // if(subImageStream !== undefined){
+    //   subImageStream.unsubscribe();
+    // }
     // subImageStream = new ROSLIB.Topic({
     //   ros: that.ros,
     //   name : imageStreamTopicName,
