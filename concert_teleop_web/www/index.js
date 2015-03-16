@@ -47,6 +47,8 @@ var availableResourceTopicType = 'rocon_std_msgs/StringArray';
 
 var captureResourcePairName = 'capture_teleop';
 var captureResourcePairType = 'concert_service_msgs/CaptureResourcePair';
+var CaptureTimeoutName = 'capture_timeout';
+var captureTimeout = 45.0;
 
 if (rocon_interactions.remappings.hasOwnProperty(videoSteamTopicName)){
   videoSteamTopicName = rocon_interactions.remappings[videoSteamTopicName];
@@ -59,6 +61,9 @@ if (rocon_interactions.remappings.hasOwnProperty(availableResourceTopicName)){
 }
 if (rocon_interactions.remappings.hasOwnProperty(captureResourcePairName)){
   captureResourcePairName = rocon_interactions.remappings[captureResourcePairName];
+}
+if (rocon_interactions.remappings.hasOwnProperty(CaptureTimeoutName)){
+  CaptureTimeout = rocon_interactions.remappings[CaptureTimeoutName];
 }
 
 var vsInterface;
@@ -137,6 +142,7 @@ function loadResourceChooser(){
     availableResourceTopicType: availableResourceTopicType,
     captureResourcePairName: captureResourcePairName,
     captureResourcePairType: captureResourcePairType,
+    captureTimeout: captureTimeout,
   });
 
   rdUI = new ResourceChooserUI({
