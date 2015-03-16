@@ -1,4 +1,4 @@
-/*
+l/*
   Concert Teleop
   
   Dependency
@@ -34,6 +34,13 @@ var ros = new ROSLIB.Ros();
 var defaultUrl = rocon_interactions.rosbridge_uri;
 var videoSteamerHost = rocon_interactions.parameters['video_steamer_host'];
 var videoSteamerPort = rocon_interactions.parameters['video_steamer_port'];
+
+var captureTimeoutName = 'capture_timeout';
+var captureTimeout = 45.0;
+
+if (rocon_interactions.parameters.hasOwnProperty(captureTimeoutName)){
+  captureTimeout = rocon_interactions.parameters[captureTimeoutName];
+}
 
 //var videoSteamTopicName = "/camera/rgb/image_color";
 var videoSteamTopicName = "image";
@@ -137,6 +144,7 @@ function loadResourceChooser(){
     availableResourceTopicType: availableResourceTopicType,
     captureResourcePairName: captureResourcePairName,
     captureResourcePairType: captureResourcePairType,
+    captureTimeout: captureTimeout,
   });
 
   rdUI = new ResourceChooserUI({

@@ -72,9 +72,12 @@ ServicePairClient = function(options){
       request : msg,
       id : {'uuid': uuid.parse(key)},
     };
+
+    var timeout_mil = timeout * 1000; // timeout is in sec. Change it to mili second.
+    console.log(timeout_mil);
     requestHandlers[key] = new NonBlockingRequestHandler({
       key : key,
-      timer : (function(id){return setTimeout(function(){timeoutCallback(id)},timeout); })(key),
+      timer : (function(id){return setTimeout(function(){timeoutCallback(id)},timeout_mil); })(key),
       callback : callback,
       errorCallback : errorCallback,
     })
