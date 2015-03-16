@@ -1,4 +1,4 @@
-/*
+l/*
   Concert Teleop
   
   Dependency
@@ -35,6 +35,13 @@ var defaultUrl = rocon_interactions.rosbridge_uri;
 var videoSteamerHost = rocon_interactions.parameters['video_steamer_host'];
 var videoSteamerPort = rocon_interactions.parameters['video_steamer_port'];
 
+var captureTimeoutName = 'capture_timeout';
+var captureTimeout = 45.0;
+
+if (rocon_interactions.parameters.hasOwnProperty(captureTimeoutName)){
+  captureTimeout = rocon_interactions.parameters[captureTimeoutName];
+}
+
 //var videoSteamTopicName = "/camera/rgb/image_color";
 var videoSteamTopicName = "image";
 var videoSteamTopicType = "sensor_msgs/Image";
@@ -47,8 +54,6 @@ var availableResourceTopicType = 'rocon_std_msgs/StringArray';
 
 var captureResourcePairName = 'capture_teleop';
 var captureResourcePairType = 'concert_service_msgs/CaptureResourcePair';
-var CaptureTimeoutName = 'capture_timeout';
-var captureTimeout = 45.0;
 
 if (rocon_interactions.remappings.hasOwnProperty(videoSteamTopicName)){
   videoSteamTopicName = rocon_interactions.remappings[videoSteamTopicName];
@@ -61,9 +66,6 @@ if (rocon_interactions.remappings.hasOwnProperty(availableResourceTopicName)){
 }
 if (rocon_interactions.remappings.hasOwnProperty(captureResourcePairName)){
   captureResourcePairName = rocon_interactions.remappings[captureResourcePairName];
-}
-if (rocon_interactions.remappings.hasOwnProperty(CaptureTimeoutName)){
-  CaptureTimeout = rocon_interactions.remappings[CaptureTimeoutName];
 }
 
 var vsInterface;
