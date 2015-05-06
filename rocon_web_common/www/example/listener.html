@@ -8,41 +8,52 @@
 <!--
 <script type="text/javascript" src="http://chimek.yujinrobot.com/rosjs/interactions.js"></script>
 -->
-<script type="text/javascript" src="js/interactions.js"></script>
+<script type="text/javascript" src="/rocon_web_common/js/interactions.js"></script>
 <script type="text/javascript" type="text/javascript">
 
-  console.log("Display Name : " + rocon_interactions.display_name)
-  console.log("Rosbridge URI: " + rocon_interactions.rosbridge_uri)
-  console.log("Parameters   : " + JSON.stringify(rocon_interactions.parameters))
-  console.log("Remappings   : " + JSON.stringify(rocon_interactions.remappings))
- 
-  // Connecting to ROS
-  // -----------------
-  var ros = new ROSLIB.Ros({
-    url : rocon_interactions.rosbridge_uri
-    //url : 'ws://localhost:8080'
-  });
+  $.ready() {
+    
+    var log_div = $("#log_div");
+    var info_div = $("#info_div");
 
-  // Subscribing to a Topic
-  // ----------------------
-  var topic_name = '/chatter'
-  if (topic_name in rocon_interactions.remappings)
-    topic_name = rocon_interactions.remappings[topic_name]
-  var listener = new ROSLIB.Topic({
-    ros : ros,
-    name : topic_name,
-    messageType : 'std_msgs/String'
-  });
+    info_div.append("Display Name : " + rocon_interactions.display_name + "<br/>");
+    info_div.append("Rosbridge URI: " + rocon_interactions.rosbridge_uri + "<br/>");
+    info_div.append("Parameters   : " + JSON.stringify(rocon_interactions.parameters) + "<br/>");
+    info_div.append("Remappings   : " + JSON.stringify(rocon_interactions.remappings) + "<br/>");
 
-  listener.subscribe(function(message) {
-    console.log('Received message on ' + listener.name + ': ' + message.data);
-    listener.unsubscribe();
-  });
+    // Connecting to ROS
+    // -----------------
+    var ros = new ROSLIB.Ros({
+      url : rocon_interactions.rosbridge_uri
+      //url : 'ws://localhost:8080'
+    });
+
+    // Subscribing to a Topic
+    // ----------------------
+    var topic_name = '/chatter'
+    if (topic_name in rocon_interactions.remappings)
+      topic_name = rocon_interactions.remappings[topic_name]
+    var listener = new ROSLIB.Topic({
+      ros : ros,
+      name : topic_name,
+      messageType : 'std_msgs/String'
+    });
+
+    listener.subscribe(function(message) {
+      //console.log('Received message on ' + listener.name + ': ' + message.data);
+      //listener.unsubscribe();
+      log_div.append(message + "</br>");
+    });
+  }
 </script>
 </head>
 
 <body>
   <h1>Rocon Interactions Listener Demo</h1>
-  <p>Check your Web Console for output (hit F12 in google chrome).</p>
+  <p>Check your Web Console for Information(hit F12 in google chrome).</p>
+  <h1>Info</h1>
+  <div id="info_div"></div>
+  <h1>Logs</h1>
+  <div id="log_div"></div>
 </body>
 </html>
