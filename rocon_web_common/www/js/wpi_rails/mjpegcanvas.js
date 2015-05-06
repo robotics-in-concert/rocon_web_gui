@@ -315,6 +315,7 @@ MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
   this.image = new Image();
   // create the image to hold the stream
   var src = 'http://' + this.host + ':' + this.port + '/stream?topic=' + topic;
+
   // add various options
   src += '&width=' + this.width;
   src += '&height=' + this.height;
@@ -325,6 +326,7 @@ MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
   this.image.src = src;
   // emit an event for the change
   this.emit('change', topic);
+  console.log(src);
 };
 
 /**

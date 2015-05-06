@@ -33,6 +33,7 @@ VideoStreamerInterface = function(options){
   }
 
   that.changeVideoStreamTopic = function(msg){
+    console.log(msg);
     var remappings = msg.response.remappings;
     var imageStreamTopicName = that.imageStreamTopicName;
     if(remappings.length !== 0){
@@ -55,7 +56,7 @@ VideoStreamerInterface = function(options){
     // });
     
     if (that.changeStreamCallback !== undefined) {
-      that.changeStreamCallback(imageStreamTopicName);  
+      that.changeStreamCallback(imageStreamTopicName);
     }
   }
 

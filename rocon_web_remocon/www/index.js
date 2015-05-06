@@ -193,6 +193,7 @@ function connect() {
     if (newUrl.search(":") < 0) {
       newUrl += ":9090";
     }
+    console.log(newUrl);
 
     ros.connect('ws://' + newUrl);
   });

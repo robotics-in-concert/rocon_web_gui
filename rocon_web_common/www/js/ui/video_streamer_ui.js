@@ -33,10 +33,13 @@ VideoStreamerUI = function(options){
   }
 
   var reloadVideoCanvas = function(topic){
+    console.log("reload video canvas", topic);
     if(that.viewer !== undefined){
+      console.log('changestream');
       that.viewer.changeStream(topic);
     }
     else{
+      console.log('init video canvas');
       that.initVideoCanvas();
     }
   }
