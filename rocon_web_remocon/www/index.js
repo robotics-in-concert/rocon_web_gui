@@ -44,6 +44,8 @@ $(document).ready(function () {
   deleteUrl();
   listItemSelect();
   startApp();
+  stopApp();
+  stopAllApps();
   getBrowser();
 
   if(defaultUrl != undefined) {
@@ -85,7 +87,7 @@ function initSubscriber(){
       gSubscribers['pairing_status'].subscribe(function(msg){
         if(gPairing !== null){
             if (msg.rapp.length === 0 && msg.remocon === gRemoconName){
-              stopApp(gPairing);
+              stopInteractions(gPairing);
             }
         }
       });
@@ -461,6 +463,7 @@ function prepareWebappUrl(interaction, baseUrl) {
 function displayDescription(interaction) {
   $("#startappBtn").show();
   $("#stopappBtn").show();
+  $("#stopallappsBtn").show();
   $("#descriptionpanel").append('<p><strong>name</strong> : ' + interaction["name"] + '</p><hr>');
     
   $("#descriptionpanel").append('<p><strong>display_name</strong> : ' + interaction["display_name"] + '</p>');
@@ -584,13 +587,41 @@ function startApp() {
   });
 }
 
-
 /**
   * Event function when 'Stop App' button is clicked
   *
   * @function stopApp
 */
-function stopApp(interactionHash) {
+function stopApp() {
+  $("#stopappBtn").click(function () {
+    var finalHash = gFinalHash;
+    stopInteractions(finalHash);
+  });
+}
+
+/**
+  * Event function when 'Stop All Apps' button is clicked
+  *
+  * @function stopAllApps
+*/
+function stopAllApps() {
+  console.log('stopallappsBtn');
+  $("#stopallappsBtn").click(function () {
+    for (i = 0 ; i < gRunningInteractions.length ; i ++){
+      console.log('stopallappsBtn');
+      stopInteractions(gRunningInteractions[i].interaction_hash);
+    }
+  });
+}
+
+
+/**
+  * Stop interaction with interaction hash.
+  *
+  * @function stopInteractions
+*/
+
+function stopInteractions(interactionHash) {
   for (i = 0 ; i < gRunningInteractions.length ; i ++){
     if (gRunningInteractions[i].interaction_hash === interactionHash){
       if (gRunningInteractions[i].hasOwnProperty('window_handler') === true){
@@ -603,7 +634,6 @@ function stopApp(interactionHash) {
         gRunningInteractions.splice(i, 1);
         publishRemoconStatus();
       }
-
     }
   }
   if(gPairing !== null){
@@ -653,6 +683,7 @@ function initInteractionList() {
     $("#interactions_listgroup").children().remove();
     $("#startappBtn").hide();
     $("#stopappBtn").hide();
+    $("#stopallappsBtn").hide();
 }
 
 /**
@@ -664,6 +695,7 @@ function initDescriptionList() {
     $("#descriptionpanel").children().remove();
     $("#startappBtn").hide();
     $("#stopappBtn").hide();
+    $("#stopallappsBtn").hide();
 }
 
 /**
