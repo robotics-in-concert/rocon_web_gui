@@ -193,7 +193,6 @@ function connect() {
     if (newUrl.search(":") < 0) {
       newUrl += ":9090";
     }
-    console.log(newUrl);
 
     ros.connect('ws://' + newUrl);
   });
@@ -519,18 +518,32 @@ function startApp() {
     var finalHash = gFinalHash;
     var runningInteraction = {}
     var id = uuid();
+    var request = new ROSLIB.ServiceRequest({
+      remocon : gRemoconName,
+      hash : finalHash
+    });
+    ros.getServicesForType('rocon_interaction_msgs/RequestInteraction', function(service_name){
+      if (service_name !== undefined || service_name.length > 0){
+        callService(ros, service_name[0], 'rocon_interaction_msgs/RequestInteraction', request, function(result) {
+          console.log(result)
+          if (result.error_code === 0){ // rocon_app_manager_msgs/ErrorCodes.msg
+            (function(){
+              var new_window = window.open(finalUrl);
+              runningInteraction['interaction_hash'] = finalHash;
+              runningInteraction[id] = setInterval(function(){
+                checkRunningInteraction(new_window, id);
+              }, 1000);
+              gRunningInteractions.push(runningInteraction);
+              publishRemoconStatus();
+            })();
+          }
+          else{
+            alert('interaction request rejected [' + result.message + ']');
+          }
 
-    if (finalUrl == null) {
-      alert("not available on this platform");
-      return;
-    }
-    var new_window = window.open(finalUrl);
-    runningInteraction['interaction_hash'] = finalHash;
-    runningInteraction[id] = setInterval(function(){
-          checkRunningInteraction(new_window, id);
-      }, 1000);
-    gRunningInteractions.push(runningInteraction);
-    publishRemoconStatus();
+        });
+      }
+    });
   });
 }
 
