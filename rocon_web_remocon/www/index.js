@@ -107,7 +107,7 @@ function publishRemoconStatus(){
     //todo 
     //getting running interactions how to get interaction info?
     var runningInteractionHashs = [];
-    for (i = 0 ; i < gRunningInteractions.length ; i ++){
+    for (var i = 0 ; i < gRunningInteractions.length ; i ++){
       var hash = gRunningInteractions[i]['interaction_hash'];
       runningInteractionHashs.push(hash)
     }
@@ -463,19 +463,13 @@ function prepareWebappUrl(interaction, baseUrl) {
 function displayDescription(interaction) {
   $("#startappBtn").show();
   $("#stopappBtn").show();
-  $("#stopallappsBtn").show();
   if (checkIsRunningInteraction(interaction) === false){
     $("#stopappBtn").attr('disabled',true);
   }
   else{
     $("#stopappBtn").attr('disabled',false);
   }
-  if(gRunningInteractions.length > 0){
-    $("#stopallappsBtn").attr('disabled',false);
-  }
-  else{
-    $("#stopallappsBtn").attr('disabled',true);
-  }
+  stopAllAppsBtnCtrl();
   $("#descriptionpanel").append('<p><strong>name</strong> : ' + interaction["name"] + '</p><hr>');
     
   $("#descriptionpanel").append('<p><strong>display_name</strong> : ' + interaction["display_name"] + '</p>');
@@ -500,10 +494,9 @@ function displayDescription(interaction) {
   * @function listItemSelect
 */
 function checkIsRunningInteraction(interaction){
-  console.log(interaction);
   var targetHash = interaction.hash;
   var isRunning = false;
-  for (i = 0 ; i < gRunningInteractions.length ; i ++){
+  for (var i = 0 ; i < gRunningInteractions.length ; i ++){
     if (gRunningInteractions[i].interaction_hash === targetHash){
       isRunning = true;
       break;
@@ -563,7 +556,7 @@ function listItemSelect() {
 */
 function checkRunningInteraction (window_handler, window_key){
   if (window_handler.closed === true){
-    for (i = 0 ; i < gRunningInteractions.length ; i ++){
+    for (var i = 0 ; i < gRunningInteractions.length ; i ++){
       if (gRunningInteractions[i].hasOwnProperty(window_key) === true){
         clearInterval(gRunningInteractions[i][window_key]);
         gRunningInteractions.splice(i, 1);
@@ -609,12 +602,7 @@ function startApp() {
             })();
             //button ctrl
             $("#stopappBtn").attr('disabled',false);
-            if(gRunningInteractions.length > 0){
-              $("#stopallappsBtn").attr('disabled',false);
-            }
-            else{
-              $("#stopallappsBtn").attr('disabled',true);
-            }
+            stopAllAppsBtnCtrl();
           }
           else{
             alert('interaction request rejected [' + result.message + ']');
@@ -646,13 +634,28 @@ function stopApp() {
 */
 function stopAllApps() {
   $("#stopallappsBtn").click(function () {
-    for (i = 0 ; i < gRunningInteractions.length ; i ++){
-      stopInteractions(gRunningInteractions[i].interaction_hash);
+    var RunningInteractions = $.extend([] , gRunningInteractions); //deep copy
+    for (var i = 0 ; i < RunningInteractions.length ; i ++){
+      stopInteractions(RunningInteractions[i].interaction_hash);
     }
     $("#stopappBtn").attr('disabled',true);
   });
 }
 
+/**
+  * Stop interaction with interaction hash.
+  *
+  * @function stopInteractions
+*/
+function stopAllAppsBtnCtrl(){
+  if(gRunningInteractions.length > 0){
+    $("#stopallappsBtn").attr('disabled', false);
+  }
+  else{
+    $("#stopallappsBtn").attr('disabled', true);
+    $("#stopappBtn").attr('disabled', true);
+  }
+}
 
 /**
   * Stop interaction with interaction hash.
@@ -661,7 +664,7 @@ function stopAllApps() {
 */
 
 function stopInteractions(interactionHash) {
-  for (i = 0 ; i < gRunningInteractions.length ; i ++){
+  for (var i = 0 ; i < gRunningInteractions.length ; i ++){
     if (gRunningInteractions[i].interaction_hash === interactionHash){
       if (gRunningInteractions[i].hasOwnProperty('window_handler') === true){
         var window_handler = gRunningInteractions[i].window_handler;
@@ -673,17 +676,12 @@ function stopInteractions(interactionHash) {
         gRunningInteractions.splice(i, 1);
         publishRemoconStatus();
       }
+      if(gPairing !== null){
+        gPairing = null;
+      }
     }
   }
-  if(gPairing !== null){
-    gPairing = null;
-  }
-  if(gRunningInteractions.length > 0){
-    $("#stopallappsBtn").attr('disabled',true);
-  }
-  else{
-    $("#stopallappsBtn").attr('disabled',false);
-  }
+  stopAllAppsBtnCtrl();
 }
 
 /**
@@ -728,7 +726,6 @@ function initInteractionList() {
     $("#interactions_listgroup").children().remove();
     $("#startappBtn").hide();
     $("#stopappBtn").hide();
-    $("#stopallappsBtn").hide();
 }
 
 /**
@@ -740,7 +737,6 @@ function initDescriptionList() {
     $("#descriptionpanel").children().remove();
     $("#startappBtn").hide();
     $("#stopappBtn").hide();
-    $("#stopallappsBtn").hide();
 }
 
 /**
