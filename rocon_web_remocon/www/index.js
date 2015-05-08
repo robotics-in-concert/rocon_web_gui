@@ -464,6 +464,18 @@ function displayDescription(interaction) {
   $("#startappBtn").show();
   $("#stopappBtn").show();
   $("#stopallappsBtn").show();
+  if (checkIsRunningInteraction(interaction) === false){
+    $("#stopappBtn").attr('disabled',true);
+  }
+  else{
+    $("#stopappBtn").attr('disabled',false);
+  }
+  if(gRunningInteractions.length > 0){
+    $("#stopallappsBtn").attr('disabled',false);
+  }
+  else{
+    $("#stopallappsBtn").attr('disabled',true);
+  }
   $("#descriptionpanel").append('<p><strong>name</strong> : ' + interaction["name"] + '</p><hr>');
     
   $("#descriptionpanel").append('<p><strong>display_name</strong> : ' + interaction["display_name"] + '</p>');
@@ -480,6 +492,24 @@ function displayDescription(interaction) {
     
   $("#descriptionpanel").append('<p><strong>remappings</strong> : [remap_from:' + remapFrom + '] [remap_to:' + remapTo +']</p>');
   $("#descriptionpanel").append('<p><strong>parameters</strong> : ' + interaction["parameters"] + '</p>');
+}
+
+/**
+  * Event function when item in role list and interaction list is clicked
+  *
+  * @function listItemSelect
+*/
+function checkIsRunningInteraction(interaction){
+  console.log(interaction);
+  var targetHash = interaction.hash;
+  var isRunning = false;
+  for (i = 0 ; i < gRunningInteractions.length ; i ++){
+    if (gRunningInteractions[i].interaction_hash === targetHash){
+      isRunning = true;
+      break;
+    }
+  }
+  return isRunning;
 }
 
 /**
@@ -577,6 +607,14 @@ function startApp() {
                 gPairing = finalHash;
               }
             })();
+            //button ctrl
+            $("#stopappBtn").attr('disabled',false);
+            if(gRunningInteractions.length > 0){
+              $("#stopallappsBtn").attr('disabled',false);
+            }
+            else{
+              $("#stopallappsBtn").attr('disabled',true);
+            }
           }
           else{
             alert('interaction request rejected [' + result.message + ']');
@@ -596,7 +634,9 @@ function stopApp() {
   $("#stopappBtn").click(function () {
     var finalHash = gFinalHash;
     stopInteractions(finalHash);
+    $("#stopappBtn").attr('disabled',true);
   });
+
 }
 
 /**
@@ -605,12 +645,11 @@ function stopApp() {
   * @function stopAllApps
 */
 function stopAllApps() {
-  console.log('stopallappsBtn');
   $("#stopallappsBtn").click(function () {
     for (i = 0 ; i < gRunningInteractions.length ; i ++){
-      console.log('stopallappsBtn');
       stopInteractions(gRunningInteractions[i].interaction_hash);
     }
+    $("#stopappBtn").attr('disabled',true);
   });
 }
 
@@ -638,6 +677,12 @@ function stopInteractions(interactionHash) {
   }
   if(gPairing !== null){
     gPairing = null;
+  }
+  if(gRunningInteractions.length > 0){
+    $("#stopallappsBtn").attr('disabled',true);
+  }
+  else{
+    $("#stopallappsBtn").attr('disabled',false);
   }
 }
 
