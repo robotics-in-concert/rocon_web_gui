@@ -8,18 +8,18 @@
 <!--
 <script type="text/javascript" src="http://chimek.yujinrobot.com/rosjs/interactions.js"></script>
 -->
-<script type="text/javascript" src="/rocon_web_common/js/interactions.js"></script>
+<script type="text/javascript" src="/rocon_web_common/js/rocon/interactions.js"></script>
 <script type="text/javascript" type="text/javascript">
 
-  $.ready() {
+  function init() {
     
-    var log_div = $("#log_div");
-    var info_div = $("#info_div");
+    var log_div = document.getElementById("log_div");
+    var info_div = document.getElementById("info_div");
 
-    info_div.append("Display Name : " + rocon_interactions.display_name + "<br/>");
-    info_div.append("Rosbridge URI: " + rocon_interactions.rosbridge_uri + "<br/>");
-    info_div.append("Parameters   : " + JSON.stringify(rocon_interactions.parameters) + "<br/>");
-    info_div.append("Remappings   : " + JSON.stringify(rocon_interactions.remappings) + "<br/>");
+    info_div.innerHTML  = "Display Name : " + rocon_interactions.display_name + "<br/>";
+    info_div.innerHTML += "Rosbridge URI: " + rocon_interactions.rosbridge_uri + "<br/>";
+    info_div.innerHTML += "Parameters   : " + JSON.stringify(rocon_interactions.parameters) + "<br/>";
+    info_div.innerHTML += "Remappings   : " + JSON.stringify(rocon_interactions.remappings) + "<br/>";
 
     // Connecting to ROS
     // -----------------
@@ -42,13 +42,13 @@
     listener.subscribe(function(message) {
       //console.log('Received message on ' + listener.name + ': ' + message.data);
       //listener.unsubscribe();
-      log_div.append(message + "</br>");
+      log_div.innerHTML += message.data + "</br>";
     });
   }
 </script>
 </head>
 
-<body>
+<body onload="init()">
   <h1>Rocon Interactions Listener Demo</h1>
   <p>Check your Web Console for Information(hit F12 in google chrome).</p>
   <h1>Info</h1>
