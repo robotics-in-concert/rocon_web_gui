@@ -54,6 +54,19 @@ $(document).ready(function () {
   }
 });
 
+/**
+  * Browser Close event
+  *
+  * @function initPublisher
+*/
+
+window.onbeforeunload = function(e){
+  var RunningInteractions = $.extend([] , gRunningInteractions); //deep copy
+  for (var i = 0 ; i < RunningInteractions.length ; i ++){
+    stopInteractions(RunningInteractions[i].interaction_hash);
+  }
+  return null;
+}
 
 /**
   * Initialize ros publishers for sending data
@@ -342,7 +355,7 @@ function getRoles() {
         displayRoles();
       });
     }
-  }); 
+  });
 }
 
 /**
