@@ -15,39 +15,13 @@ var pickup_order_list_sub_topic_name = 'pickup_order_list';
 var vm_order_list_sub_topic_name = 'vm_order_list';
 var order_list_sub_topic_type = 'simple_delivery_msgs/OrderList';
 
-//set pub
-var show_video_publisher = '';
-var show_video_pub_topic_name = 'show_video';
-var show_video_pub_topic_type = 'simple_media_msgs/ShowVideo';
-
-var set_color_publisher = '';
-var set_color_pub_topic_name = 'set_color';
-var set_color_pub_topic_type = 'rocon_device_msgs/SetColor';
-
-var touch_sensor_event_publisher = '';
-var touch_sensor_event_pub_topic_name = 'touch_sensor_event';
-var touch_sensor_event_pub_topic_type = 'std_msgs/String';
-
 
 //remapping pub
-if(show_video_pub_topic_name in rocon_interactions.remappings)
-  show_video_pub_topic_name = rocon_interactions.remappings[show_video_pub_topic_name];
-
-if(set_color_pub_topic_name in rocon_interactions.remappings)
-  set_color_pub_topic_name = rocon_interactions.remappings[set_color_pub_topic_name];
-
-if(touch_sensor_event_pub_topic_name in rocon_interactions.remappings)
-  touch_sensor_event_pub_topic_name = rocon_interactions.remappings[touch_sensor_event_pub_topic_name];
-
 if(pickup_order_list_sub_topic_name in rocon_interactions.remappings)
   pickup_order_list_sub_topic_name = rocon_interactions.remappings[pickup_order_list_sub_topic_name];
 
 if(vm_order_list_sub_topic_name in rocon_interactions.remappings)
   vm_order_list_sub_topic_name = rocon_interactions.remappings[vm_order_list_sub_topic_name];
-
-//remapping sub
-if(show_video_pub_topic_name in rocon_interactions.remappings)
-  show_video_pub_topic_name = rocon_interactions.remappings[show_video_pub_topic_name];
 
 delivery_status_list = {
 "10" : "IDLE",
@@ -64,9 +38,6 @@ delivery_status_list = {
 "-10" : "ERROR"
 }
 
-var config_values = {};
-config_values['go_cart_hue_1'] = 4+"";
-config_values['go_cart_hue_2'] = 5+"";
 
 $().ready(function(e) {
 
@@ -100,8 +71,9 @@ function createViewer() {
   div.css('margin-top','20pt');
 
   var width = div.width();
-  var half_window = $(document).height() -300;
+  var half_window = $(window).height() -300;
   var height = half_window;// < 200?200:half_window;
+  console.log('half_window: ', half_window);
   $(".order-list").css('max-height',height);
   viewer = new ROS2D.Viewer({
     divID : 'view',
@@ -116,9 +88,11 @@ function createViewer() {
 
    $(window).resize(function(e) {
      console.log("resize event");
-     var half_window = $(document).height()-300;
+     div = $('#view');
+     div.css('margin-top','20pt');
+     var width = div.width();
+     var half_window = $(window).height()-300;
      var height = half_window;// < 200?200:half_window;
-  
      viewer.resizeCanvas(width,height);
      viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
    });
@@ -246,23 +220,7 @@ function settingROSCallbacks()
 }
 
 function settingPublisher(){
-   //setting publisher
-    show_video_publisher = new ROSLIB.Topic({
-        ros : ros,
-        name : show_video_pub_topic_name,
-        messageType : show_video_pub_topic_type
-    });
-    touch_sensor_event_publisher = new ROSLIB.Topic({
-        ros : ros,
-        name : touch_sensor_event_pub_topic_name,
-        messageType : touch_sensor_event_pub_topic_type
-    });
-    
-    set_color_publisher = new ROSLIB.Topic({
-        ros : ros,
-        name : set_color_pub_topic_name,
-        messageType : set_color_pub_topic_type
-    });
+  
 }
 
 function settingSubscriber(){
@@ -283,7 +241,6 @@ function settingSubscriber(){
 }
 
 function processVMOrderList(msg) {
-  console.log(msg);
   var i;
   vm_nav_div.empty();
   for(i in msg.orders) {
@@ -294,7 +251,6 @@ function processVMOrderList(msg) {
 }
 
 function processPickupOrderList(msg) {
-  console.log(msg);
   var i;
   pickup_nav_div.empty();
   for(i in msg.orders) {
@@ -348,8 +304,9 @@ RobotStatus = function(options) {
   robot_status.topicType = options.topicType || 'simple_delivery_msgs/RobotStatus';
 
   context = '';
-  context += '<div class="span2">'
-  context += '<h4 class=' + robot_status.robot_name + '-robot-status>'+robot_status.robot_name+' : None'+ '</h4>'
+  context += '<div class="span3">'
+  context += '<h4 class=' + robot_status.robot_name + '-robot-name>' + robot_status.robot_name +'</h4>'
+  context += '<h5 class=' + robot_status.robot_name + '-robot-status>' + 'None' + '</h5>'
   context += '<div class="progress"><div class="progress-bar ' + robot_status.robot_name + '-battery-status" \
                 role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: 100%;">\
                 100%\
