@@ -1,6 +1,6 @@
 var ros = new ROSLIB.Ros();
 var defaultUrL = rocon_interactions.rosbridge_uri;
-var gocart_current_target_goal = "";
+
 var robot1 = rocon_interactions.parameters['robot1'];
 var robot2 = rocon_interactions.parameters['robot2'];
 var robot3 = rocon_interactions.parameters['robot3'];
@@ -14,9 +14,6 @@ var ar_region_poller;
 var order_list_sub_topic_name = 'order_list';
 var order_list_sub_topic_type = 'simple_delivery_msgs/OrderList';
 
-var gocart_status_sub_topic_name = 'nav_ctrl_status';
-var gocart_status_sub_topic_type = 'yocs_msgs/NavigationControlStatus';
-
 //set pub
 var show_video_publisher = '';
 var show_video_pub_topic_name = 'show_video';
@@ -25,10 +22,6 @@ var show_video_pub_topic_type = 'simple_media_msgs/ShowVideo';
 var set_color_publisher = '';
 var set_color_pub_topic_name = 'set_color';
 var set_color_pub_topic_type = 'rocon_device_msgs/SetColor';
-
-var gocart_move_publisher = '';
-var gocart_move_pub_topic_name = 'nav_ctrl';
-var gocart_move_pub_topic_type = 'yocs_msgs/NavigationControl';
 
 var touch_sensor_event_publisher = '';
 var touch_sensor_event_pub_topic_name = 'touch_sensor_event';
@@ -42,9 +35,6 @@ if(show_video_pub_topic_name in rocon_interactions.remappings)
 if(set_color_pub_topic_name in rocon_interactions.remappings)
   set_color_pub_topic_name = rocon_interactions.remappings[set_color_pub_topic_name];
 
-if(gocart_move_pub_topic_name in rocon_interactions.remappings)
-  gocart_move_pub_topic_name = rocon_interactions.remappings[gocart_move_pub_topic_name];
-
 if(touch_sensor_event_pub_topic_name in rocon_interactions.remappings)
   touch_sensor_event_pub_topic_name = rocon_interactions.remappings[touch_sensor_event_pub_topic_name];
 
@@ -54,10 +44,6 @@ if(order_list_sub_topic_name in rocon_interactions.remappings)
 //remapping sub
 if(show_video_pub_topic_name in rocon_interactions.remappings)
   show_video_pub_topic_name = rocon_interactions.remappings[show_video_pub_topic_name];
-
-if(gocart_status_sub_topic_name in rocon_interactions.remappings)
-  gocart_status_sub_topic_name = rocon_interactions.remappings[gocart_status_sub_topic_name];
-
 
 delivery_status_list = {
 "10" : "IDLE",
@@ -82,7 +68,6 @@ $().ready(function(e) {
 
   initHeader();
   initViewer();
-  initGoCart();
   nav_div= $('#nav-orders');
   var nw = $('#nav-wrapper');
   nw.css('margin-top','20pt');
@@ -267,12 +252,7 @@ function settingPublisher(){
         name : touch_sensor_event_pub_topic_name,
         messageType : touch_sensor_event_pub_topic_type
     });
-    gocart_move_publisher = new ROSLIB.Topic({
-        ros : ros,
-        name : gocart_move_pub_topic_name,
-        messageType : gocart_move_pub_topic_type
-    });
-
+    
     set_color_publisher = new ROSLIB.Topic({
         ros : ros,
         name : set_color_pub_topic_name,
@@ -288,28 +268,8 @@ function settingSubscriber(){
     });
     order_list_listener.subscribe(processOrderList);
 
-    var gocart_status_listener = new ROSLIB.Topic({
-      ros : ros,
-      name : gocart_status_sub_topic_name,
-      messageType: gocart_status_sub_topic_type
-    });
-
-    gocart_status_listener.subscribe(processGoCartStatus);
 }
 
-function processGoCartStatus(data){
-  console.log(data);
-  $(".go-cart-status").html(data.status_desc+"");
-  console.log(data.status_desc);
-  if (data.status == 0){
-    $(".on-doing-gocart").hide();
-    $(".idle-gocart").show();
-  }
-  else if(data.status == 4){
-    $(".on-doing-gocart").hide();
-    $(".idle-gocart").show();
-  }
-}
 
 function processOrderList(msg) {
   console.log(msg);
@@ -322,6 +282,11 @@ function processOrderList(msg) {
   }
 }
 
+function msec2Time(msec){
+  var sec = msec / 1000;
+  return parseInt(sec / 60) + ":" + parseInt(sec % 60);
+}
+
 function createOrderLi(order_number, order) {
   var li = document.createElement('li');
   var p = document.createElement('p');
@@ -330,112 +295,26 @@ function createOrderLi(order_number, order) {
              "<br/><b> menu : </b>" + order.menus.toString()+
              "<br/><b> Robot : </b>" + (order.robot || "Not Assign")+  
              "<br/><b> Status : </b>" + delivery_status_list[order.status+""]+
+             "<br/><b> Elapsed Time : </b>" + msec2Time(order.elapsed_time) +
              "<br/><b> uuid : </b>" + order.order_id;
   li.appendChild(p);
-
-  $(li).hover(
+  if (delivery_status_list[order.status+""] === "ERROR"){
+    $(li).css("color","red")
+          .hover(
+           function() { this.style.background= "gray"; },
+           function() { this.style.background= "";      });  
+  }else{
+    $(li).hover(
       function() { this.style.background= "gray"; },
-      function() { this.style.background= "";     }
-  );
+      function() { this.style.background= "";      }
+    );  
+  }
+  
   $(li).click(function() {
   });
 
   return li;
 }
-
-function initGoCart(){
-  $(".on-doing-gocart").hide();
-  $(".idle-gocart").show();
-  
-  $(".go-to-kitchen").click(function(){
-    callGoCart("go_to_kitchen", 1);
-    showVideo(2);
-    setColor("RED");
-    $(".on-doing-gocart").show();
-    $(".idle-gocart").hide();
-  });
-
-  $(".go-to-base").click(function(){
-    callGoCart("go_to_storage", 1);
-    showVideo(2);
-    setColor("GREEN");
-    $(".on-doing-gocart").show();
-    $(".idle-gocart").hide();
-  });
-
-   $(".pause-gocart").click(function(){
-    callGoCart(gocart_current_target_goal, 2);
-  });
-
-   $(".stop-gocart").click(function(){
-    callGoCart(gocart_current_target_goal, 0);
-  });
-
-}
-
-function setColor(color_name){
-  var target_color = new ROSLIB.Message({
-    id : config_values['go_cart_hue_1'],
-    color : color_name
-  }); 
-  set_color_publisher.publish(target_color);
-
-  target_color = new ROSLIB.Message({
-    id : config_values['go_cart_hue_2'],
-    color : color_name
-  }); 
-  set_color_publisher.publish(target_color);
-}
-function showVideo(video_mode){
-  left_video = "TV_Default.mp4";
-  right_video = "TV_Default.mp4";
-  if(video_mode == 0){
-    left_video = "TV_Left_1_Robosem.mp4";
-    right_video = "TV_Right_1_Robosem.mp4";
-  }
-  else if (video_mode == 1){
-    left_video = "TV_Left_2_Waiterbot.mp4";
-    right_video = "TV_Right_2_Waiterbot.mp4";
-  }
-  else if (video_mode == 2){
-    left_video = "TV_Left_3_GoCart.mp4";
-    right_video = "TV_Right_3_GoCart.mp4";
-  }
-  else{
-    left_video = "TV_Default.mp4";
-    right_video = "TV_Default.mp4";
-  }
- 
-  var left_video = new ROSLIB.Message({
-    screen_id : "left",
-    video_url : left_video
-  });
-
-  show_video_publisher.publish(left_video);
-  var right_video = new ROSLIB.Message({
-    screen_id : "right",
-    video_url : right_video
-  });
-  show_video_publisher.publish(right_video);
-}
-
-function callGoCart(goal_name, control){
-  gocart_current_target_goal = goal_name;
-  var order = new ROSLIB.Message({
-    goal_name : goal_name,
-    control : control
-  }); 
-  gocart_move_publisher.publish(order);
-  console.log("Call gocart");
-}
-
-function callTouchSensorEvent(sensor_id){
-  var sensor_event = new ROSLIB.Message({
-    data : sensor_id+"",
-  });
-  touch_sensor_event_publisher.publish(sensor_event)
-}
-
 
 
 RobotStatus = function(options) {
