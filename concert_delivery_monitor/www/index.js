@@ -11,7 +11,8 @@ var waypoint_poller;
 var ar_region_poller;
 
 //set sub
-var order_list_sub_topic_name = 'order_list';
+var pickup_order_list_sub_topic_name = 'pickup_order_list';
+var vm_order_list_sub_topic_name = 'vm_order_list';
 var order_list_sub_topic_type = 'simple_delivery_msgs/OrderList';
 
 //set pub
@@ -38,8 +39,11 @@ if(set_color_pub_topic_name in rocon_interactions.remappings)
 if(touch_sensor_event_pub_topic_name in rocon_interactions.remappings)
   touch_sensor_event_pub_topic_name = rocon_interactions.remappings[touch_sensor_event_pub_topic_name];
 
-if(order_list_sub_topic_name in rocon_interactions.remappings)
-  order_list_sub_topic_name = rocon_interactions.remappings[order_list_sub_topic_name];
+if(pickup_order_list_sub_topic_name in rocon_interactions.remappings)
+  pickup_order_list_sub_topic_name = rocon_interactions.remappings[pickup_order_list_sub_topic_name];
+
+if(vm_order_list_sub_topic_name in rocon_interactions.remappings)
+  vm_order_list_sub_topic_name = rocon_interactions.remappings[vm_order_list_sub_topic_name];
 
 //remapping sub
 if(show_video_pub_topic_name in rocon_interactions.remappings)
@@ -68,7 +72,8 @@ $().ready(function(e) {
 
   initHeader();
   initViewer();
-  nav_div= $('#nav-orders');
+  pickup_nav_div= $('#nav-pickup-orders');
+  vm_nav_div= $('#nav-vm-orders');
   var nw = $('#nav-wrapper');
   nw.css('margin-top','20pt');
 });
@@ -261,24 +266,41 @@ function settingPublisher(){
 }
 
 function settingSubscriber(){
-    var order_list_listener = new ROSLIB.Topic({
+    var pickup_order_list_listener = new ROSLIB.Topic({
       ros : ros,
-      name : order_list_sub_topic_name,
+      name : pickup_order_list_sub_topic_name,
       messageType: order_list_sub_topic_type
     });
-    order_list_listener.subscribe(processOrderList);
+    pickup_order_list_listener.subscribe(processPickupOrderList);
+
+    var vm_order_list_listener = new ROSLIB.Topic({
+      ros : ros,
+      name : vm_order_list_sub_topic_name,
+      messageType: order_list_sub_topic_type
+    });
+    vm_order_list_listener.subscribe(processVMOrderList);
 
 }
 
-
-function processOrderList(msg) {
+function processVMOrderList(msg) {
   console.log(msg);
   var i;
-  nav_div.empty();
+  vm_nav_div.empty();
   for(i in msg.orders) {
       // add into navigation bar
       var navli = createOrderLi(i, msg.orders[i]); 
-      nav_div.append(navli);
+      vm_nav_div.append(navli);
+  }
+}
+
+function processPickupOrderList(msg) {
+  console.log(msg);
+  var i;
+  pickup_nav_div.empty();
+  for(i in msg.orders) {
+      // add into navigation bar
+      var navli = createOrderLi(i, msg.orders[i]); 
+      pickup_nav_div.append(navli);
   }
 }
 
