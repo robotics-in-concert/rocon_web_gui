@@ -93,7 +93,6 @@ function initHeader()
   settingROSCallbacks();
   ros.connect(defaultUrL);
   $('#focusedInput').val(''+defaultUrL);
-  initConfig(config_values);
 }
 
 function initViewer() {
@@ -437,99 +436,7 @@ function callTouchSensorEvent(sensor_id){
   touch_sensor_event_publisher.publish(sensor_event)
 }
 
-var config_mode = 0;
-function initConfig(configs){
-    $('.brand').click(function(){
 
-        config_mode += 1;
-        if (config_mode > 2){
-            config_mode = 0;
-        }
-        doConfig(config_mode);
-
-    });
-    $(".config-layer").hide();
-    doConfig(config_mode);
-    settingConfigValue(configs);
-}
-
-function settingConfigValue(configs){  
-    context = '';
-    for (value in configs){
-        context += '<div class="input-prepend"><span class="add-on span1">'+value+'</span>'
-        context += '<input class="span1 config-'+value+'" id="prependedInput" type="text" value="'+configs[value]+'">'
-        context += '</div>'
-    }
-    context += '<button class="span2 btn btn-primary save-config-values" type="button">Save</button>';
-    context += '</hr>'
-    context += '<button class="span2 btn btn-primary right-touch-sensor-event" type="button">Right Touch</button>';
-    context += '<button class="span2 btn btn-primary left-touch-sensor-event" type="button">Left Touch</button>';
-    context += '<button class="span2 btn btn-primary show-welcome-video-event" type="button">Show Welcome</button>';
-    context += '<button class="span2 btn btn-primary show-delivery-video-event" type="button">Show Delivery</button>';
-    context += '<button class="span2 btn btn-primary show-restock-video-event" type="button">Show Restock</button>';
-    context += '<button class="span2 btn btn-primary show-default-video-event" type="button">Show Default</button>';
-    context += '<button class="span2 btn btn-primary set-color-white" type="button">Hue White</button>';
-    context += '<button class="span2 btn btn-primary set-color-red" type="button">Hue Red</button>';
-    context += '<button class="span2 btn btn-primary set-color-green" type="button">Hue Green</button>';
-    context += '<button class="span2 btn btn-primary set-color-blue" type="button">Hue Blue</button>';
-    context += '<button class="span2 btn btn-primary set-color-off" type="button">Hue Off</button>';
-    $(".config-layer").append(context);
-    
-    $(".save-config-values").click(function(){
-        for (value in configs){
-            configs[value] = $(".config-"+value).val();
-        }
-    });
-    $(".right-touch-sensor-event").click(function(){
-        callTouchSensorEvent(4);
-    });
-    
-    $(".left-touch-sensor-event").click(function(){
-        callTouchSensorEvent(3);
-    });
-
-    $(".show-welcome-video-event").click(function(){
-        showVideo(0);
-    });
-    $(".show-delivery-video-event").click(function(){
-        showVideo(1);
-    });
-    $(".show-restock-video-event").click(function(){
-        showVideo(2);
-    });
-    $(".show-default-video-event").click(function(){
-        showVideo(-1);
-    });
-    $(".set-color-white").click(function(){
-        setColor("WHITE");
-    });
-    $(".set-color-red").click(function(){
-        setColor("RED");
-    });
-    $(".set-color-green").click(function(){
-        setColor("GREEN");
-    });
-    $(".set-color-blue").click(function(){
-        setColor("BLUE");
-    });
-    $(".set-color-off").click(function(){
-        setColor("OFF");
-    });
-}
-
-function doConfig(mode){
-    if (mode == 0 ){
-        $(".oa-ui-connection-info").css('opacity',.0);
-        $(".config-layer").hide("slide");
-    }
-    else if(mode == 1){
-        $(".oa-ui-connection-info").css('opacity',.8);
-        $(".config-layer").hide();
-    }
-    else{
-        $(".config-layer").show("slide");
-    }
-}
 
 RobotStatus = function(options) {
   var robot_status = this;
@@ -542,7 +449,10 @@ RobotStatus = function(options) {
   context = '';
   context += '<div class="span2">'
   context += '<h4 class=' + robot_status.robot_name + '-robot-status>'+robot_status.robot_name+' : None'+ '</h4>'
-  context += '<div class="progress"><div class="bar '+robot_status.robot_name+'-battery-status" style="width: 0%;">None</div></div>'
+  context += '<div class="progress"><div class="progress-bar ' + robot_status.robot_name + '-battery-status" \
+                role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: 100%;">\
+                100%\
+                </div></div>';
   context += '</div>'
   $('.robots-status').append(context);
   $('.'+robot_status.robot_name + '-robot-status').css('word-break','break-word');
@@ -558,9 +468,9 @@ RobotStatus = function(options) {
   robot_status.status_listener.subscribe(function(msg){
      battery = Number((msg.battery_status.toFixed(1)));
      if ($('.'+robot_status.robot_name+'-battery-status').length){
-        $('.'+robot_status.robot_name+'-battery-status').css('width', battery+'%');
-        $('.'+robot_status.robot_name+'-battery-status').html(battery);
+        $('.'+robot_status.robot_name+'-battery-status').css('width', battery + '%');
+        $('.'+robot_status.robot_name+'-battery-status').html(battery + '%');
         $('.'+robot_status.robot_name+'-robot-status').html(robot_status.robot_name+' : '+ delivery_status_list[msg.robot_status]);
      }
   })
-}  
+}
