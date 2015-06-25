@@ -98,7 +98,7 @@ function initPublisher(){
 
 function initSubscriber(){
   ros.getTopicsForType('rocon_interaction_msgs/Pair', function(topic_name){
-    if (topic_name !== undefined || topic_name.length > 0){
+    if (topic_name !== undefined && topic_name.length > 0){
       gSubscribers['pairing_status'] = new ROSLIB.Topic({
         ros : ros,
         name : topic_name[0],
@@ -330,12 +330,12 @@ function displayMasterInfo() {
   $("#selecturl").hide();
   $("#masterinfo").show();
   ros.getTopicsForType("rocon_std_msgs/MasterInfo", function(topic_name){
-    if(topic_name !== undefined || topic_name.length > 0){
+    if(topic_name !== undefined && topic_name.length > 0){
         subscribeTopic(ros, topic_name[0], "rocon_std_msgs/MasterInfo", function(message) {
-        $("#masterinfopanel").append('<p style="float: left"><img src="data:' + message["icon"]["resource_name"] + ';base64,' + message["icon"]["data"] + '" alt="Red dot" style="height:75px; width:75px;"></p>');
-        $("#masterinfopanel").append('<p><strong>&nbsp;&nbsp;&nbsp;name</strong> : ' + message["name"] +'</p>');
+        $("#masterinfopanel").append('<p style="float: left"><img src="data:' + message.icon.resource_name + ';base64,' + message.icon.data + '" alt="Red dot" style="height:75px; width:75px;"></p>');
+        $("#masterinfopanel").append('<p><strong>&nbsp;&nbsp;&nbsp;name</strong> : ' + message.name +'</p>');
         $("#masterinfopanel").append('<p><strong>&nbsp;&nbsp;&nbsp;master_url</strong> : ' + gUrl +'</p>');
-        $("#masterinfopanel").append('<p><strong>&nbsp;&nbsp;&nbsp;description</strong> : ' + message["description"] +'</p>');
+        $("#masterinfopanel").append('<p><strong>&nbsp;&nbsp;&nbsp;description</strong> : ' + message.description +'</p>');
       });  
     }
   });
@@ -353,7 +353,7 @@ function getRoles() {
     uri : 'rocon:/*/*/*/' + browser
   });
   ros.getServicesForType('rocon_interaction_msgs/GetRoles', function(service_name){
-    if (service_name !== undefined || service_name.length > 0){
+    if (service_name !== undefined && service_name.length > 0){
       callService(ros, service_name[0], 'rocon_interaction_msgs/GetRoles', request, function(result) {
         for (var i = 0; i < result.roles.length; i++) {
           gListRoles.push(result.roles[i]);
@@ -389,7 +389,7 @@ function getInteractions(selectedRole) {
     uri : 'rocon:/*/*/*/' + browser
   });
   ros.getServicesForType('rocon_interaction_msgs/GetInteractions', function(service_name){
-    if (service_name !== undefined || service_name.length > 0){
+    if (service_name !== undefined && service_name.length > 0){
       callService(ros, service_name[0], 'rocon_interaction_msgs/GetInteractions', request, function(result) {
         for (var i = 0; i < result.interactions.length; i++) {
           var interaction = result.interactions[i];
@@ -601,7 +601,7 @@ function startInteraction() {
       hash : finalHash
     });
     ros.getServicesForType('rocon_interaction_msgs/RequestInteraction', function(service_name){
-      if (service_name !== undefined || service_name.length > 0){
+      if (service_name !== undefined && service_name.length > 0){
         callService(ros, service_name[0], 'rocon_interaction_msgs/RequestInteraction', request, function(result){
           if (result.error_code === 0){ //https://raw.githubusercontent.com/robotics-in-concert/rocon_msgs/indigo/rocon_app_manager_msgs/msg/ErrorCodes.msg
             (function(){
