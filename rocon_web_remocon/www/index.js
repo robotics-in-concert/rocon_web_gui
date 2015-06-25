@@ -43,9 +43,9 @@ $(document).ready(function () {
   addUrl();
   deleteUrl();
   listItemSelect();
-  startApp();
-  stopApp();
-  stopAllApps();
+  startInteraction();
+  stopInteraction();
+  stopAllInteractions();
   getBrowser();
 
   if(defaultUrl != undefined) {
@@ -61,11 +61,18 @@ $(document).ready(function () {
 */
 
 window.onbeforeunload = function(e){
+  var ret_message = "";
   var RunningInteractions = $.extend([] , gRunningInteractions); //deep copy
-  for (var i = 0 ; i < RunningInteractions.length ; i ++){
-    stopInteractions(RunningInteractions[i].interaction_hash);
+  if(RunningInteractions.length > 0){
+    ret_message = RunningInteractions.length + " interactions running. Are you really shutdown?"
+    for (var i = 0 ; i < RunningInteractions.length ; i ++){
+      stopInteractions(RunningInteractions[i].interaction_hash);
+    }
   }
-  return null;
+  else{
+    ret_message = null;
+  }
+  return ret_message;
 }
 
 /**
@@ -124,7 +131,6 @@ function publishRemoconStatus(){
       var hash = gRunningInteractions[i]['interaction_hash'];
       runningInteractionHashs.push(hash)
     }
-    console.log('runningInteractionHashs: ', runningInteractionHashs);
     var remocon_status = {
       'platform_info' : gRemoconPlatformInfo,
       'uuid' : gRemoconUUID,
@@ -474,15 +480,15 @@ function prepareWebappUrl(interaction, baseUrl) {
   * @param {interaction} interaction
 */
 function displayDescription(interaction) {
-  $("#startappBtn").show();
-  $("#stopappBtn").show();
+  $("#startInteractionBtn").show();
+  $("#stopInteractionBtn").show();
   if (checkIsRunningInteraction(interaction) === false){
-    $("#stopappBtn").attr('disabled',true);
+    $("#stopInteractionBtn").attr('disabled',true);
   }
   else{
-    $("#stopappBtn").attr('disabled',false);
+    $("#stopInteractionBtn").attr('disabled',false);
   }
-  stopAllAppsBtnCtrl();
+  stopAllInteractionsBtnCtrl();
   $("#descriptionpanel").append('<p><strong>name</strong> : ' + interaction["name"] + '</p><hr>');
     
   $("#descriptionpanel").append('<p><strong>display_name</strong> : ' + interaction["display_name"] + '</p>');
@@ -580,12 +586,12 @@ function checkRunningInteraction (window_handler, window_key){
 }
 
 /**
-  * Event function when 'Start App' button is clicked
+  * Event function when 'Start Interaction' button is clicked
   *
-  * @function startApp
+  * @function startInteraction
 */
-function startApp() {
-  $("#startappBtn").click(function () {
+function startInteraction() {
+  $("#startInteractionBtn").click(function () {
     var finalUrl = gFinalUrl;
     var finalHash = gFinalHash;
     var runningInteraction = {}
@@ -614,8 +620,8 @@ function startApp() {
               }
             })();
             //button ctrl
-            $("#stopappBtn").attr('disabled',false);
-            stopAllAppsBtnCtrl();
+            $("#stopInteractionBtn").attr('disabled',false);
+            stopAllInteractionsBtnCtrl();
           }
           else{
             alert('interaction request rejected [' + result.message + ']');
@@ -627,31 +633,31 @@ function startApp() {
 }
 
 /**
-  * Event function when 'Stop App' button is clicked
+  * Event function when 'Stop Interaction' button is clicked
   *
-  * @function stopApp
+  * @function stopInteraction
 */
-function stopApp() {
-  $("#stopappBtn").click(function () {
+function stopInteraction() {
+  $("#stopInteractionBtn").click(function () {
     var finalHash = gFinalHash;
     stopInteractions(finalHash);
-    $("#stopappBtn").attr('disabled',true);
+    $("#stopInteractionBtn").attr('disabled',true);
   });
 
 }
 
 /**
-  * Event function when 'Stop All Apps' button is clicked
+  * Event function when 'Stop All Interactions' button is clicked
   *
-  * @function stopAllApps
+  * @function stopAllInteractions
 */
-function stopAllApps() {
-  $("#stopallappsBtn").click(function () {
+function stopAllInteractions() {
+  $("#stopAllInteractionsBtn").click(function () {
     var RunningInteractions = $.extend([] , gRunningInteractions); //deep copy
     for (var i = 0 ; i < RunningInteractions.length ; i ++){
       stopInteractions(RunningInteractions[i].interaction_hash);
     }
-    $("#stopappBtn").attr('disabled',true);
+    $("#stopInteractionBtn").attr('disabled',true);
   });
 }
 
@@ -660,13 +666,13 @@ function stopAllApps() {
   *
   * @function stopInteractions
 */
-function stopAllAppsBtnCtrl(){
+function stopAllInteractionsBtnCtrl(){
   if(gRunningInteractions.length > 0){
-    $("#stopallappsBtn").attr('disabled', false);
+    $("#stopAllInteractionsBtn").attr('disabled', false);
   }
   else{
-    $("#stopallappsBtn").attr('disabled', true);
-    $("#stopappBtn").attr('disabled', true);
+    $("#stopAllInteractionsBtn").attr('disabled', true);
+    $("#stopInteractionBtn").attr('disabled', true);
   }
 }
 
@@ -685,16 +691,14 @@ function stopInteractions(interactionHash) {
           window_handler.close();
         }
       }
-      else{
-        gRunningInteractions.splice(i, 1);
-        publishRemoconStatus();
-      }
+      gRunningInteractions.splice(i, 1);
+      publishRemoconStatus();
       if(gPairing !== null){
         gPairing = null;
       }
     }
   }
-  stopAllAppsBtnCtrl();
+  stopAllInteractionsBtnCtrl();
 }
 
 /**
@@ -737,8 +741,8 @@ function initRoleList() {
 function initInteractionList() {
     gListInteractions = [];
     $("#interactions_listgroup").children().remove();
-    $("#startappBtn").hide();
-    $("#stopappBtn").hide();
+    $("#startInteractionBtn").hide();
+    $("#stopInteractionBtn").hide();
 }
 
 /**
@@ -748,8 +752,8 @@ function initInteractionList() {
 */
 function initDescriptionList() {
     $("#descriptionpanel").children().remove();
-    $("#startappBtn").hide();
-    $("#stopappBtn").hide();
+    $("#startInteractionBtn").hide();
+    $("#stopInteractionBtn").hide();
 }
 
 /**
