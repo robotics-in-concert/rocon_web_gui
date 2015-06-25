@@ -14,7 +14,7 @@ var gFinalIsPairedType;
 var gUrl;
 var gCookieCount;
 
-var defaultUrl;
+var defaultUrl="ws://192.168.10.32:9090";
 
 
 //Remocon profile
@@ -361,7 +361,15 @@ function getRoles() {
         displayRoles();
       });
     }
-  });
+  },  function(error) {
+    callService(ros, '/concert/interactions/get_roles', 'rocon_interaction_msgs/GetRoles', request, function(result) {
+      for (var i = 0; i < result.roles.length; i++) {
+        gListRoles.push(result.roles[i]);
+      }
+      displayRoles();
+    });
+    
+  }); 
 }
 
 /**
@@ -401,6 +409,13 @@ function getInteractions(selectedRole) {
         displayInteractions();
       });
     }
+  }, function(error) {
+    callService(ros, '/concert/interactions/get_interactions', 'rocon_interaction_msgs/GetInteractions', request, function(result) {
+      for (var i = 0; i < result.interactions.length; i++) {
+        gListInteractions.push(result.interactions[i]);
+      }
+      displayInteractions();
+    });
   });
   
 }
