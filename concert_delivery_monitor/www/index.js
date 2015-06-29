@@ -108,7 +108,7 @@ function addMap(viewer) {
     ros : ros,
     topic : map_topic,
     rootObject : viewer.scene,
-    compression: 'png'
+    compression: 'none'
   });
 
   // Scale the canvas to fit to the map
