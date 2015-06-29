@@ -14,7 +14,7 @@ var gFinalIsPairedType;
 var gUrl;
 var gCookieCount;
 
-var defaultUrl="ws://192.168.10.32:9090";
+var defaultUrl="";
 
 
 //Remocon profile
@@ -48,10 +48,6 @@ $(document).ready(function () {
   stopAllInteractions();
   getBrowser();
 
-  if(defaultUrl != undefined) {
-    gUrl = defaultUrl;
-    ros.connect(defaultUrl);
-  }
 });
 
 /**
@@ -63,16 +59,10 @@ $(document).ready(function () {
 window.onbeforeunload = function(e){
   var ret_message = "";
   var RunningInteractions = $.extend([] , gRunningInteractions); //deep copy
-  if(RunningInteractions.length > 0){
-    ret_message = RunningInteractions.length + " interactions running. Are you really shutdown?"
-    for (var i = 0 ; i < RunningInteractions.length ; i ++){
-      stopInteractions(RunningInteractions[i].interaction_hash);
-    }
+  for (var i = 0 ; i < RunningInteractions.length ; i ++){
+    stopInteractions(RunningInteractions[i].interaction_hash);
   }
-  else{
-    ret_message = null;
-  }
-  return ret_message;
+  return null;
 }
 
 /**
