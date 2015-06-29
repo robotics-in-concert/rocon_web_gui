@@ -194,6 +194,7 @@ ROS2D.OccupancyGridClient = function(options) {
   options = options || {};
   var ros = options.ros;
   var topic = options.topic || '/map';
+  var compression = options.compression || 'none';
   this.continuous = options.continuous;
   this.rootObject = options.rootObject || new createjs.Container();
 
@@ -205,7 +206,7 @@ ROS2D.OccupancyGridClient = function(options) {
     ros : ros,
     name : topic,
     messageType : 'nav_msgs/OccupancyGrid',
-    compression : 'png'
+    compression : compression
   });
   rosTopic.subscribe(function(message) {
     // check for an old map
