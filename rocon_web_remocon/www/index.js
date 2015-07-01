@@ -47,7 +47,6 @@ $(document).ready(function () {
   stopInteraction();
   stopAllInteractions();
   getBrowser();
-
 });
 
 /**
@@ -633,7 +632,33 @@ function startInteraction() {
           }
         });
       }
-    });
+    }, function(error){
+        callService(ros, '/concert/interactions/request_interaction', 'rocon_interaction_msgs/RequestInteraction', request, function(result){
+          if (result.error_code === 0){ //https://raw.githubusercontent.com/robotics-in-concert/rocon_msgs/indigo/rocon_app_manager_msgs/msg/ErrorCodes.msg
+            (function(){
+              if (finalUrl !== null){
+                var new_window = window.open(finalUrl);
+                runningInteraction['window_handler'] = new_window;
+                runningInteraction[id] = setInterval(function(){
+                  checkRunningInteraction(new_window, id);
+                }, 1000);
+              }
+              runningInteraction['interaction_hash'] = finalHash;
+              gRunningInteractions.push(runningInteraction);
+              publishRemoconStatus();
+              if (gFinalIsPairedType === true){
+                gPairing = finalHash;
+              }
+            })();
+            //button ctrl
+            $("#stopInteractionBtn").attr('disabled',false);
+            stopAllInteractionsBtnCtrl();
+          }
+          else{
+            alert('interaction request rejected [' + result.message + ']');
+          }
+        });
+   });
   });
 }
 
