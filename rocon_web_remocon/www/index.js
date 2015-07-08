@@ -57,7 +57,6 @@ $(document).ready(function () {
 */
 
 window.onbeforeunload = function(e){
-  console.log("here");
   var ret_message = "";
   var RunningInteractions = $.extend([] , gRunningInteractions); //deep copy
   for (var i = 0 ; i < RunningInteractions.length ; i ++){
