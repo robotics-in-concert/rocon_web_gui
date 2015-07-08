@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>Rocon - ROBO WORLD</title>
+    <title>Vending Machine Delivery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -11,8 +11,7 @@
     <!-- jQuery -->
     <script src="/rocon_web_common/js/thirdparty/jquery/jquery.js"></script>
     <!-- Bootstrap -->
-    <script src="/rocon_web_common/js/thirdparty/bootstrap/legacy/bootstrap.2.3.1.js"></script>
-    <script src="/rocon_web_common/js/thirdparty/bootstrap/bootstrap-button.js"></script>
+    <script src="/rocon_web_common/js/thirdparty/bootstrap/bootstrap.min.js"></script>
     <!-- ROS -->
     <script src="/rocon_web_common/js/thirdparty/eventemitter2/eventemitter2.js"></script>
     <script src="/rocon_web_common/js/ros/robotwebtools/roslib.js"></script>
@@ -20,99 +19,163 @@
     <script type="text/javascript" src="/rocon_web_common/js/rocon/interactions.js"></script>
     <script type="text/javascript" src="/rocon_web_common/js/thirdparty/uuid.js"></script>
     <script type="text/javascript" src="/rocon_web_common/js/thirdparty/config.js"></script>
-    <script type="text/javascript" src="/rocon_web_common/js/thirdparty/jquery.flexslider.js"></script>
-
     <!-- styles -->
-    <link href="/rocon_web_common/css/legacy/bootstrap.2.3.1.css" rel="stylesheet"></link>
-    <link href="/rocon_web_common/css/bootstrap-button.css" rel="stylesheet"></link>
-    <link href="/rocon_web_common/css/bootstrap-responsive.css" rel="stylesheet"></link>
+    <link rel="stylesheet" href="/rocon_web_common/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/rocon_web_common/css/bootstrap-theme.min.css">
+    
     <!-- App -->
     <script type="text/javascript" src="index.js"></script>
     <link href="index.css" rel="stylesheet"></link>
-
   </head>
   <body>
-    <!-- config layer -->
-     <p class='oa-ui-connection-info rosbridge-ip-info'>ws://localhost:9090</p>
-     <p class='oa-ui-connection-info rosbridge-connection-info'>connection</p>
-     
-     <div class='config-layer container'>
-        <h1>Config</h1>
-     </div>
-    <!-- order app main layer -->
-     <div class="oa-ui-main">
-       <!-- Title-layer 0-->
-       <div class="container oa-ui title-layer">
-       </div>
-       <!-- Intro-layer 1-->
-       <div class="container oa-ui intro-layer">
-        <img class="intro-layer-img-button" src="./img/2_intro_button_off.png">
-       </div>     
-       <!-- Menu-layer 2-->
-       <div class="container oa-ui menu-layer">
-        <p class="menu-layer-drink-img-group"></p>
-        <p class="menu-layer-button-img-group">
-          <img class="menu-layer-button-img cancel-img-btn" src="./img/3_order_button_cancel_disabled.png">
-          <img class="menu-layer-button-img order-img-btn" src="./img/3_order_button_order_disabled.png">
-        </p>
-       </div>
-       <!-- Ordered-layer 3-->
-       <div class="container oa-ui ordered-layer">
-        <p class='oa-ui-connection-info rosbridge-ip-info'>ws://localhost:9090</p>
-        <p class='oa-ui-connection-info rosbridge-connection-info'>connection</p>
-        <div class='config-layer container'>
-            <h1>Config</h1>
+    
+    <!-- Header -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+              <img class="navbar-brand" style="height:65px; width:150px;" src="/rocon_web_common/img/rocon_logo.png"></img>
+              <a class="navbar-brand col-xs-9" href="#" style="margin-top:6px">Vending Machine Delivery</a>
+            </div>
         </div>
-       </div>
-       <!-- On delivery layer 4-->
-       <div class="container oa-ui on-delivery-layer">
-        <div class= "on-delivery-layer-slideshow">
-          <div class="flexslider">
-              <ul class="slides">
-                <li>
-                  <img src="./img/delivery_status_0.png" />
-                </li>
-                <li>
-                  <img src="./img/delivery_status_1.png" />
-                </li>
-                <li>
-                  <img src="./img/delivery_status_2.png" />
-                </li>
-                <li>
-                  <img src="./img/delivery_status_3.png" />
-                </li>
-                <li>
-                  <img src="./img/delivery_status_4.png" />
-                </li>
-                
-              </ul>
+    </div>
+
+    <!-- header end-->
+
+    <!-- body -->    
+    <div class="container intro-layer">
+      <div class="jumbotron">
+        <h1>Welcome!</h1>
+        <p>Do you enjoy Vending machine delivery service?</p>
+        <p><a class="btn btn-primary btn-lg yes-btn-intro-layer" href="#" role="button">Yes</a></p>
+      </div>
+    </div>
+
+    <div class="container menu-layer">
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+          <h1>Choice your drinks</h1>
+          <p>You can select drinks within two.</p>
+        </div>
+      </div>
+      <div class="row menu-img-grp-menu-layer"></div>
+      <p/>
+
+      <div class="row menu-btn-grp-menu-layer">
+        <p>
+          <a class="col-xs-4 col-xs-offset-1 btn btn-primary btn-lg yes-btn-menu-layer" href="#" role="button">Yes</a>
+          <a class="col-xs-4 col-xs-offset-2 btn btn-primary btn-lg no-btn-menu-layer" href="#" role="button">No</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="container deliverying-layer">
+
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+          <h1><b>Your Delivery Status</b></h1>
+          <hr/>
+          <h2 class="delivery-status-deliverying-layer"><b>IDLE</b></h2>
+        </div>
+      </div>
+      <p/>
+      <hr/>
+      <div class="row">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <img src="./img/delivery_status_0.png" alt="0">
+              <div class="carousel-caption">
+                AD
+              </div>
+            </div>
+            <div class="item">
+              <img src="./img/delivery_status_1.png" alt="1">
+              <div class="carousel-caption">
+                AD
+              </div>
+            </div>
+            <div class="item">
+              <img src="./img/delivery_status_2.png" alt="2">
+              <div class="carousel-caption">
+                AD
+              </div>
+            </div>
+            <div class="item">
+              <img src="./img/delivery_status_3.png" alt="3">
+              <div class="carousel-caption">
+                AD
+              </div>
+            </div>
+            <div class="item">
+              <img src="./img/delivery_status_4.png" alt="4">
+              <div class="carousel-caption">
+                AD
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- Controls -->
+          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container waiting-confirm-layer">
+      <div class="jumbotron">
+        <h1>Your Delivery Arrives</h1>
+        <p>Push the green button on waiterbot</p>
+      </div>
+    </div>
+
+    <div class="container end-layer">
+      <div class="jumbotron">
+        <h1>Thank you</h1>
+      </div>
+    </div>
+
+    <!-- Modal layer  -->
+    <div class="modal fade" id="confirm-modal" role="dialog" aria-labelledby="gridSystemModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="gridSystemModalLabel">Are you sure?</h4>
+          </div>
+          <div class="modal-body">
+             <div class="container-fluid modal-layer">
+               <div class="row drink-img-grp-modal-layer">
+               </div>
+               <p/>
+               <div class="row btn-img-grp-modal-layer">
+                <p>
+                 <a class="col-xs-4 col-xs-offset-1 btn btn-primary btn-lg yes-btn-modal-layer" href="#" role="button" data-dismiss="modal">Yes</a>
+                 <a class="col-xs-4 col-xs-offset-2 btn btn-primary btn-lg no-btn-modal-layer" href="#" role="button" data-dismiss="modal">No</a>
+                </p>
+              </div>
+             </div>
           </div>
         </div>
-        
-        <p class="image-delivery-status-group">
-          <img class="on-delivery-layer-status-img status-img" src="./img/6_order status_ready.png"> 
-        </p>
-       </div>
-       
-       <!-- Arrival layer -->
-       <div class="container oa-ui arrival-layer">
-       </div>
-      
-       <!-- Delivery end layer -->
-       <div class="container oa-ui delivery-end-layer">
-       </div>
-       <!-- Modal layer  -->
-       <div id="confirm-modal" class="modal hide fade modal-order-list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-body">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <p class="modal-drink-img-group"></p>
-          <p class="modal-button-img-group">
-            <img class="modal-button-img no-img-btn" src="./img/4_modalbox_button_no_off.png" data-dismiss="modal">
-            <img class="modal-button-img yes-img-btn" src="./img/4_modalbox_button_yes_off.png" data-dismiss="modal">
-          </p>
-        </div>
-       </div>
-     </div>
+      </div>
+    </div>
+    <!-- body end -->
+
+    <!-- footer -->
+    <br/>
+    <footer>
+      <img style="width:90px; height:25px;" src="/rocon_web_common/img/yujin_logo.jpg"></img>
+      &copy 2015
+    </footer>
+    <!-- footer-->
+
   </body>
 </html>
 
