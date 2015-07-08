@@ -34,6 +34,7 @@ var gRemoconPlatformInfo = {
              }
 };
 var gPairing = null;
+var gInterationsNamespace = null;
 
 // Starts here
 $(document).ready(function () {
@@ -56,6 +57,7 @@ $(document).ready(function () {
 */
 
 window.onbeforeunload = function(e){
+  console.log("here");
   var ret_message = "";
   var RunningInteractions = $.extend([] , gRunningInteractions); //deep copy
   for (var i = 0 ; i < RunningInteractions.length ; i ++){
@@ -341,25 +343,36 @@ function getRoles() {
   var request = new ROSLIB.ServiceRequest({
     uri : 'rocon:/*/*/*/' + browser
   });
-  ros.getServicesForType('rocon_interaction_msgs/GetRoles', function(service_name){
-    if (service_name !== undefined && service_name.length > 0){
-      callService(ros, service_name[0], 'rocon_interaction_msgs/GetRoles', request, function(result) {
-        for (var i = 0; i < result.roles.length; i++) {
-          gListRoles.push(result.roles[i]);
-        }
-        displayRoles();
-      });
-    }
-  },  function(error) {
-    callService(ros, '/concert/interactions/get_roles', 'rocon_interaction_msgs/GetRoles', request, function(result) {
-      for (var i = 0; i < result.roles.length; i++) {
-        gListRoles.push(result.roles[i]);
+
+  if(gInterationsNamespace === null){
+    ros.getServicesForType('rocon_interaction_msgs/GetRoles', function(service_name){
+      if (service_name !== undefined && service_name.length > 0){
+        gInterationsNamespace = service_name.slice(0,service_name('get_roles'));
+        callService(ros, gInterationsNamespace + 'get_roles', 'rocon_interaction_msgs/GetRoles', request, processGetRoles);
       }
-      displayRoles();
-    });
-    
-  }); 
+    },  function(error) {
+      callService(ros, '/concert/interactions/get_roles', 'rocon_interaction_msgs/GetRoles', request, processGetRoles);
+      
+    });   
+  }
+  else{
+    callService(ros, gInterationsNamespace + 'get_roles', 'rocon_interaction_msgs/GetRoles', request, processGetRoles);
+  }
 }
+
+/**
+  * process getting the roles and display them when GetRoles service is called.
+  *
+  * @function displayRoles
+*/
+
+function processGetRoles(result){
+  for (var i = 0; i < result.roles.length; i++) {
+    gListRoles.push(result.roles[i]);
+  }
+  displayRoles();
+}
+
 
 /**
   * Display the roles list to the screen
@@ -379,35 +392,45 @@ function displayRoles() {
   *
   * @param {string} selectedRole
 */
+
 function getInteractions(selectedRole) {
   var browser = getBrowser();
   var request = new ROSLIB.ServiceRequest({
     roles : [selectedRole],
     uri : 'rocon:/*/*/*/' + browser
   });
-  ros.getServicesForType('rocon_interaction_msgs/GetInteractions', function(service_name){
-    if (service_name !== undefined && service_name.length > 0){
-      callService(ros, service_name[0], 'rocon_interaction_msgs/GetInteractions', request, function(result) {
-        for (var i = 0; i < result.interactions.length; i++) {
-          var interaction = result.interactions[i];
-          if (interaction.hasOwnProperty('pairing')){
-            interaction['is_paired_type'] = true;
-          }
-          gListInteractions.push(interaction);
-        }
-        displayInteractions();
-      });
-    }
-  }, function(error) {
-    callService(ros, '/concert/interactions/get_interactions', 'rocon_interaction_msgs/GetInteractions', request, function(result) {
-      for (var i = 0; i < result.interactions.length; i++) {
-        gListInteractions.push(result.interactions[i]);
+  if(gInterationsNamespace === null){
+    ros.getServicesForType('rocon_interaction_msgs/GetInteractions', function(service_name){
+      if (service_name !== undefined && service_name.length > 0){
+        gInterationsNamespace = service_name.slice(0,service_name('get_interactions'));
+        callService(ros, gInterationsNamespace + 'get_interactions', 'rocon_interaction_msgs/GetInteractions', request, processGetInteractions);
       }
-      displayInteractions();
+    }, function(error) {
+      callService(ros, '/concert/interactions/get_interactions', 'rocon_interaction_msgs/GetInteractions', request, processGetInteractions);
     });
-  });
-  
+  }
+  else{
+    callService(ros, gInterationsNamespace + 'get_interactions', 'rocon_interaction_msgs/GetInteractions', request, processGetInteractions);
+  }
 }
+
+/**
+  * process getting interactions when GetInteractions service is called.
+  *
+  * @function processGetInteractions
+*/
+
+function processGetInteractions(result) {
+  for (var i = 0; i < result.interactions.length; i++) {
+    var interaction = result.interactions[i];
+    if (interaction.hasOwnProperty('pairing')){
+      interaction['is_paired_type'] = true;
+    }
+    gListInteractions.push(interaction);
+  }
+  displayInteractions();
+}
+
 
 /**
   * Display the interaction list to the screen
@@ -596,71 +619,65 @@ function checkRunningInteraction (window_handler, window_key){
 */
 function startInteraction() {
   $("#startInteractionBtn").click(function () {
-    var finalUrl = gFinalUrl;
     var finalHash = gFinalHash;
-    var runningInteraction = {}
-    var id = uuid();
     var request = new ROSLIB.ServiceRequest({
       remocon : gRemoconName,
       hash : finalHash
     });
-    ros.getServicesForType('rocon_interaction_msgs/RequestInteraction', function(service_name){
-      if (service_name !== undefined && service_name.length > 0){
-        callService(ros, service_name[0], 'rocon_interaction_msgs/RequestInteraction', request, function(result){
-          if (result.error_code === 0){ //https://raw.githubusercontent.com/robotics-in-concert/rocon_msgs/indigo/rocon_app_manager_msgs/msg/ErrorCodes.msg
-            (function(){
-              if (finalUrl !== null){
-                var new_window = window.open(finalUrl);
-                runningInteraction['window_handler'] = new_window;
-                runningInteraction[id] = setInterval(function(){
-                  checkRunningInteraction(new_window, id);
-                }, 1000);
-              }
-              runningInteraction['interaction_hash'] = finalHash;
-              gRunningInteractions.push(runningInteraction);
-              publishRemoconStatus();
-              if (gFinalIsPairedType === true){
-                gPairing = finalHash;
-              }
-            })();
-            //button ctrl
-            $("#stopInteractionBtn").attr('disabled',false);
-            stopAllInteractionsBtnCtrl();
+    if(gInterationsNamespace === null){
+          ros.getServicesForType('rocon_interaction_msgs/RequestInteraction', function(service_name){
+          if (service_name !== undefined && service_name.length > 0){
+            callService(ros, service_name[0], 'rocon_interaction_msgs/RequestInteraction', request, processStopInteraction);
           }
-          else{
-            alert('interaction request rejected [' + result.message + ']');
-          }
-        });
-      }
-    }, function(error){
-        callService(ros, '/concert/interactions/request_interaction', 'rocon_interaction_msgs/RequestInteraction', request, function(result){
-          if (result.error_code === 0){ //https://raw.githubusercontent.com/robotics-in-concert/rocon_msgs/indigo/rocon_app_manager_msgs/msg/ErrorCodes.msg
-            (function(){
-              if (finalUrl !== null){
-                var new_window = window.open(finalUrl);
-                runningInteraction['window_handler'] = new_window;
-                runningInteraction[id] = setInterval(function(){
-                  checkRunningInteraction(new_window, id);
-                }, 1000);
-              }
-              runningInteraction['interaction_hash'] = finalHash;
-              gRunningInteractions.push(runningInteraction);
-              publishRemoconStatus();
-              if (gFinalIsPairedType === true){
-                gPairing = finalHash;
-              }
-            })();
-            //button ctrl
-            $("#stopInteractionBtn").attr('disabled',false);
-            stopAllInteractionsBtnCtrl();
-          }
-          else{
-            alert('interaction request rejected [' + result.message + ']');
-          }
-        });
-   });
+        }, function(error){
+            callService(ros, '/concert/interactions/request_interaction', 'rocon_interaction_msgs/RequestInteraction', request, processStopInteraction);
+       });
+    }
+    else{
+          callService(ros, '/concert/interactions/request_interaction', 'rocon_interaction_msgs/RequestInteraction', request, processStopInteraction);
+
+    }
+
   });
 }
+
+/**
+  * process stopping interaction when 'Stop Interaction' service is called.
+  *
+  * @function processStopInteraction
+*/
+
+function processStopInteraction(result){
+if (result.error_code === 0){ //https://raw.githubusercontent.com/robotics-in-concert/rocon_msgs/indigo/rocon_app_manager_msgs/msg/ErrorCodes.msg
+  (function(){
+    var finalUrl = gFinalUrl;
+    var runningInteraction = {}
+    var id = uuid();
+    var finalHash = gFinalHash;
+    if (finalUrl !== null){
+      var new_window = window.open(finalUrl);
+      runningInteraction['window_handler'] = new_window;
+      runningInteraction[id] = setInterval(function(){
+        checkRunningInteraction(new_window, id);
+      }, 1000);
+    }
+    runningInteraction['interaction_hash'] = finalHash;
+    gRunningInteractions.push(runningInteraction);
+    publishRemoconStatus();
+    if (gFinalIsPairedType === true){
+      gPairing = finalHash;
+    }
+  })();
+  
+  //button ctrl
+  $("#stopInteractionBtn").attr('disabled',false);
+  stopAllInteractionsBtnCtrl();
+  }
+  else{
+    alert('interaction request rejected [' + result.message + ']');
+  }
+}
+
 
 /**
   * Event function when 'Stop Interaction' button is clicked
