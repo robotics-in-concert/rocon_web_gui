@@ -16,7 +16,6 @@ var gCookieCount;
 
 var defaultUrl="";
 
-
 //Remocon profile
 var gPublishers = {}
 var gSubscribers = {}
@@ -346,7 +345,7 @@ function getRoles() {
   if(gInterationsNamespace === null){
     ros.getServicesForType('rocon_interaction_msgs/GetRoles', function(service_name){
       if (service_name !== undefined && service_name.length > 0){
-        gInterationsNamespace = service_name.slice(0,service_name('get_roles'));
+        gInterationsNamespace = service_name[0].slice(0,service_name[0].indexOf('get_roles'));
         callService(ros, gInterationsNamespace + 'get_roles', 'rocon_interaction_msgs/GetRoles', request, processGetRoles);
       }
     },  function(error) {
@@ -401,7 +400,7 @@ function getInteractions(selectedRole) {
   if(gInterationsNamespace === null){
     ros.getServicesForType('rocon_interaction_msgs/GetInteractions', function(service_name){
       if (service_name !== undefined && service_name.length > 0){
-        gInterationsNamespace = service_name.slice(0,service_name('get_interactions'));
+        gInterationsNamespace = service_name[0].slice(0,service_name[0].indexOf('get_interactions'));
         callService(ros, gInterationsNamespace + 'get_interactions', 'rocon_interaction_msgs/GetInteractions', request, processGetInteractions);
       }
     }, function(error) {
@@ -626,7 +625,8 @@ function startInteraction() {
     if(gInterationsNamespace === null){
           ros.getServicesForType('rocon_interaction_msgs/RequestInteraction', function(service_name){
           if (service_name !== undefined && service_name.length > 0){
-            callService(ros, service_name[0], 'rocon_interaction_msgs/RequestInteraction', request, processStopInteraction);
+            gInterationsNamespace = service_name[0].slice(0,service_name[0].indexOf('request_interaction'));
+            callService(ros, gInterationsNamespace + 'request_interaction', 'rocon_interaction_msgs/RequestInteraction', request, processStopInteraction);
           }
         }, function(error){
             callService(ros, '/concert/interactions/request_interaction', 'rocon_interaction_msgs/RequestInteraction', request, processStopInteraction);
