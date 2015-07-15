@@ -1,14 +1,15 @@
 var ros = new ROSLIB.Ros();
 var defaultUrL = rocon_interactions.rosbridge_uri;
 
-var robot1 = rocon_interactions.parameters['robot1'];
-var robot2 = rocon_interactions.parameters['robot2'];
-var robot3 = rocon_interactions.parameters['robot3'];
+var robots = {}
 
 var viewer;
+var map_origin;
 var gridClient;
 var waypoint_poller;
 var ar_region_poller;
+var pickup_nav_div;
+var vm_nav_div;
 
 //set sub
 var pickup_order_list_sub_topic_name = 'pickup_order_list';
@@ -40,13 +41,14 @@ delivery_status_list = {
 
 
 $().ready(function(e) {
-
-  initHeader();
-  initViewer();
   pickup_nav_div= $('#nav-pickup-orders');
   vm_nav_div= $('#nav-vm-orders');
   var nw = $('#nav-wrapper');
   nw.css('margin-top','20pt');
+  initRobotList();
+  initHeader();
+  initViewer();
+
 });
 
 function initHeader()
@@ -58,11 +60,26 @@ function initHeader()
 
 function initViewer() {
 
-  viewer = createViewer();
-  gridClient = addMap(viewer);
-  addRegionViz(viewer,gridClient);
-  addNavigators(viewer,gridClient);
+  createViewer();
+  addMap();
+  addRegionViz();
+  addNavigators();
   addRobotStatus();
+}
+
+function initRobotList(){
+  var robot1 = rocon_interactions.parameters['robot1'];
+  var robot2 = rocon_interactions.parameters['robot2'];
+  var robot3 = rocon_interactions.parameters['robot3'];
+
+  [robot1, robot2, robot3].forEach(function(r){
+    robots[r] = {};
+    robots[r]['name'] = r;
+    robots[r]['pose_topic'] = '/' + r + '/robot_pose';
+    robots[r]['status_topic'] = '/' + r + '/robot_status';
+    robots[r]['viewer_obj'] = null;
+    robots[r]['status_obj'] = null;
+  })
 }
 
 function createViewer() {
@@ -96,11 +113,9 @@ function createViewer() {
      viewer.resizeCanvas(width,height);
      viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
    });
-
-  return viewer;
 }
 
-function addMap(viewer) {
+function addMap() {
   var continuous = false;
   var map_topic = rocon_interactions.remappings['map'] || 'map';
 
@@ -113,74 +128,89 @@ function addMap(viewer) {
 
   // Scale the canvas to fit to the map
   gridClient.on('change', function(map_origin) {
+     map_origin = map_origin;
      viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
   });
-  return gridClient;
 }
 
 function addRobotStatus() {
-  var robots = [robot2, robot3, robot1];
-  var robot_status_topic_type = 'simple_delivery_msgs/RobotStatus';
-  for (var i = robots.length - 1; i >= 0; i--) {
-    new RobotStatus({
-      ros : ros,
-      robot_name : robots[i],
-      topicName : '/'+robots[i]+'/robot_status',
-      topicType : robot_status_topic_type,
-    })
-  };
+  gridClient.on('change', function(map_origin) {
+    var robot_status_topic_type = 'simple_delivery_msgs/RobotStatus';
+    for (var r in robots){
+      var robot = robots[r];
+      var robot_name = robot['name'];
+
+      var context = '';
+      context += '<div class="span3">'
+      context += '<div class="input-group"><input type="text" class="form-control robot-names ' + robot_name + '-robot-name" \
+                    placeholder="Robot name" aria-describedby="basic-addon1" value="' + robot_name + '"></div>'
+      context += '<h5 class=' + robot_name + '-robot-status>' + 'None' + '</h5>'
+      context += '<div class="progress"><div class="progress-bar ' + robot_name + '-battery-status" \
+                    role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: 100%;">\
+                    100%\
+                    </div></div>';
+      context += '</div>'
+
+      $('.robots-status').append(context);
+      $('.' + robot_name + '-robot-status').css('word-break','break-word');
+      $('.' + robot_name + '-robot-name').change(function(evt) {
+        robot_name = evt.currentTarget.className.split(" ")[2].split("-robot-name")[0];
+        changed_robot_name = $(this).val();
+        robots[robot_name]['status_obj'] = new RobotStatus({
+            ros : ros,
+            robot_name : robot_name,
+            topicName : '/' + changed_robot_name + '/robot_status',
+            topicType : robot_status_topic_type,
+        });
+
+        robots[robot_name]['viewer_obj'] = new ROS2D.Robot({
+            ros: ros,
+            map_origin : map_origin,
+            name       : changed_robot_name,
+            size       : 20,
+            topicName  : '/' + changed_robot_name + '/robot_pose',
+            topicType  : 'geometry_msgs/PoseStamped',
+            fillColor  : createjs.Graphics.getRGB(255,64,128,0.66),
+            rootObject : viewer.scene
+        });
+      });
+
+      robot['status_obj'] = new RobotStatus({
+            ros : ros,
+            robot_name : robot_name,
+            topicName : robot['status_topic'],
+            topicType : robot_status_topic_type,
+      });
+    }
+  });
+
 }
 
-function addNavigators(viewer,gridClient) {
-
-  var robot1_name = robot1;
-  var robot2_name = robot2;
-  var robot3_name = robot3;
-  var robot1_pose_topic = '/' + robot1 + '/robot_pose';
-  var robot2_pose_topic = '/' + robot2 + '/robot_pose';
-  var robot3_pose_topic = '/' + robot3 + '/robot_pose';
-  
+function addNavigators() {
   gridClient.on('change', function(map_origin) {
-    var robot1 = new ROS2D.Robot({
-      ros: ros,
-      map_origin : map_origin,
-      name       : robot1_name,
-      size       : 20,
-      topicName  : robot1_pose_topic, 
-      topicType  : 'geometry_msgs/PoseStamped',
-      fillColor  : createjs.Graphics.getRGB(255,64,128,0.66),
-      rootObject : viewer.scene
-    });
-
-    var robot2 = new ROS2D.Robot({
-      ros: ros,
-      map_origin : map_origin,
-      name       : robot2_name,
-      size       : 20,
-      topicName  : robot2_pose_topic,
-      topicType  : 'geometry_msgs/PoseStamped',
-      fillColor  : createjs.Graphics.getRGB(100,64,255,0.66),
-      rootObject : viewer.scene
-    });
-     var robot3 = new ROS2D.Robot({
-      ros: ros,
-      map_origin : map_origin,
-      name       : robot3_name,
-      size       : 20,
-      topicName  : robot3_pose_topic,
-      topicType  : 'geometry_msgs/PoseStamped',
-      fillColor  : createjs.Graphics.getRGB(100,64,255,0.66),
-      rootObject : viewer.scene
-    });
-
+    map_origin = map_origin;
+    for (var r in robots){
+      var robot = robots[r];
+      robot['viewer_obj'] = new ROS2D.Robot({
+        ros: ros,
+        map_origin : map_origin,
+        name       : robot.name,
+        size       : 20,
+        topicName  : robot.pose_topic,
+        topicType  : 'geometry_msgs/PoseStamped',
+        fillColor  : createjs.Graphics.getRGB(255,64,128,0.66),
+        rootObject : viewer.scene
+      });
+    }
   });
 }
 
-function addRegionViz(viewer,gridClient){
+function addRegionViz(){
   var table_topic = rocon_interactions.remappings['tables'] || 'tables';
   var ar_marker_topic = rocon_interactions.remappings['ar_markers'] || 'ar_markers';
 
-  gridClient.on('change', function(map_origin) {   
+  gridClient.on('change', function(map_origin) {
+    map_origin = map_origin;
     waypoint_poller = new REGIONVIZ.Waypoint({
       ros: ros,
       map_origin : map_origin,
@@ -202,7 +232,7 @@ function settingROSCallbacks()
 {
   ros.on('connection',function() {
     console.log("Connected");
-    // subscribe to order list                                                       
+    // subscribe to order list
     $('#focusedInput').val('Connected');
     $('#focusedInput').attr('disabled',true);
     settingSubscriber();
@@ -295,7 +325,6 @@ function createOrderLi(order_number, order) {
   return li;
 }
 
-
 RobotStatus = function(options) {
   var robot_status = this;
   options = options || {};
@@ -303,19 +332,6 @@ RobotStatus = function(options) {
   robot_status.robot_name = options.robot_name || 'None';
   robot_status.topicName = options.topicName || 'robot_status';
   robot_status.topicType = options.topicType || 'simple_delivery_msgs/RobotStatus';
-
-  context = '';
-  context += '<div class="span3">'
-  context += '<h4 class=' + robot_status.robot_name + '-robot-name>' + robot_status.robot_name +'</h4>'
-  context += '<h5 class=' + robot_status.robot_name + '-robot-status>' + 'None' + '</h5>'
-  context += '<div class="progress"><div class="progress-bar ' + robot_status.robot_name + '-battery-status" \
-                role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: 100%;">\
-                100%\
-                </div></div>';
-  context += '</div>'
-  $('.robots-status').append(context);
-  $('.'+robot_status.robot_name + '-robot-status').css('word-break','break-word');
-
 
   robot_status.status_listener = new ROSLIB.Topic({
     ros: robot_status.ros,
