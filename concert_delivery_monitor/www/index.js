@@ -26,9 +26,9 @@ if(vm_order_list_sub_topic_name in rocon_interactions.remappings)
 
 delivery_status_list = {
 "10" : "IDLE",
-"20" : "GO_TO_FRONTDESK",
-"30" : "ARRIVAL_AT_FRONTDESK",
-"40" : "WAITING_FOR_FRONTDESK",
+"20" : "GO_TO_PICKUP",
+"30" : "ARRIVAL_AT_PICKUP",
+"40" : "WAITING_FOR_PICKUP",
 "51" : "GO_TO_RECEIVER",
 "52" : "ARRIVAL_AT_RECEIVER",
 "53" : "WAITING_CONFIRM_RECEIVER",
