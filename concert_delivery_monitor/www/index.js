@@ -16,13 +16,21 @@ var pickup_order_list_sub_topic_name = 'pickup_order_list';
 var vm_order_list_sub_topic_name = 'vm_order_list';
 var order_list_sub_topic_type = 'simple_delivery_msgs/OrderList';
 
+//set pub
+var delivery_order_cancel_pub_topic_name = 'cancel_delivery_order';
+var delivery_order_cancel_pub_topic_type = 'std_msgs/String';
 
-//remapping pub
+// set publisher
+var delivery_order_cancel_publisher = null;
+//remapping
 if(pickup_order_list_sub_topic_name in rocon_interactions.remappings)
   pickup_order_list_sub_topic_name = rocon_interactions.remappings[pickup_order_list_sub_topic_name];
 
 if(vm_order_list_sub_topic_name in rocon_interactions.remappings)
   vm_order_list_sub_topic_name = rocon_interactions.remappings[vm_order_list_sub_topic_name];
+
+if(delivery_order_cancel_pub_topic_name in rocon_interactions.remappings)
+  delivery_order_cancel_pub_topic_name = rocon_interactions.remappings[delivery_order_cancel_pub_topic_name];
 
 delivery_status_list = {
 "10" : "IDLE",
@@ -251,6 +259,11 @@ function settingROSCallbacks()
 }
 
 function settingPublisher(){
+  delivery_order_cancel_publisher = new ROSLIB.Topic({
+    ros : ros,
+    name : delivery_order_cancel_pub_topic_name,
+    messageType: delivery_order_cancel_pub_topic_type
+  }); 
   
 }
 
@@ -279,6 +292,9 @@ function processVMOrderList(msg) {
       var navli = createOrderLi(i, msg.orders[i]); 
       vm_nav_div.append(navli);
   }
+  $('.btn-deliver-order-cancel').click(function(context){
+    cancelOrder(context.currentTarget.getAttribute('order-uuid'));
+  });
 }
 
 function processPickupOrderList(msg) {
@@ -289,6 +305,18 @@ function processPickupOrderList(msg) {
       var navli = createOrderLi(i, msg.orders[i]); 
       pickup_nav_div.append(navli);
   }
+  
+  $('.btn-deliver-order-cancel').click(function(context){
+    cancelOrder(context.currentTarget.getAttribute('order-uuid'));
+  });
+}
+
+function cancelOrder(orderUuid){
+   var order_cancel_msg = new ROSLIB.Message({
+        data : orderUuid
+   });
+   delivery_order_cancel_publisher.publish(order_cancel_msg);
+   console.log('send pulish cancel order: ', orderUuid);
 }
 
 function msec2Time(msec){
@@ -299,14 +327,24 @@ function msec2Time(msec){
 function createOrderLi(order_number, order) {
   var li = document.createElement('li');
   var p = document.createElement('p');
-  p.innerHTML = "<b>#" + order_number + "</b>"+
-             "<br/><b> location : </b>" + order.location+
-             "<br/><b> menu : </b>" + order.menus.toString()+
-             "<br/><b> Robot : </b>" + (order.robot || "Not Assign")+  
-             "<br/><b> Status : </b>" + delivery_status_list[order.status+""]+
-             "<br/><b> Elapsed Time : </b>" + msec2Time(order.elapsed_time) +
-             "<br/><b> uuid : </b>" + order.order_id;
+  var button = document.createElement('button');
+  p.innerHTML = 
+             '<b>#' + order_number + '</b>'+
+             '<br/><b> location : </b>' + order.location+
+             '<br/><b> menu : </b>' + order.menus.toString()+
+             '<br/><b> Robot : </b>' + (order.robot || 'Not Assign')+  
+             '<br/><b> Status : </b>' + delivery_status_list[order.status+'']+
+             '<br/><b> Elapsed Time : </b>' + msec2Time(order.elapsed_time) +
+             '<br/><b> uuid : </b>' + order.order_id;
+
+  button.setAttribute('type', 'button');
+  button.setAttribute('class', 'btn btn-primary btn-large btn-deliver-order-cancel');
+  button.setAttribute('order-uuid', order.order_id);
+  button.innerHTML = 'cancel';
+  
   li.appendChild(p);
+  li.appendChild(button);
+  
   if (delivery_status_list[order.status+""] === "ERROR"){
     $(li).css("color","red")
           .hover(
@@ -321,7 +359,6 @@ function createOrderLi(order_number, order) {
   
   $(li).click(function() {
   });
-
   return li;
 }
 
