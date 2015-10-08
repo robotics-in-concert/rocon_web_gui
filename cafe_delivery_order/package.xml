@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <name>cafe_delivery_order</name>
+  <version>0.0.0</version>
+  <description>
+    drink delivery order application
+  </description>
+
+  <maintainer email="hrkim@yujinrobot.com">HyunhRyul Kim</maintainer>
+
+  <license>BSD</license>
+
+  <author>Jihoon Lee</author> 
+  <author>Dongwook Lee</author> 
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>
