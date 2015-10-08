@@ -2,32 +2,7 @@
 {
 
 	"HTMLFileName":"cafe_delivery_order.html",
-	"symbol_stage":{
-		"dummyStageParentWidth":"768px",
-		"element_${Stage}":{
-			"timelineColor2":"0xcbbd71",
-			"timelineColor3":"0x7b7652",
-			"timelineColor":"0xeedf79"},
-		"defaultStageParentWidth":"768px",
-		"defaultStageParentHeight":"1024px",
-		"dummyStageParentHeight":"1024px"},
-	"CompZoomFactor":"100",
-	"StageZoomFactor":"100",
-	"expanded:images/preloader5.gif":"nil",
-	"Preloader-Default Timeline_playhead_ms":"0",
-	"symbol_Preloader":{
-		"dummyStageParentWidth":"768px",
-		"dummyStageParentHeight":"1024px",
-		"defaultStageParentWidth":"768px",
-		"element_${preloader5}":{
-			"timelineColor2":"0x81aa62",
-			"timelineColor3":"0x5b6c4d",
-			"timelineColor":"0x91c767"},
-		"defaultStageParentHeight":"1024px"},
-	"usedBOM":"false",
-	"nextElementColorIndex":"3",
-	"stage-Default Timeline_playhead_ms":"0",
-	"pref__general__FilterNonAnimatedElements":"false",
+	"expanded:images/es_ro_7.png":"nil",
 	"ModelData":"{\
 \"stage\": {\
    \"timelines\": {\
@@ -44,4 +19,39 @@
 \
    }}\
 }",
-	"viewStartY":"0"}
+	"expanded:images/es_ro_4.png":"nil",
+	"expanded:images/es_ro_5.png":"nil",
+	"expanded:images/es_ro_2.png":"nil",
+	"Preloader-Default Timeline_playhead_ms":"0",
+	"pref__general__FilterNonAnimatedElements":"false",
+	"expanded:images/water.svg":"nil",
+	"expanded:images/juice.svg":"nil",
+	"symbol_Preloader":{
+		"dummyStageParentWidth":"768px",
+		"dummyStageParentHeight":"1024px",
+		"defaultStageParentWidth":"768px",
+		"element_${preloader5}":{
+			"timelineColor2":"0x81aa62",
+			"timelineColor3":"0x5b6c4d",
+			"timelineColor":"0x91c767"},
+		"defaultStageParentHeight":"1024px"},
+	"expanded:images/greentea.png":"nil",
+	"CompZoomFactor":"100",
+	"StageZoomFactor":"100",
+	"expanded:images/es_ro_6.png":"nil",
+	"expanded:images/es_ro_3.png":"nil",
+	"symbol_stage":{
+		"dummyStageParentWidth":"768px",
+		"element_${Stage}":{
+			"timelineColor2":"0xcbbd71",
+			"timelineColor3":"0x7b7652",
+			"timelineColor":"0xeedf79"},
+		"defaultStageParentWidth":"768px",
+		"defaultStageParentHeight":"1024px",
+		"dummyStageParentHeight":"1024px"},
+	"usedBOM":"false",
+	"nextElementColorIndex":"3",
+	"stage-Default Timeline_playhead_ms":"0",
+	"expanded:images/preloader5.gif":"nil",
+	"viewStartY":"0",
+	"expanded:images/es_ro_1.png":"nil"}
