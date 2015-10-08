@@ -16,4 +16,12 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
    })("stage");
    //Edge symbol end:'stage'
 
+   //=========================================================
+   
+   //Edge symbol: 'menu'
+   (function(symbolName) {   
+   
+   })("menu");
+   //Edge symbol end:'menu'
+
 })(window.jQuery || AdobeEdge.$, AdobeEdge, "EDGE-67918046");
