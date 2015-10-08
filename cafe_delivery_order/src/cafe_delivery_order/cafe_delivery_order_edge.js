@@ -31,14 +31,16 @@
                         {
                             id: 'menu',
                             symbolName: 'menu',
+                            display: 'none',
                             type: 'rect',
-                            rect: ['15', '250', '260', '270', 'auto', 'auto']
+                            rect: ['9px', '10px', '260', '270', 'auto', 'auto'],
+                            overflow: 'visible'
                         }
                     ],
                     style: {
                         '${Stage}': {
                             isStage: true,
-                            rect: [undefined, undefined, '768px', '1024px'],
+                            rect: [undefined, undefined, '720px', '1280px'],
                             overflow: 'hidden',
                             fill: ["rgba(255,255,255,1)"]
                         }
@@ -48,7 +50,36 @@
                     duration: 0,
                     autoPlay: true,
                     data: [
-
+                        [
+                            "eid5",
+                            "top",
+                            0,
+                            0,
+                            "linear",
+                            "${menu}",
+                            '10px',
+                            '10px'
+                        ],
+                        [
+                            "eid4",
+                            "left",
+                            0,
+                            0,
+                            "linear",
+                            "${menu}",
+                            '9px',
+                            '9px'
+                        ],
+                        [
+                            "eid6",
+                            "display",
+                            0,
+                            0,
+                            "linear",
+                            "${menu}",
+                            'none',
+                            'none'
+                        ]
                     ]
                 }
             },
@@ -69,7 +100,7 @@
                             fill: ['rgba(73,180,163,1.00)']
                         },
                         {
-                            rect: ['6px', '9px', '246px', '228px', 'auto', 'auto'],
+                            rect: ['6px', '9px', '246px', '221px', 'auto', 'auto'],
                             borderRadius: ['10px', '10px', '10px', '10px'],
                             id: 'photo',
                             stroke: [0, 'rgb(0, 0, 0)', 'none'],
@@ -77,9 +108,9 @@
                             fill: ['rgba(255,255,255,1.00)']
                         },
                         {
-                            rect: ['6px', '242px', '246px', '28px', 'auto', 'auto'],
+                            rect: ['6px', '234px', '246px', '28px', 'auto', 'auto'],
                             textStyle: ['', '', '', '', 'none'],
-                            font: ['Arial, Helvetica, sans-serif', [24, 'px'], 'rgba(5,17,99,1.00)', '400', 'none', 'normal', 'break-word', ''],
+                            font: ['Tahoma, Geneva, sans-serif', [24, 'px'], 'rgba(5,17,99,1.00)', '700', 'none', 'normal', 'break-word', ''],
                             id: 'title',
                             text: '<p style=\"margin: 0px;\">​title</p>',
                             align: 'center',

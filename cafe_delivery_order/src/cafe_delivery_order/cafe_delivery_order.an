@@ -3,6 +3,7 @@
 
 	"HTMLFileName":"cafe_delivery_order.html",
 	"expanded:images/es_ro_7.png":"nil",
+	"menu-Default Timeline_playhead_ms":"0",
 	"ModelData":"{\
 \"stage\": {\
    \"timelines\": {\
@@ -46,7 +47,7 @@
 	"expanded:images/greentea.png":"nil",
 	"expanded:images/water.svg":"nil",
 	"expanded:images/es_ro_6.png":"nil",
-	"pref__general__AutoKeyframePropertiesArmed":"false",
+	"pref__general__AutoKeyframePropertiesArmed":"true",
 	"expanded:images/juice.svg":"nil",
 	"symbol_Preloader":{
 		"dummyStageParentWidth":"768px",
@@ -57,31 +58,33 @@
 			"timelineColor3":"0x5b6c4d",
 			"timelineColor":"0x91c767"},
 		"defaultStageParentHeight":"1024px"},
-	"TransitionIdCounter":"2",
+	"TransitionIdCounter":"7",
 	"CompZoomFactor":"100",
 	"StageZoomFactor":"100",
 	"pixelsPerMs":"0.2",
 	"expanded:images/es_ro_3.png":"nil",
 	"symbol_stage":{
-		"dummyStageParentWidth":"768px",
+		"dummyStageParentWidth":"720px",
 		"element_${title}":{
 			"timelineColor2":"0x107faa",
 			"timelineColor3":"0x295a6d",
 			"animationEnabled":"false",
 			"timelineColor":"0x008dc8"},
-		"dummyStageParentHeight":"1024px",
+		"dummyStageParentHeight":"1280px",
 		"element_${menu}":{
 			"timelineColor2":"0x1095d2",
 			"timelineColor3":"0x29647e",
+			"timelineColor":"0x00a9fa",
 			"animationEnabled":"true",
-			"timelineColor":"0x00a9fa"},
-		"defaultStageParentHeight":"1024px",
+			"invisible":"false"},
+		"defaultStageParentHeight":"1280px",
+		"codeTreeElementPopupFilter":"",
 		"element_${photo}":{
 			"timelineColor2":"0x5a558a",
 			"timelineColor3":"0x4a485e",
 			"animationEnabled":"false",
 			"timelineColor":"0x63599f"},
-		"defaultStageParentWidth":"768px",
+		"defaultStageParentWidth":"720px",
 		"element_${menu_bg}":{
 			"timelineColor2":"0xb099ce",
 			"timelineColor3":"0x70657c",
