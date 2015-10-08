@@ -47,7 +47,7 @@
 	"expanded:images/greentea.png":"nil",
 	"expanded:images/water.svg":"nil",
 	"expanded:images/es_ro_6.png":"nil",
-	"pref__general__AutoKeyframePropertiesArmed":"true",
+	"pref__general__AutoKeyframePropertiesArmed":"false",
 	"expanded:images/juice.svg":"nil",
 	"symbol_Preloader":{
 		"dummyStageParentWidth":"768px",
