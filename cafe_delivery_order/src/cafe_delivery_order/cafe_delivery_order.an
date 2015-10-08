@@ -1,0 +1,47 @@
+
+{
+
+	"HTMLFileName":"cafe_delivery_order.html",
+	"symbol_stage":{
+		"dummyStageParentWidth":"768px",
+		"element_${Stage}":{
+			"timelineColor2":"0xcbbd71",
+			"timelineColor3":"0x7b7652",
+			"timelineColor":"0xeedf79"},
+		"defaultStageParentWidth":"768px",
+		"defaultStageParentHeight":"1024px",
+		"dummyStageParentHeight":"1024px"},
+	"CompZoomFactor":"100",
+	"StageZoomFactor":"100",
+	"expanded:images/preloader5.gif":"nil",
+	"Preloader-Default Timeline_playhead_ms":"0",
+	"symbol_Preloader":{
+		"dummyStageParentWidth":"768px",
+		"dummyStageParentHeight":"1024px",
+		"defaultStageParentWidth":"768px",
+		"element_${preloader5}":{
+			"timelineColor2":"0x81aa62",
+			"timelineColor3":"0x5b6c4d",
+			"timelineColor":"0x91c767"},
+		"defaultStageParentHeight":"1024px"},
+	"usedBOM":"false",
+	"nextElementColorIndex":"3",
+	"stage-Default Timeline_playhead_ms":"0",
+	"pref__general__FilterNonAnimatedElements":"false",
+	"ModelData":"{\
+\"stage\": {\
+   \"timelines\": {\
+      \"Default Timeline\": {\
+      }\
+   }},\
+\"Preloader\": {\
+   \"timelines\": {\
+      \"Default Timeline\": {\
+      }\
+   }},\
+\"Down-level\": {\
+   \"timelines\": {\
+\
+   }}\
+}",
+	"viewStartY":"0"}
