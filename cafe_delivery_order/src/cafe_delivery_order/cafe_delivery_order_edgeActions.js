@@ -22,14 +22,46 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          console.log("menu.json loaded");
          var menu_data;
          $.getJSON('menu.json', function(menu_data) {
-         console.log("menu list size :" + menu_data.length);
-         for(var i=0; i<menu_data.length; i++){
-         	var s = sym.createChildSymbol("menu","Stage");
-         	s.$("photo").css({"background-image":"url('"+menu_data[i].image+"')"});
-         	s.$("title").html(menu_data[i].title);
-         	s.getSymbolElement().css({"float":"left", "margin":"10px", "top" : "100px"});
-         	}
+         	console.log("menu list size :" + menu_data.length);
+         
+         	var arr = new Array();
+         	sym.setVariable("menuArray", arr);
+         	var compId = sym.getComposition().getCompId();	
+         	for(var i=0; i<menu_data.length; i++){
+         		//var j = "menu"+i.toString();
+         		//console.log(j);
+         		//Create an instance element of a symbol as a child of the given parent element 
+         		var s = sym.createChildSymbol("menu","Stage");
+         		//Symbol.bindSymbolAction(compId, "menu", "creationComplete", function(sym, e) {
+         			//console.log("creation Complete");    
+         		//});
+         		//set the value of a Symbol variable
+         		s.setVariable("id", i);
+         		s.$("photo").css({"background-image":"url('"+menu_data[i].image+"')"});
+         		s.$("title").html(menu_data[i].title);
+         		s.getSymbolElement().css({"float":"left", "margin":"10px", "top" : "100px"});
+         		//push it into the array
+         		arr.push(s);
+         	}	
+         	
+         	arr.forEach(function(symbolInTheArray){
+         		var menuItem = $(symbolInTheArray);
+         		//create a jQuery reference to the DIV element inside the symbol.
+         		var menuElement = $(symbolInTheArray.getSymbolElement());
+         		//now you can bind interactivity to the menu items' DIVs
+         		menuElement.bind ("click",function(){
+         			console.log("Clicked " + symbolInTheArray.getVariable("id"));
+         		});
+         		//menuElement.bind ("mouseover",function(){menuElement.animate({opacity: 0.2, left:"-=25px"});});
+         		//menuElement.bind ("mouseout",function(){menuElement.animate({opacity: 1, left:"+=25px"});});
+         	});
          });
+         
+         function traceSelected (symbolInTheArray){
+          alert("You clicked a menuItem with the id of: "+symbolInTheArray.getVariable("id"));
+         }
+         
+         
 
       });
       //Edge binding end
@@ -44,8 +76,6 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          //sub
          var delivery_status_sub_topic = "delivery_status";
          var delivery_status_sub_type = "simple_delivery_msgs/DeliveryStatus";
-         //var tables_sub_topic = "tables";
-         //var tables_sub_topic_type = "yocs_msgs/WaypointList";
          var defaultUrL = "";
          var discard_btn_list = "";
          
@@ -63,9 +93,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          }
          console.log(rocon_interactions.parameters);
          console.log(discard_btn_list);
-         //if(tables_sub_topic in rocon_interactions.remappings)
-         //	tables_sub_topic = rocon_interactions.remappings[tables_sub_topic];
-         
+                  
          if(send_order_pub in rocon_interactions.remappings)
          	send_order_pub = rocon_interactions.remappings[send_order_pub];
          
@@ -93,9 +121,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          var delivery_goal = "";
          var parsing_list = ['Distance','Remain Time','Message'];
          var id = ''
-         //Declare ros action
-         //var deliver_order_client;
-         
+                  
          settingROSCallbacks();
          ros.connect(defaultUrL);
          
@@ -111,22 +137,12 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          		messageType: send_order_pub_type 
          	 });
          
-         	 /*
-         	 var tables_listener = new ROSLIB.Topic({
-         		ros : ros,
-         		name : tables_sub_topic,
-         		messageType: tables_sub_topic_type
-         		});
-         	 tables_listener.subscribe(processTableListUpdate);
-         	*/
          	var delivery_status_listener = new ROSLIB.Topic({
          		ros : ros,
          		name : delivery_status_sub_topic,
          		messageType: delivery_status_sub_type
          		});
          	 delivery_status_listener.subscribe(processDeliveryStatusUpdate);
-         
-         	 //showMainMenu(true);
          	}
          
          	);
@@ -316,6 +332,8 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
    //Edge symbol: 'menu'
    (function(symbolName) {   
    
+      
+
    })("menu");
    //Edge symbol end:'menu'
 

@@ -97,7 +97,7 @@
                             id: 'menu_bg',
                             stroke: [0, 'rgba(0,0,0,1)', 'none'],
                             type: 'rect',
-                            fill: ['rgba(73,180,163,1.00)']
+                            fill: ['rgba(60,93,212,1.00)']
                         },
                         {
                             rect: ['6px', '9px', '246px', '221px', 'auto', 'auto'],
