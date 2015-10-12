@@ -20,6 +20,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          menu.json으로부터 주문 가능한 메뉴의 이미지와 이름을 불러옴
          */
          console.log("menu.json loaded");
+         
          var menu_data;
          $.getJSON('menu.json', function(menu_data) {
          	console.log("menu list size :" + menu_data.length);
@@ -37,13 +38,15 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          		//});
          		//set the value of a Symbol variable
          		s.setVariable("id", i);
+         		s.setVariable("name", menu_data[i].title);
+         		s.setVariable("qty", 0);
          		s.$("photo").css({"background-image":"url('"+menu_data[i].image+"')"});
-         		s.$("title").html(menu_data[i].title);
+         		s.$("title").html(s.getVariable("name"));
          		s.getSymbolElement().css({"float":"left", "margin":"10px", "top" : "100px"});
          		//push it into the array
          		arr.push(s);
          	}	
-         	
+         
          	arr.forEach(function(symbolInTheArray){
          		var menuItem = $(symbolInTheArray);
          		//create a jQuery reference to the DIV element inside the symbol.
@@ -51,17 +54,28 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          		//now you can bind interactivity to the menu items' DIVs
          		menuElement.bind ("click",function(){
          			console.log("Clicked " + symbolInTheArray.getVariable("id"));
+         			//console.log(menuItem);
+         			var qty = symbolInTheArray.getVariable("qty");
+         			if(qty < 3) {
+         				qty = qty + 1;
+         			} else {
+         				qty = 0;
+         			}
+         			symbolInTheArray.setVariable("qty", qty);
+         			var div = symbolInTheArray.$("menu_bg")[0];
+         			if(qty > 0) {
+         				symbolInTheArray.$("title").html(symbolInTheArray.getVariable("name")+" "+qty.toString()+"잔");
+         				div.style.backgroundColor = "#3c5dd4";
+         			}
+         			else {
+         				div.style.backgroundColor = "#c8d1f3";
+         				symbolInTheArray.$("title").html(symbolInTheArray.getVariable("name"));
+         			}
          		});
          		//menuElement.bind ("mouseover",function(){menuElement.animate({opacity: 0.2, left:"-=25px"});});
          		//menuElement.bind ("mouseout",function(){menuElement.animate({opacity: 1, left:"+=25px"});});
          	});
          });
-         
-         function traceSelected (symbolInTheArray){
-          alert("You clicked a menuItem with the id of: "+symbolInTheArray.getVariable("id"));
-         }
-         
-         
 
       });
       //Edge binding end
