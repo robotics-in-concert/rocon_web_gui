@@ -35,12 +35,18 @@
                             type: 'rect',
                             rect: ['9px', '10px', '260', '270', 'auto', 'auto'],
                             overflow: 'visible'
+                        },
+                        {
+                            id: 'order_btn',
+                            symbolName: 'order_btn',
+                            type: 'rect',
+                            rect: ['17px', '21', '227', '69', 'auto', 'auto']
                         }
                     ],
                     style: {
                         '${Stage}': {
                             isStage: true,
-                            rect: [undefined, undefined, '720px', '1280px'],
+                            rect: ['null', 'null', '720px', '1280px', 'auto', 'auto'],
                             overflow: 'hidden',
                             fill: ["rgba(255,255,255,1)"]
                         }
@@ -50,6 +56,16 @@
                     duration: 0,
                     autoPlay: true,
                     data: [
+                        [
+                            "eid7",
+                            "left",
+                            0,
+                            0,
+                            "linear",
+                            "${order_btn}",
+                            '17px',
+                            '17px'
+                        ],
                         [
                             "eid5",
                             "top",
@@ -93,10 +109,10 @@
                 content: {
                     dom: [
                         {
-                            rect: ['0px', '0px', '260px', '270px', 'auto', 'auto'],
+                            type: 'rect',
                             id: 'menu_bg',
                             stroke: [0, 'rgba(0,0,0,1)', 'none'],
-                            type: 'rect',
+                            rect: ['0px', '0px', '260px', '270px', 'auto', 'auto'],
                             fill: ['rgba(200,209,243,1.00)']
                         },
                         {
@@ -108,11 +124,52 @@
                             fill: ['rgba(255,255,255,1.00)']
                         },
                         {
-                            rect: ['6px', '234px', '246px', '28px', 'auto', 'auto'],
-                            textStyle: ['', '', '', '', 'none'],
                             font: ['Tahoma, Geneva, sans-serif', [24, 'px'], 'rgba(5,17,99,1.00)', '700', 'none', 'normal', 'break-word', ''],
+                            type: 'text',
+                            align: 'center',
                             id: 'title',
+                            textStyle: ['', '', '', '', 'none'],
                             text: '<p style=\"margin: 0px;\">​title</p>',
+                            rect: ['6px', '234px', '246px', '28px', 'auto', 'auto']
+                        }
+                    ],
+                    style: {
+                        '${symbolSelector}': {
+                            rect: [null, null, '260px', '270px']
+                        }
+                    }
+                },
+                timeline: {
+                    duration: 0,
+                    autoPlay: true,
+                    data: [
+
+                    ]
+                }
+            },
+            "order_btn": {
+                version: "6.0.0",
+                minimumCompatibleVersion: "5.0.0",
+                build: "6.0.0.400",
+                scaleToFit: "none",
+                centerStage: "none",
+                resizeInstances: false,
+                content: {
+                    dom: [
+                        {
+                            rect: ['0%', '0%', '99.8%', '99.6%', 'auto', 'auto'],
+                            borderRadius: ['10px', '10px', '10px', '10px'],
+                            id: 'order_btn_bg',
+                            stroke: [0, 'rgb(0, 0, 0)', 'none'],
+                            type: 'rect',
+                            fill: ['rgba(200,209,243,1)']
+                        },
+                        {
+                            rect: ['16.7%', '32.1%', 'auto', 'auto', 'auto', 'auto'],
+                            textStyle: ['', '', '', '', 'none'],
+                            font: ['Tahoma, Geneva, sans-serif', [24, 'px'], 'rgba(5,17,99,1)', '700', 'none', 'normal', 'break-word', 'nowrap'],
+                            id: 'order_btn_txt',
+                            text: '<p style=\"margin: 0px;\">​Select Drinks</p>',
                             align: 'center',
                             type: 'text'
                         }
@@ -120,7 +177,7 @@
                     style: {
                         '${symbolSelector}': {
                             isStage: 'true',
-                            rect: [undefined, undefined, '260px', '270px']
+                            rect: [undefined, undefined, '227px', '69px']
                         }
                     }
                 },

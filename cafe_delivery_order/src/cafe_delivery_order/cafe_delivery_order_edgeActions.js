@@ -22,11 +22,12 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          console.log("menu.json loaded");
          
          var menu_data;
+         var arr = new Array();
+         sym.setVariable("menuArray", arr);
+         
          $.getJSON('menu.json', function(menu_data) {
          	console.log("menu list size :" + menu_data.length);
          
-         	var arr = new Array();
-         	sym.setVariable("menuArray", arr);
          	var compId = sym.getComposition().getCompId();	
          	for(var i=0; i<menu_data.length; i++){
          		//var j = "menu"+i.toString();
@@ -53,9 +54,10 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          		var menuElement = $(symbolInTheArray.getSymbolElement());
          		//now you can bind interactivity to the menu items' DIVs
          		menuElement.bind ("click",function(){
-         			console.log("Clicked " + symbolInTheArray.getVariable("id"));
+         			//console.log("Clicked " + symbolInTheArray.getVariable("id"));
          			//console.log(menuItem);
          			var qty = symbolInTheArray.getVariable("qty");
+         			//3 should be parameterize later
          			if(qty < 3) {
          				qty = qty + 1;
          			} else {
@@ -64,18 +66,56 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          			symbolInTheArray.setVariable("qty", qty);
          			var div = symbolInTheArray.$("menu_bg")[0];
          			if(qty > 0) {
-         				symbolInTheArray.$("title").html(symbolInTheArray.getVariable("name")+" "+qty.toString()+"잔");
+         				symbolInTheArray.$("title").html(symbolInTheArray.getVariable("name")+"  Qty: "+qty.toString());
          				div.style.backgroundColor = "#3c5dd4";
          			}
          			else {
          				div.style.backgroundColor = "#c8d1f3";
+         				//sym.getSymbol("order_btn").$("order_btn_txt").toggle();
+         
          				symbolInTheArray.$("title").html(symbolInTheArray.getVariable("name"));
          			}
+         			update_order_msg();
          		});
          		//menuElement.bind ("mouseover",function(){menuElement.animate({opacity: 0.2, left:"-=25px"});});
          		//menuElement.bind ("mouseout",function(){menuElement.animate({opacity: 1, left:"+=25px"});});
          	});
          });
+         
+         function update_order_msg(){
+         	if(typeof arr == "undefined") {
+         		console.log("stored menu array is undefined");
+         		return false;
+         	}
+         	else {
+         		var total_qty = 0;
+         		var menus = ""
+         		for(var i=0; i<arr.length; i++) {
+         			var order_in_array = arr[i];
+         			var temp_qty = order_in_array.getVariable("qty");
+         			total_qty = total_qty + temp_qty;
+         			if(temp_qty > 0)
+         				menus = menus + order_in_array.getVariable("name")+":"+temp_qty.toString()+",";
+         			//console.log(order_array.getVariable("qty"));
+         		}	           
+         		sym.setVariable("total_qty",total_qty);
+         		sym.setVariable("menus",menus);
+         		if(total_qty > 0) {
+         			sym.getSymbol("order_btn").$("order_btn_txt").html("Order");
+         			sym.getSymbol("order_btn").$("order_btn_txt").css("color","white");
+         			sym.getSymbol("order_btn").$("order_btn_bg")[0].style.backgroundColor = "#3c5dd4";
+         		}
+         		else {
+         			sym.getSymbol("order_btn").$("order_btn_txt").html("Select");
+         			sym.getSymbol("order_btn").$("order_btn_txt").css("color","#3c5dd4");
+         			sym.getSymbol("order_btn").$("order_btn_bg")[0].style.backgroundColor = "#c8d1f3";
+         		}
+         		console.log("Total:"+total_qty.toString(10));
+         		console.log(menus);
+         		return true;
+         	}
+         };
+         
 
       });
       //Edge binding end
@@ -350,5 +390,13 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
 
    })("menu");
    //Edge symbol end:'menu'
+
+   //=========================================================
+   
+   //Edge symbol: 'order_btn'
+   (function(symbolName) {   
+   
+   })("order_btn");
+   //Edge symbol end:'order_btn'
 
 })(window.jQuery || AdobeEdge.$, AdobeEdge, "EDGE-67918046");
