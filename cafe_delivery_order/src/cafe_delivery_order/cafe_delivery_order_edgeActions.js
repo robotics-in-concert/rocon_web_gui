@@ -131,7 +131,8 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          var delivery_status_sub_topic = "delivery_status";
          var delivery_status_sub_type = "simple_delivery_msgs/DeliveryStatus";
          var defaultUrL = "";
-         var discard_btn_list = "";
+         //var discard_btn_list = "";
+         sym.setVariable("order_progressing",false);
          
          //parameter setting
          if (rocon_interactions.hasOwnProperty('rosbridge_uri')){
@@ -140,13 +141,15 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          	defaultUrL = 'localhost';
          }
          console.log("defaultUrL : " + defaultUrL);
+         /*
          if (rocon_interactions.parameters.hasOwnProperty('discard_btn_name')){
          	discard_btn_list = rocon_interactions.parameters.discard_btn_name;
          }else{
          	discard_btn_list = "";
          }
+         */
          console.log(rocon_interactions.parameters);
-         console.log(discard_btn_list);
+         //console.log(discard_btn_list);
          
          if(send_order_pub in rocon_interactions.remappings)
          	send_order_pub = rocon_interactions.remappings[send_order_pub];
@@ -154,7 +157,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          // remapping rules setting
          if(delivery_status_sub_topic in rocon_interactions.remappings)
            delivery_status_sub_topic = rocon_interactions.remappings[delivery_status_sub_topic];
-         
+         /*
          var delivery_status_list = {
          "10" : "IDLE",
          "20" : "GO_TO_FRONTDESK",
@@ -169,7 +172,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          "80" : "COMPELTE_RETURN",
          "-10" : "ERROR"
          }
-         
+         */
          // public var
          var row_max_num = 3;
          var delivery_goal = "";
@@ -265,7 +268,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          	 	case 54 : 
          	 		sym.getSymbol("progress_status").stop(770);
          	 		sym.getSymbol("progress_status").$("status_txt").html("Delivery complete");
-         	 		break;
+	        	 		break;
          	 	case 70 : 
          	 		sym.getSymbol("progress_status").stop(880);
          	 		sym.getSymbol("progress_status").$("status_txt").html("Return to dock");
@@ -273,6 +276,8 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          	 	case 80 : 
          	 		sym.getSymbol("progress_status").stop(1000);
          	 		sym.getSymbol("progress_status").$("status_txt").html("Return complete");
+         	 		sym.getSymbol("order_btn").$("order_btn_bg")[0].style.backgroundColor = "#3c5dd4";
+ 						sym.setVariable("order_progressing",false);
          	 		break;
          	 	case -10 : 
          	 		sym.getSymbol("progress_status").stop(110);
@@ -298,7 +303,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
         var qty = sym.getVariable("total_qty");
         if(typeof qty != "undefined") {
          	console.log("total qty:"+qty.toString());
-         	if(qty > 0) {
+         	if(qty > 0 && sym.getVariable("order_progressing") == false) {
         		var menus = [];
         		menus.push(sym.getVariable("menus"));
         		//var menus = sym.getVariable("menus");
@@ -310,6 +315,9 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
         		});
          		console.log(order);
          		deliver_order_client.publish(order);
+         		sym.setVariable("order_progressing",true);
+         		sym.getSymbol("order_btn").$("order_btn_bg")[0].style.backgroundColor = "#c8d1f3";
+         		sym.getSymbol("progress_status").$("status_txt").html("Order received.");
          	}
         }
         else {
