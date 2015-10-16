@@ -43,7 +43,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          		s.setVariable("qty", 0);
          		s.$("photo").css({"background-image":"url('"+menu_data[i].image+"')"});
          		s.$("title").html(s.getVariable("name"));
-         		s.getSymbolElement().css({"float":"left", "margin":"10px", "top" : "100px"});
+         		s.getSymbolElement().css({"float":"left", "margin":"10px", "top" : "100px", "left" : "50px"});
          		//push it into the array
          		arr.push(s);
          	}	
@@ -147,7 +147,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          }
          console.log(rocon_interactions.parameters);
          console.log(discard_btn_list);
-                  
+         
          if(send_order_pub in rocon_interactions.remappings)
          	send_order_pub = rocon_interactions.remappings[send_order_pub];
          
@@ -155,7 +155,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          if(delivery_status_sub_topic in rocon_interactions.remappings)
            delivery_status_sub_topic = rocon_interactions.remappings[delivery_status_sub_topic];
          
-         delivery_status_list = {
+         var delivery_status_list = {
          "10" : "IDLE",
          "20" : "GO_TO_FRONTDESK",
          "30" : "ARRIVAL_AT_FRONTDESK",
@@ -174,8 +174,8 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          var row_max_num = 3;
          var delivery_goal = "";
          var parsing_list = ['Distance','Remain Time','Message'];
-         var id = ''
-                  
+         //var order_id = ''
+         
          settingROSCallbacks();
          ros.connect(defaultUrL);
          
@@ -209,7 +209,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          	 	//alert("ROS Connection Close!");
          	});
          };
-         
+         /*
          function parsingDeliveryStatus(data, parsing_list){
          	var parsing_data ={}
          	var main_status = data.replace(/\s/g,'').split('[')[0].split('Status:')[1];
@@ -226,154 +226,97 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          	};
          	return parsing_data;
          }
-         
-         function showDeliveryStatus(data){
-           //$(".sd-delivery-status-layer").html(delivery_status_list[current_order_status+""]);
-         };
-         
-         /*
-         랜드마크 목록의 정렬
          */
-         /*
-         function processFilterSortMenu(data){
-         	var menu = [];
-         	var sortable = [];
-         	//filter
-         	for (var i = 0; i < data.length; i++) {
-         	 var allow_flag = true;
-         	 var disard_btns = "";
-         	 if( typeof(discard_btn_list) === "string"){
-         		 disard_btns = discard_btn_list.replace(/\[/g,'').replace(/\]/g,'').replace(/\s/g,'').split(',');
-         	 }
-         	 else if(typeof(discard_btn_list) === "object"){
-         		disard_btns = discard_btn_list;
-         	 }
-         
-         	 disard_btns.forEach(function(discard_name){
-         		if (discard_name.indexOf(data[i].name) == -1){
-         		  allow_flag = allow_flag&true;
-         		}
-         		else{
-         		  allow_flag = allow_flag&false;
-         		}      
-         	 });
-         
-         	 if(allow_flag){
-         		menu.push(data[i]);
-         	 }
-         	 else{
-         	 }
-         	};
-         	//sort by name
-         	sortable_menu = menu.sort(function (a,b) {
-         	 if (a.name < b.name)
-         		 return -1;
-         	 if (a.name > b.name)
-         		 return 1;
-         	});
-         	for (var i = 0; i < sortable_menu.length; i++) {
-         	console.log("table :"+sortable_menu[i].name);
-         	}
-         
-         	return sortable_menu;
-         
-         }
-         */
-         
-         /*
-         랜드마크 정보를 받아서 화면에 버튼으로 표시
-         */
-         /*
-         function processTableListUpdate(data){
-           var menu = processFilterSortMenu(data.waypoints);
-           settingMainMenu(menu);
-         }
-         */
-         
-         function setBattPecent(obj, data){
-         	 //var text = $(obj).text();
-         	 //$(obj).text(text.split(':')[0]+': ' + data+' %');
-         }
-         
-         function getBattPecent(data){
-         	 var percent = '-1';
-         	 var charge = -1;
-         	 var capacity = -1;
-         	 for (var i = 0; i < data.length; i++) {
-         		var key = data[i].key;
-         		if(key === 'Charge (Ah)'){
-         			charge = data[i].value;
-         		}
-         		else if(key === 'Capacity (Ah)'){
-         			capacity = data[i].value;
-         		}
-         	 };
-         	 if( charge === -1 || capacity === -1){
-         		percent = -1;  
-         	 }
-         	 else{
-         		percent = 100 * charge / capacity;
-         	 } 
-         	 return percent.toFixed(2);
-         };
-         
-         /*
-         function settingMainMenu(data){
-           var row_num = 0;
-           $('.sd-main-menu').html("");
-           for (var i = 0; i < data.length; i++) {
-         	 var table_name = data[i].name;
-         	 if(i % row_max_num === 0){
-         		row_num += 1;
-         		$('.sd-main-menu').append('<div class="row-fluid sd-table-row-num-' + row_num + '">');
-         	 }
-         	 $('.sd-table-row-num-' + row_num).append('<button type="button" class="span4 btn btn-primary btn-large sd-table-list sd-table-' + table_name + '">' + table_name + '</button>')  
-         
-         	 $('.sd-table-'+table_name).click(function(data){
-         		var order_location = data.currentTarget.outerText;
-         		$('.sd-goal-msg').text(order_location);
-         		send order
-         		id = uuid();
-         		hardcoded
-         		var order = new ROSLIB.Message({
-         		  order_id : id,
-         		  receivers : [{location: order_location, qty : 1, menus:[]}]
-         		});
-         		deliver_order_client.publish(order);
-         		showMainMenu(false);
-         	 });
-           };
-         };
-         
-         
-         function showMainMenu(flag){
-         	 if(flag === true){
-         				$('.sd-main-menu-layer').show();
-         				$('.sd-delivery-status').hide();
-         		 }
-         	 else{
-         		$('.sd-main-menu-layer').hide();
-         		$('.sd-delivery-status').show();
-         	 }
-         };
-         */
-         
-         current_order_status = 10;
          function processDeliveryStatusUpdate(data){
-           console.log("Process Deliver Status: "+data);
-           if (data.order_id == id) {
-         	 current_order_status = data.status;
-         	 //$(".sd-delivery-status-layer").html(delivery_status_list[current_order_status+""]);
-         	 if(current_order_status == 60) {
-         		//showMainMenu(true);
+           //console.log("Process Deliver Status - id :"+data.order_id);
+           var current_order_id = sym.getVariable("order_id");
+           //console.log("current order id :"+current_order_id);
+           if (data.order_id == current_order_id) {
+	        	 switch (data.status)
+         	 {
+         	 	case 10 : 
+         	 		sym.getSymbol("progress_status").play();
+         	 		sym.getSymbol("progress_status").$("status_txt").html("YujinRobot Smart Cafe");
+         	 		break;
+         	 	case 20 : 
+         	 		sym.getSymbol("progress_status").stop(110);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Robot is going to frontdesk");
+         	 		break;
+         	 	case 30 : 
+         	 		sym.getSymbol("progress_status").stop(220);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Arrived at frontdesk");
+         	 		break;
+         	 	case 40 : 
+         	 		sym.getSymbol("progress_status").stop(330);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Preparing ordered drink");
+         	 		break;
+         	 	case 51 : 
+         	 		sym.getSymbol("progress_status").stop(440);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Robot is going to receiver");
+         	 		break;
+         	 	case 52 : 
+         	 		sym.getSymbol("progress_status").stop(550);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Arrived at receiver");
+         	 		break;
+         	 	case 53 : 
+         	 		sym.getSymbol("progress_status").stop(660);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Take your order and press robot's green button");
+         	 		break;
+         	 	case 54 : 
+         	 		sym.getSymbol("progress_status").stop(770);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Delivery complete");
+         	 		break;
+         	 	case 70 : 
+         	 		sym.getSymbol("progress_status").stop(880);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Return to dock");
+         	 		break;
+         	 	case 80 : 
+         	 		sym.getSymbol("progress_status").stop(1000);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Return complete");
+         	 		break;
+         	 	case -10 : 
+         	 		sym.getSymbol("progress_status").stop(110);
+         	 		sym.getSymbol("progress_status").$("status_txt").html("Error");
+         	 		break;
          	 }
            }
            else{
          	 console.log('other delivery status');
-         	 console.log(id);
-         	 console.log(data.id);
+         	 console.log(current_order_id);
+         	 console.log(data.order_id);
            }
          };
+
+      });
+      //Edge binding end
+
+      Symbol.bindElementAction(compId, symbolName, "${order_btn}", "click", function(sym, e) {
+         // insert code for mouse click here
+        /*
+        Order button action
+        */
+        var qty = sym.getVariable("total_qty");
+        if(typeof qty != "undefined") {
+         	console.log("total qty:"+qty.toString());
+         	if(qty > 0) {
+        		var menus = [];
+        		menus.push(sym.getVariable("menus"));
+        		//var menus = sym.getVariable("menus");
+        		var order_id = uuid();
+        		sym.setVariable("order_id",order_id);
+        		var order = new ROSLIB.Message({
+        			  order_id : order_id,
+        			  receivers : [{'location': "sw_team", 'qty' : qty, 'menus':menus}]
+        		});
+         		console.log(order);
+         		deliver_order_client.publish(order);
+         	}
+        }
+        else {
+         	console.log("qty is undefined");
+         }
+        
+        
 
       });
       //Edge binding end
@@ -398,5 +341,13 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
    
    })("order_btn");
    //Edge symbol end:'order_btn'
+
+   //=========================================================
+   
+   //Edge symbol: 'progress_status'
+   (function(symbolName) {   
+   
+   })("progress_status");
+   //Edge symbol end:'progress_status'
 
 })(window.jQuery || AdobeEdge.$, AdobeEdge, "EDGE-67918046");
