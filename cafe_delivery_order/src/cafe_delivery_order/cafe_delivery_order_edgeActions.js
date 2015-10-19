@@ -80,6 +80,8 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          		//menuElement.bind ("mouseover",function(){menuElement.animate({opacity: 0.2, left:"-=25px"});});
          		//menuElement.bind ("mouseout",function(){menuElement.animate({opacity: 1, left:"+=25px"});});
          	});
+         	//for reload of this webapp, consider about this issue(https://github.com/RobotWebTools/rosbridge_suite/issues/138)
+         	ros.connect(sym.getVariable("master_url"));	
          });
          
          function update_order_msg(){
@@ -140,6 +142,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          }else{
          	defaultUrL = 'localhost';
          }
+         sym.setVariable("master_url",defaultUrL);
          console.log("defaultUrL : " + defaultUrL);
          /*
          if (rocon_interactions.parameters.hasOwnProperty('discard_btn_name')){
@@ -153,10 +156,11 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          
          if(send_order_pub in rocon_interactions.remappings)
          	send_order_pub = rocon_interactions.remappings[send_order_pub];
-         
+         console.log(send_order_pub);
          // remapping rules setting
          if(delivery_status_sub_topic in rocon_interactions.remappings)
            delivery_status_sub_topic = rocon_interactions.remappings[delivery_status_sub_topic];
+          console.log(delivery_status_sub_topic);
          /*
          var delivery_status_list = {
          "10" : "IDLE",
@@ -174,39 +178,37 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          }
          */
          // public var
-         var row_max_num = 3;
-         var delivery_goal = "";
-         var parsing_list = ['Distance','Remain Time','Message'];
+         //var row_max_num = 3;
+         //var delivery_goal = "";
+         //var parsing_list = ['Distance','Remain Time','Message'];
          //var order_id = ''
          
          settingROSCallbacks();
-         ros.connect(defaultUrL);
+         //ros.connect(defaultUrL);
          
          function settingROSCallbacks()
          {
          	 ros.on('connection',function() {
-         	 console.log("Connected");
-         	 // subscribe to order list
-         
-         	 deliver_order_client = new ROSLIB.Topic({
-         		ros : ros,
-         		name: send_order_pub,
-         		messageType: send_order_pub_type 
-         	 });
-         
-         	var delivery_status_listener = new ROSLIB.Topic({
-         		ros : ros,
-         		name : delivery_status_sub_topic,
-         		messageType: delivery_status_sub_type
-         		});
-         	 delivery_status_listener.subscribe(processDeliveryStatusUpdate);
-         	}
-         
+         	 	console.log("Connected");
+  	 		     	// subscribe to order list
+  				 	deliver_order_client = new ROSLIB.Topic({
+						ros : ros,
+						name: send_order_pub,
+						messageType: send_order_pub_type 
+					});
+
+					var delivery_status_listener = new ROSLIB.Topic({
+						ros : ros,
+						name : delivery_status_sub_topic,
+						messageType: delivery_status_sub_type
+						});
+					 delivery_status_listener.subscribe(processDeliveryStatusUpdate);
+					}
          	);
          	ros.on('error',function(e) {
          	 	console.log("Error!",e);
          	});
-         
+
          	ros.on('close',function() {
          		console.log("Connection Close!");
          	 	//alert("ROS Connection Close!");
@@ -313,6 +315,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
         			  order_id : order_id,
         			  receivers : [{'location': "sw_team", 'qty' : qty, 'menus':menus}]
         		});
+         		console.log("send order");
          		console.log(order);
          		deliver_order_client.publish(order);
          		sym.setVariable("order_progressing",true);
