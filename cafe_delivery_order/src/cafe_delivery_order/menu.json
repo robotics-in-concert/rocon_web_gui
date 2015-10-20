@@ -1,0 +1,26 @@
+﻿[
+	{
+		"image" : "images/juice.svg",
+		"title" : "Juice"
+	},
+	{
+		"image" : "images/greentea.png",
+		"title" : "Green Tea"
+	},
+	{
+		"image" : "images/water.svg",
+		"title" : "Water"
+	},
+	{
+		"image" : "images/es_ro_4.png",
+		"title" : "카페 카푸치노"
+	},
+	{
+		"image" : "images/es_ro_5.png",
+		"title" : "카페모카"
+	},
+	{
+		"image" : "images/es_ro_6.png",
+		"title" : "화이트 카페모카"
+	}
+]

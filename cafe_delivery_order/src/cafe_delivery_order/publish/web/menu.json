@@ -1,0 +1,14 @@
+﻿[
+	{
+		"image" : "images/juice.svg",
+		"title" : "Juice"
+	},
+	{
+		"image" : "images/greentea.png",
+		"title" : "Green Tea"
+	},
+	{
+		"image" : "images/water.svg",
+		"title" : "Water"
+	}
+]
