@@ -9,7 +9,8 @@
         js='js/',
         fonts = {
             'bebas-neue, sans-serif': '<script src=\"http://use.edgefonts.net/bebas-neue:n4:all.js\"></script>',
-            'average, sans-serif': '<script src=\"http://use.edgefonts.net/average:n4:all.js\"></script>'        },
+            'average, sans-serif': '<script src=\"http://use.edgefonts.net/average:n4:all.js\"></script>',
+            'acme, sans-serif': '<script src=\"http://use.edgefonts.net/acme:n4:all.js\"></script>'        },
         opts = {
             'gAudioPreloadPreference': 'auto',
             'gVideoPreloadPreference': 'auto'
@@ -143,7 +144,7 @@
                         {
                             rect: ['6px', '234px', '246px', '28px', 'auto', 'auto'],
                             textStyle: ['', '', '', '', 'none'],
-                            font: ['average, sans-serif', [24, 'px'], 'rgba(5,17,99,1.00)', '700', 'none', 'normal', 'break-word', ''],
+                            font: ['acme, sans-serif', [24, 'px'], 'rgba(5,17,99,1.00)', '700', 'none', 'normal', 'break-word', ''],
                             id: 'title',
                             text: '<p style=\"margin: 0px;\">​title</p>',
                             align: 'center',
