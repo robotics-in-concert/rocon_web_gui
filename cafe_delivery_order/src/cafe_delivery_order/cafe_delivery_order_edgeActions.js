@@ -133,7 +133,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          var delivery_status_sub_topic = "delivery_status";
          var delivery_status_sub_type = "simple_delivery_msgs/DeliveryStatus";
          var defaultUrL = "";
-         //var discard_btn_list = "";
+         var receiver_location = "";
          sym.setVariable("order_progressing",false);
          
          //parameter setting
@@ -144,13 +144,14 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          }
          sym.setVariable("master_url",defaultUrL);
          console.log("defaultUrL : " + defaultUrL);
-         /*
-         if (rocon_interactions.parameters.hasOwnProperty('discard_btn_name')){
-         	discard_btn_list = rocon_interactions.parameters.discard_btn_name;
-         }else{
-         	discard_btn_list = "";
+         
+         if (rocon_interactions.parameters.hasOwnProperty('extra_data')){
+         	receiver_location = rocon_interactions.parameters.extra_data;
          }
-         */
+         else{
+         	console.log("extra_data(receiver_location) is not set");
+         }
+         sym.setVariable("receiver_location",receiver_location);
          console.log(rocon_interactions.parameters);
          //console.log(discard_btn_list);
          
@@ -311,9 +312,10 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
         		//var menus = sym.getVariable("menus");
         		var order_id = uuid();
         		sym.setVariable("order_id",order_id);
+        		var target = sym.getVariable("receiver_location");
         		var order = new ROSLIB.Message({
         			  order_id : order_id,
-        			  receivers : [{'location': "sw_team", 'qty' : qty, 'menus':menus}]
+        			  receivers : [{'location': target, 'qty' : qty, 'menus':menus}]
         		});
          		console.log("send order");
          		console.log(order);
