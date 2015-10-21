@@ -61,9 +61,19 @@
                     }
                 },
                 timeline: {
-                    duration: 0,
+                    duration: 1000,
                     autoPlay: true,
                     data: [
+                        [
+                            "eid8",
+                            "top",
+                            0,
+                            0,
+                            "linear",
+                            "${order_btn}",
+                            '27px',
+                            '27px'
+                        ],
                         [
                             "eid12",
                             "left",
@@ -95,16 +105,6 @@
                             '9px'
                         ],
                         [
-                            "eid8",
-                            "top",
-                            0,
-                            0,
-                            "linear",
-                            "${order_btn}",
-                            '27px',
-                            '27px'
-                        ],
-                        [
                             "eid6",
                             "display",
                             0,
@@ -127,10 +127,10 @@
                 content: {
                     dom: [
                         {
-                            rect: ['0px', '0px', '260px', '270px', 'auto', 'auto'],
+                            type: 'rect',
                             id: 'menu_bg',
                             stroke: [0, 'rgba(0,0,0,1)', 'none'],
-                            type: 'rect',
+                            rect: ['0px', '0px', '260px', '270px', 'auto', 'auto'],
                             fill: ['rgba(200,209,243,1.00)']
                         },
                         {
@@ -142,19 +142,18 @@
                             fill: ['rgba(255,255,255,1.00)']
                         },
                         {
-                            rect: ['6px', '234px', '246px', '28px', 'auto', 'auto'],
-                            textStyle: ['', '', '', '', 'none'],
                             font: ['acme, sans-serif', [24, 'px'], 'rgba(5,17,99,1.00)', '700', 'none', 'normal', 'break-word', ''],
-                            id: 'title',
-                            text: '<p style=\"margin: 0px;\">​title</p>',
+                            type: 'text',
                             align: 'center',
-                            type: 'text'
+                            id: 'title',
+                            textStyle: ['', '', '', '', 'none'],
+                            text: '<p style=\"margin: 0px;\">​title</p>',
+                            rect: ['6px', '234px', '246px', '28px', 'auto', 'auto']
                         }
                     ],
                     style: {
                         '${symbolSelector}': {
-                            isStage: 'true',
-                            rect: [undefined, undefined, '260px', '270px']
+                            rect: [null, null, '260px', '270px']
                         }
                     }
                 },
@@ -184,13 +183,13 @@
                             fill: ['rgba(200,209,243,1)']
                         },
                         {
-                            font: ['Tahoma, Geneva, sans-serif', [24, 'px'], 'rgba(5,17,99,1)', '700', 'none', 'normal', 'break-word', 'nowrap'],
                             type: 'text',
-                            align: 'center',
+                            rect: ['16.7%', '32.1%', 'auto', 'auto', 'auto', 'auto'],
+                            text: '<p style=\"margin: 0px;\">​Select Drinks</p>',
                             id: 'order_btn_txt',
                             textStyle: ['', '', '', '', 'none'],
-                            text: '<p style=\"margin: 0px;\">​Select Drinks</p>',
-                            rect: ['16.7%', '32.1%', 'auto', 'auto', 'auto', 'auto']
+                            align: 'center',
+                            font: ['Tahoma, Geneva, sans-serif', [24, 'px'], 'rgba(5,17,99,1)', '700', 'none', 'normal', 'break-word', 'nowrap']
                         }
                     ],
                     style: {
@@ -217,33 +216,32 @@
                 content: {
                     dom: [
                         {
-                            rect: ['0px', '1px', '396px', '18px', 'auto', 'auto'],
+                            type: 'rect',
                             id: 'progress_bg',
                             stroke: [2, 'rgb(204, 204, 204)', 'solid'],
-                            type: 'rect',
+                            rect: ['0px', '1px', '396px', '18px', 'auto', 'auto'],
                             fill: ['rgba(213,223,232,1.00)']
                         },
                         {
-                            rect: ['1px', '3px', '0px', '18px', 'auto', 'auto'],
+                            type: 'rect',
                             id: 'progress_fg',
                             stroke: [2, 'rgb(204, 204, 204)', 'none'],
-                            type: 'rect',
+                            rect: ['1px', '3px', '0px', '18px', 'auto', 'auto'],
                             fill: ['rgba(41,128,185,1.00)']
                         },
                         {
-                            rect: ['1px', '25px', '400px', '27px', 'auto', 'auto'],
-                            textStyle: ['', '', '', '', 'none'],
                             font: ['average, sans-serif', [25, 'px'], 'rgba(41,128,185,1)', '400', 'none', 'normal', 'break-word', ''],
-                            id: 'status_txt',
-                            text: '<p style=\"margin: 0px; text-indent: 0%;\">​<span style=\"font-family: Tahoma, Geneva, sans-serif; font-size: 90%; word-spacing: 0em; letter-spacing: 0em; font-weight: 500;\">YujinRobot&nbsp;Smart cafe&nbsp;</span></p>',
+                            type: 'text',
                             align: 'left',
-                            type: 'text'
+                            id: 'status_txt',
+                            textStyle: ['', '', '', '', 'none'],
+                            text: '<p style=\"margin: 0px; text-indent: 0%;\">​<span style=\"font-family: Tahoma, Geneva, sans-serif; font-size: 90%; word-spacing: 0em; letter-spacing: 0em; font-weight: 500;\">YujinRobot&nbsp;Smart cafe&nbsp;</span></p>',
+                            rect: ['1px', '25px', '400px', '27px', 'auto', 'auto']
                         }
                     ],
                     style: {
                         '${symbolSelector}': {
-                            isStage: 'true',
-                            rect: [undefined, undefined, '401px', '68px']
+                            rect: [null, null, '401px', '68px']
                         }
                     }
                 },
