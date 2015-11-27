@@ -42,13 +42,13 @@
                             id: 'order_btn',
                             symbolName: 'order_btn',
                             type: 'rect',
-                            rect: ['6px', '27px', '227', '69', 'auto', 'auto']
+                            rect: ['16px', '73px', '688px', '69', 'auto', 'auto']
                         },
                         {
                             id: 'progress_status',
                             symbolName: 'progress_status',
                             type: 'rect',
-                            rect: ['auto', '2.3%', '401', '68', '10.7%', 'auto']
+                            rect: ['auto', '0%', '720px', '68', '-0.4%', 'auto']
                         }
                     ],
                     style: {
@@ -65,24 +65,24 @@
                     autoPlay: true,
                     data: [
                         [
-                            "eid8",
-                            "top",
-                            0,
-                            0,
-                            "linear",
-                            "${order_btn}",
-                            '27px',
-                            '27px'
-                        ],
-                        [
-                            "eid12",
+                            "eid109",
                             "left",
                             0,
                             0,
                             "linear",
                             "${order_btn}",
-                            '6px',
-                            '6px'
+                            '16px',
+                            '16px'
+                        ],
+                        [
+                            "eid121",
+                            "width",
+                            0,
+                            0,
+                            "linear",
+                            "${progress_status}",
+                            '720px',
+                            '720px'
                         ],
                         [
                             "eid5",
@@ -105,6 +105,36 @@
                             '9px'
                         ],
                         [
+                            "eid127",
+                            "right",
+                            0,
+                            1000,
+                            "linear",
+                            "${progress_status}",
+                            '-0.42%',
+                            '0%'
+                        ],
+                        [
+                            "eid123",
+                            "top",
+                            0,
+                            0,
+                            "linear",
+                            "${order_btn}",
+                            '73px',
+                            '73px'
+                        ],
+                        [
+                            "eid112",
+                            "width",
+                            0,
+                            0,
+                            "linear",
+                            "${order_btn}",
+                            '688px',
+                            '688px'
+                        ],
+                        [
                             "eid6",
                             "display",
                             0,
@@ -113,6 +143,16 @@
                             "${menu}",
                             'none',
                             'none'
+                        ],
+                        [
+                            "eid115",
+                            "top",
+                            0,
+                            0,
+                            "linear",
+                            "${progress_status}",
+                            '0%',
+                            '0%'
                         ]
                     ]
                 }
@@ -123,18 +163,18 @@
                 build: "6.0.0.400",
                 scaleToFit: "none",
                 centerStage: "none",
-                resizeInstances: false,
+                resizeInstances: true,
                 content: {
                     dom: [
                         {
-                            type: 'rect',
+                            rect: ['-2px', '0px', '294px', '340px', 'auto', 'auto'],
                             id: 'menu_bg',
                             stroke: [0, 'rgba(0,0,0,1)', 'none'],
-                            rect: ['0px', '0px', '260px', '270px', 'auto', 'auto'],
+                            type: 'rect',
                             fill: ['rgba(200,209,243,1.00)']
                         },
                         {
-                            rect: ['6px', '9px', '246px', '221px', 'auto', 'auto'],
+                            rect: ['12px', '9px', '265px', '73.8%', 'auto', 'auto'],
                             borderRadius: ['10px', '10px', '10px', '10px'],
                             id: 'photo',
                             stroke: [0, 'rgb(0, 0, 0)', 'none'],
@@ -142,18 +182,19 @@
                             fill: ['rgba(255,255,255,1.00)']
                         },
                         {
-                            font: ['acme, sans-serif', [24, 'px'], 'rgba(5,17,99,1.00)', '700', 'none', 'normal', 'break-word', ''],
-                            type: 'text',
-                            align: 'center',
-                            id: 'title',
+                            rect: ['11px', '271px', '266px', '65px', 'auto', 'auto'],
                             textStyle: ['', '', '', '', 'none'],
+                            font: ['acme, sans-serif', [2.81, 'em'], 'rgba(5,17,99,1.00)', '700', 'none', 'normal', 'break-word', ''],
+                            id: 'title',
                             text: '<p style=\"margin: 0px;\">​title</p>',
-                            rect: ['6px', '234px', '246px', '28px', 'auto', 'auto']
+                            align: 'center',
+                            type: 'text'
                         }
                     ],
                     style: {
                         '${symbolSelector}': {
-                            rect: [null, null, '260px', '270px']
+                            isStage: 'true',
+                            rect: [undefined, undefined, '292px', '340px']
                         }
                     }
                 },
@@ -171,11 +212,11 @@
                 build: "6.0.0.400",
                 scaleToFit: "none",
                 centerStage: "none",
-                resizeInstances: false,
+                resizeInstances: true,
                 content: {
                     dom: [
                         {
-                            rect: ['0%', '0%', '99.8%', '99.6%', 'auto', 'auto'],
+                            rect: ['0.2%', '0%', '100%', '99.6%', 'auto', 'auto'],
                             borderRadius: ['10px', '10px', '10px', '10px'],
                             id: 'order_btn_bg',
                             stroke: [0, 'rgb(0, 0, 0)', 'none'],
@@ -183,18 +224,19 @@
                             fill: ['rgba(200,209,243,1)']
                         },
                         {
-                            type: 'text',
-                            rect: ['16.7%', '32.1%', 'auto', 'auto', 'auto', 'auto'],
-                            text: '<p style=\"margin: 0px;\">​Select Drinks</p>',
-                            id: 'order_btn_txt',
+                            rect: ['33%', '18.6%', 'auto', 'auto', 'auto', 'auto'],
                             textStyle: ['', '', '', '', 'none'],
+                            font: ['Tahoma, Geneva, sans-serif', [2.19, 'em'], 'rgba(5,17,99,1)', '700', 'none', 'normal', 'break-word', 'nowrap'],
+                            id: 'order_btn_txt',
+                            text: '<p style=\"margin: 0px;\">​Select Drinks</p>',
                             align: 'center',
-                            font: ['Tahoma, Geneva, sans-serif', [24, 'px'], 'rgba(5,17,99,1)', '700', 'none', 'normal', 'break-word', 'nowrap']
+                            type: 'text'
                         }
                     ],
                     style: {
                         '${symbolSelector}': {
-                            rect: [null, null, '227px', '69px']
+                            isStage: 'true',
+                            rect: [undefined, undefined, '95%', '5.4%']
                         }
                     }
                 },
@@ -212,36 +254,37 @@
                 build: "6.0.0.400",
                 scaleToFit: "none",
                 centerStage: "none",
-                resizeInstances: false,
+                resizeInstances: true,
                 content: {
                     dom: [
                         {
-                            type: 'rect',
+                            rect: ['0%', '1.5%', '99.5%', '26.5%', 'auto', 'auto'],
                             id: 'progress_bg',
                             stroke: [2, 'rgb(204, 204, 204)', 'solid'],
-                            rect: ['0px', '1px', '396px', '18px', 'auto', 'auto'],
+                            type: 'rect',
                             fill: ['rgba(213,223,232,1.00)']
                         },
                         {
-                            type: 'rect',
+                            rect: ['0.1%', '4.4%', '100%', '26.5%', 'auto', 'auto'],
                             id: 'progress_fg',
                             stroke: [2, 'rgb(204, 204, 204)', 'none'],
-                            rect: ['1px', '3px', '0px', '18px', 'auto', 'auto'],
+                            type: 'rect',
                             fill: ['rgba(41,128,185,1.00)']
                         },
                         {
-                            font: ['average, sans-serif', [25, 'px'], 'rgba(41,128,185,1)', '400', 'none', 'normal', 'break-word', ''],
-                            type: 'text',
-                            align: 'left',
-                            id: 'status_txt',
+                            rect: ['1px', '25px', '400px', '27px', 'auto', 'auto'],
                             textStyle: ['', '', '', '', 'none'],
+                            font: ['average, sans-serif', [1.88, 'em'], 'rgba(41,128,185,1)', '400', 'none', 'normal', 'break-word', ''],
+                            id: 'status_txt',
                             text: '<p style=\"margin: 0px; text-indent: 0%;\">​<span style=\"font-family: Tahoma, Geneva, sans-serif; font-size: 90%; word-spacing: 0em; letter-spacing: 0em; font-weight: 500;\">YujinRobot&nbsp;Smart cafe&nbsp;</span></p>',
-                            rect: ['1px', '25px', '400px', '27px', 'auto', 'auto']
+                            align: 'left',
+                            type: 'text'
                         }
                     ],
                     style: {
                         '${symbolSelector}': {
-                            rect: [null, null, '401px', '68px']
+                            isStage: 'true',
+                            rect: [undefined, undefined, '100%', '5.3%']
                         }
                     }
                 },
@@ -249,6 +292,16 @@
                     duration: 1000,
                     autoPlay: true,
                     data: [
+                        [
+                            "eid80",
+                            "height",
+                            0,
+                            0,
+                            "linear",
+                            "${status_txt}",
+                            '27px',
+                            '27px'
+                        ],
                         [
                             "eid86",
                             "top",
@@ -266,8 +319,8 @@
                             1000,
                             "linear",
                             "${progress_fg}",
-                            '0px',
-                            '396px'
+                            '0%',
+                            '100%'
                         ],
                         [
                             "eid83",
@@ -280,24 +333,24 @@
                             '400px'
                         ],
                         [
-                            "eid88",
+                            "eid119",
                             "font-size",
                             0,
                             0,
                             "linear",
                             "${status_txt}",
-                            '25px',
-                            '25px'
+                            '1.88em',
+                            '1.88em'
                         ],
                         [
-                            "eid80",
+                            "eid126",
                             "height",
-                            0,
+                            1000,
                             0,
                             "linear",
-                            "${status_txt}",
-                            '27px',
-                            '27px'
+                            "${progress_fg}",
+                            '26.47%',
+                            '26.47%'
                         ],
                         [
                             "eid82",

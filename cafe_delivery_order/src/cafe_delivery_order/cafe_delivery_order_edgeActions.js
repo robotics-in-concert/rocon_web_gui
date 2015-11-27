@@ -43,7 +43,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          		s.setVariable("qty", 0);
          		s.$("photo").css({"background-image":"url('"+menu_data[i].image+"')"});
          		s.$("title").html(s.getVariable("name"));
-         		s.getSymbolElement().css({"float":"left", "margin":"10px", "top" : "100px", "left" : "50px"});
+         		s.getSymbolElement().css({"float":"left", "margin":"10px", "top" : "13%", "left" : "50px"});
          		//push it into the array
          		arr.push(s);
          	}	
@@ -58,7 +58,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          			//console.log(menuItem);
          			var qty = symbolInTheArray.getVariable("qty");
          			//3 should be parameterize later
-         			if(qty < 3) {
+         			if(qty < 2) {
          				qty = qty + 1;
          			} else {
          				qty = 0;
@@ -67,10 +67,12 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // aliases for commonl
          			var div = symbolInTheArray.$("menu_bg")[0];
          			if(qty > 0) {
          				symbolInTheArray.$("title").html(symbolInTheArray.getVariable("name")+"  Qty: "+qty.toString());
+         				symbolInTheArray.$("title").css("color","white");
          				div.style.backgroundColor = "#3c5dd4";
          			}
          			else {
          				div.style.backgroundColor = "#c8d1f3";
+         				symbolInTheArray.$("title").css("color","#051163");
          				//sym.getSymbol("order_btn").$("order_btn_txt").toggle();
          
          				symbolInTheArray.$("title").html(symbolInTheArray.getVariable("name"));
